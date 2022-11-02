@@ -2,8 +2,6 @@ package kr.co.popoolserver.career.domain;
 
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.enums.GradeType;
-import kr.co.popoolserver.common.domain.enums.ProductType;
-import kr.co.popoolserver.corporate.domain.CorporateEntity;
 import kr.co.popoolserver.user.domain.UserEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
