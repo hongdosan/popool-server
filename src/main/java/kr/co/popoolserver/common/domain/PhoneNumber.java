@@ -19,7 +19,6 @@ public class PhoneNumber {
     private static final String EMPTY = "";
 
     @ApiModelProperty(example = "010-XXXX-XXXX")
-    @Column(name = "phone_number")
     private String phoneNumber;
 
     public PhoneNumber(String phoneNumber) {
