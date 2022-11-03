@@ -61,8 +61,7 @@ public class UserEntity extends BaseEntity {
                       String name,
                       String birth,
                       Gender gender,
-                      PhoneNumber phoneNumber,
-                      Address address) {
+                      PhoneNumber phoneNumber) {
         this.identity = identity;
         this.password = password;
         this.email = email;
@@ -70,6 +69,6 @@ public class UserEntity extends BaseEntity {
         this.birth = birth;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.userRole = UserRole.ROLE_USER;
     }
 }
