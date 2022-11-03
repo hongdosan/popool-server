@@ -13,6 +13,30 @@ public class UserDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    public static class LOGIN{
+        @ApiModelProperty(example = "User ID")
+        @NotBlank(message = "ID")
+        private String identity;
+
+        @ApiModelProperty(example = "User PW")
+        @NotBlank(message = "PW")
+        private String password;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class TOKEN {
+        @ApiModelProperty(example = "AccessToken")
+        private String accessToken;
+
+        @ApiModelProperty(example = "RefreshToken")
+        private String refreshToken;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
     public static class CREATE{
         @ApiModelProperty(example = "id1234")
         @NotBlank(message = "아이디를 입력하세요.")
