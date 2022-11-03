@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -72,10 +73,10 @@ public class UserEntity extends BaseEntity {
         this.userRole = userRole;
     }
 
-    public static UserEntity of(UserDto.CREATE create){
+    public static UserEntity of(UserDto.CREATE create, PasswordEncoder passwordEncoder){
         return UserEntity.builder()
                 .identity(create.getIdentity())
-                .password(create.getPassword())
+                .password(passwordEncoder.encode(create.getPassword()))
                 .name(create.getName())
                 .birth(create.getBirth())
                 .gender(Gender.of(create.getGender()))

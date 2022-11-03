@@ -4,10 +4,12 @@ import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLoginException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
+import kr.co.popoolserver.common.infra.jwt.JwtProvider;
 import kr.co.popoolserver.user.domain.UserEntity;
 import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * signUp Service
@@ -28,7 +32,7 @@ public class UserServiceImpl implements UserService{
         checkPassword(create.getPassword(), create.getCheckPassword());
         checkPhoneNumber(create.getPhone());
 
-        UserEntity userEntity = UserEntity.of(create);
+        UserEntity userEntity = UserEntity.of(create, passwordEncoder);
         userRepository.save(userEntity);
     }
 
