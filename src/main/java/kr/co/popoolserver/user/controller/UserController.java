@@ -1,6 +1,7 @@
 package kr.co.popoolserver.user.controller;
 
 import io.swagger.annotations.ApiOperation;
+import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,9 @@ public class UserController {
 
     @ApiOperation("일반 회원 회원가입")
     @PostMapping("/signUp")
-    public void signUp(@RequestBody @Valid UserDto.CREATE create){
-        //TODO : signUp
+    public ResponseFormat signUp(@RequestBody @Valid UserDto.CREATE create){
+        userService.signUp(create);
+        return ResponseFormat.ok();
     }
 
     @ApiOperation("일반 회원 정보 변경")
