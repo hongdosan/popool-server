@@ -5,7 +5,7 @@ import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
-import kr.co.popoolserver.user.domain.dto.UserDto;
+import kr.co.popoolserver.user.domain.dto.UserCreateDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,7 +73,7 @@ public class UserEntity extends BaseEntity {
         this.userRole = userRole;
     }
 
-    public static UserEntity of(UserDto.CREATE create, PasswordEncoder passwordEncoder){
+    public static UserEntity of(UserCreateDto.CREATE create, PasswordEncoder passwordEncoder){
         return UserEntity.builder()
                 .identity(create.getIdentity())
                 .password(passwordEncoder.encode(create.getPassword()))
