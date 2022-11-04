@@ -5,6 +5,7 @@ import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
+import kr.co.popoolserver.user.domain.dto.UserDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,19 +58,28 @@ public class UserEntity extends BaseEntity {
     @Builder
     public UserEntity(String identity,
                       String password,
-                      String email,
                       String name,
                       String birth,
                       Gender gender,
                       PhoneNumber phoneNumber,
-                      Address address) {
+                      UserRole userRole) {
         this.identity = identity;
         this.password = password;
-        this.email = email;
         this.name = name;
         this.birth = birth;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.userRole = userRole;
+    }
+
+    public static UserEntity of(UserDto.CREATE create){
+        return UserEntity.builder()
+                .identity(create.getIdentity())
+                .password(create.getPassword())
+                .name(create.getName())
+                .birth(create.getBirth())
+                .gender(Gender.of(create.getGender()))
+                .userRole(UserRole.ROLE_USER)
+                .build();
     }
 }
