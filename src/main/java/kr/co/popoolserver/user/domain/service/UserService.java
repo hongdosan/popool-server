@@ -1,8 +1,12 @@
 package kr.co.popoolserver.user.domain.service;
 
+import kr.co.popoolserver.user.domain.UserEntity;
 import kr.co.popoolserver.user.domain.dto.UserDto;
 
 public interface UserService {
+
+    //login
+    UserDto.TOKEN login(UserDto.LOGIN login);
 
     //create
     void signUp(UserDto.CREATE create);
@@ -17,7 +21,9 @@ public interface UserService {
     void deleteUser();
 
     //common
-    public void checkIdentity(String identity);
-    public void checkPhoneNumber(String phoneNumber);
-    public void checkPassword(String password, String checkPassword);
+    void checkIdentity(String identity);
+    void checkPhoneNumber(String phoneNumber);
+    void checkPassword(String password, String checkPassword);
+    void checkEncodePassword(String password, String encodePassword);
+    void checkDelete(String delYN);
 }

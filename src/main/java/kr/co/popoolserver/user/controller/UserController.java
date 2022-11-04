@@ -16,6 +16,12 @@ public class UserController {
 
     private final UserService userService;
 
+    @ApiOperation("Login")
+    @PostMapping("/login")
+    public ResponseFormat<UserDto.TOKEN> login(@RequestBody @Valid UserDto.LOGIN login){
+        return ResponseFormat.ok(userService.login(login));
+    }
+
     @ApiOperation("일반 회원 회원가입")
     @PostMapping("/signUp")
     public ResponseFormat signUp(@RequestBody @Valid UserDto.CREATE create){
