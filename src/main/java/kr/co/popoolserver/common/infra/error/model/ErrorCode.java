@@ -9,8 +9,11 @@ public enum ErrorCode {
     SUCCESS_NULL("실행이 성공했고, 응답 데이터는 없습니다.", 2000),
     SUCCESS_VALUE("실행이 성공했고, 응답 데이터가 있습니다.", 2001),
 
-    FAIL_NULL("실행이 실패했고, 응답 데이터는 없습니다.", 4000),
-    FAIL_EXPIRE("실행이 실패했고, 원인은 토큰 만료입니다.", 4001),
+    FAIL_NULL("응답이 실패했고, 응답 데이터는 없습니다.", 4000),
+    FAIL_EXPIRE("응답이 실패했고, 원인은 토큰 만료입니다.", 4001),
+    FAIL_INVALID_TOKEN("응답이 실패했고, 원인은 Invalid JWT Token 입니다.", 4002),
+    FAIL_INVALID_SIGNATURE("응답이 실패했고, 원인은 Invalid JWT Signature 입니다.", 4002),
+    FAIL_INVALID_CLAIMS("응답이 실패했고, 원인은 Invalid JWT Claims(EMPTY) 입니다.", 4002),
 
     //user
     WRONG_IDENTITY("존재하지 않는 아이디입니다.", 400),
