@@ -1,6 +1,6 @@
 package kr.co.popoolserver.user.domain.service.impl;
 
-import kr.co.popoolserver.common.infra.error.exception.BusinessLoginException;
+import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
@@ -28,7 +28,7 @@ public class UserCreateServiceImpl implements UserService {
     @Override
     public UserCreateDto.TOKEN login(UserCreateDto.LOGIN login) {
         UserEntity userEntity = userRepository.findByIdentity(login.getIdentity())
-                .orElseThrow(() -> new BusinessLoginException(ErrorCode.WRONG_IDENTITY));
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
         checkEncodePassword(login.getPassword(), userEntity.getPassword());
         checkDelete(userEntity.getDeyYN());
         String[] tokens = generateToken(userEntity);
@@ -54,7 +54,7 @@ public class UserCreateServiceImpl implements UserService {
      * signUp Service
      * @param create : user info
      * @exception DuplicatedException : ID, Phone Duplicated
-     * @exception BusinessLoginException : PW Check
+     * @exception BusinessLogicException : PW Check
      */
     @Override
     public void signUp(UserCreateDto.CREATE create) {

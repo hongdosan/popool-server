@@ -1,7 +1,7 @@
 package kr.co.popoolserver.user.domain.service.impl;
 
 import kr.co.popoolserver.common.domain.PhoneNumber;
-import kr.co.popoolserver.common.infra.error.exception.BusinessLoginException;
+import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.user.domain.service.UserService;
@@ -42,7 +42,7 @@ public class UserCommonServiceImpl implements UserService {
      */
     @Override
     public void checkPassword(String password, String checkPassword) {
-        if(!password.equals(checkPassword)) throw new BusinessLoginException(ErrorCode.WRONG_PASSWORD);
+        if(!password.equals(checkPassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
     }
 
     /**
@@ -52,7 +52,7 @@ public class UserCommonServiceImpl implements UserService {
      */
     @Override
     public void checkEncodePassword(String password, String encodePassword) {
-        if(!passwordEncoder.matches(password, encodePassword)) throw new BusinessLoginException(ErrorCode.WRONG_PASSWORD);
+        if(!passwordEncoder.matches(password, encodePassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
     }
 
     /**
@@ -61,6 +61,6 @@ public class UserCommonServiceImpl implements UserService {
      */
     @Override
     public void checkDelete(String delYN) {
-        if(delYN.equals("Y")) throw new BusinessLoginException(ErrorCode.DELETED_USER);
+        if(delYN.equals("Y")) throw new BusinessLogicException(ErrorCode.DELETED_USER);
     }
 }
