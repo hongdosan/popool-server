@@ -1,4 +1,4 @@
-package kr.co.popoolserver.user.domain.dto;
+package kr.co.popoolserver.user.domain.dto.userDto;
 
 import io.swagger.annotations.ApiModelProperty;
 import kr.co.popoolserver.common.domain.Address;

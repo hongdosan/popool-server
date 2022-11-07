@@ -1,7 +1,7 @@
 package kr.co.popoolserver.common.infra.interceptor;
 
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
-import kr.co.popoolserver.user.domain.UserEntity;
+import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

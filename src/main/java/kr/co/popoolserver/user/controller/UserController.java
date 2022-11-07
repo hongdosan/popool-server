@@ -2,7 +2,7 @@ package kr.co.popoolserver.user.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
-import kr.co.popoolserver.user.domain.dto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
 import kr.co.popoolserver.user.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

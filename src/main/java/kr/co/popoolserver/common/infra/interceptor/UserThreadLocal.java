@@ -1,6 +1,6 @@
 package kr.co.popoolserver.common.infra.interceptor;
 
-import kr.co.popoolserver.user.domain.UserEntity;
+import kr.co.popoolserver.user.domain.entity.UserEntity;
 
 public class UserThreadLocal {
 

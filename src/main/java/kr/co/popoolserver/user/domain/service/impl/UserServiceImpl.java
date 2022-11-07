@@ -1,20 +1,22 @@
 package kr.co.popoolserver.user.domain.service.impl;
 
+import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
-import kr.co.popoolserver.user.domain.UserEntity;
-import kr.co.popoolserver.user.domain.dto.UserCreateDto;
+import kr.co.popoolserver.user.domain.entity.UserEntity;
+import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
 import kr.co.popoolserver.user.domain.service.UserService;
 import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
-public class UserCreateServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
@@ -64,5 +66,67 @@ public class UserCreateServiceImpl implements UserService {
 
         final UserEntity userEntity = UserEntity.of(create, passwordEncoder);
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public void updateUser(UserCreateDto userCreateDto) {
+        //TODO: update user
+    }
+
+    @Override
+    public void getUser() {
+        //TODO: get user
+    }
+
+    @Override
+    public void deleteUser() {
+        //TODO: delete user
+    }
+
+    /**
+     * ID duplicated check
+     * @param identity
+     */
+    @Override
+    public void checkIdentity(String identity) {
+        if(userRepository.existsByIdentity(identity)) throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
+    }
+
+    /**
+     * Phone duplicated check
+     * @param phoneNumber
+     */
+    @Override
+    public void checkPhoneNumber(String phoneNumber) {
+        if(userRepository.existsByPhoneNumber(new PhoneNumber(phoneNumber))) throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
+    }
+
+    /**
+     * PW check
+     * @param password : use pw
+     * @param checkPassword : check pw
+     */
+    @Override
+    public void checkPassword(String password, String checkPassword) {
+        if(!password.equals(checkPassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+    }
+
+    /**
+     * Login PW Check
+     * @param password
+     * @param encodePassword
+     */
+    @Override
+    public void checkEncodePassword(String password, String encodePassword) {
+        if(!passwordEncoder.matches(password, encodePassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+    }
+
+    /**
+     * delete Check
+     * @param delYN
+     */
+    @Override
+    public void checkDelete(String delYN) {
+        if(delYN.equals("Y")) throw new BusinessLogicException(ErrorCode.DELETED_USER);
     }
 }

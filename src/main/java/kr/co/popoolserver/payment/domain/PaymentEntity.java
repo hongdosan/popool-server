@@ -1,7 +1,7 @@
 package kr.co.popoolserver.payment.domain;
 
 import kr.co.popoolserver.common.domain.BaseEntity;
-import kr.co.popoolserver.corporate.domain.CorporateEntity;
+import kr.co.popoolserver.user.domain.entity.CorporateEntity;
 import kr.co.popoolserver.product.domain.ProductEntity;
 import lombok.AccessLevel;
 import lombok.Getter;

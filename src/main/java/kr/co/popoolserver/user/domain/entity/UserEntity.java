@@ -1,11 +1,11 @@
-package kr.co.popoolserver.user.domain;
+package kr.co.popoolserver.user.domain.entity;
 
 import kr.co.popoolserver.common.domain.Address;
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
-import kr.co.popoolserver.user.domain.dto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
