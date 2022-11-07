@@ -1,21 +1,34 @@
 package kr.co.popoolserver.common.infra.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import kr.co.popoolserver.common.domain.enums.UserRole;
+import kr.co.popoolserver.common.infra.error.exception.JwtTokenExpiredException;
+import kr.co.popoolserver.common.infra.error.exception.JwtTokenInvalidException;
+import kr.co.popoolserver.common.infra.error.exception.NotFoundException;
 import kr.co.popoolserver.common.infra.error.exception.UserDefineException;
+import kr.co.popoolserver.common.infra.error.model.ErrorCode;
+import kr.co.popoolserver.user.domain.UserEntity;
 import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.Base64;
-import java.util.Date;
+import java.util.*;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class JwtProvider {
 
@@ -89,6 +102,17 @@ public class JwtProvider {
     }
 
     /**
+     * RefreshToken 을 이용하여 AccessToken 을 만들어내는 메서드
+     * @param refreshToken 사용자의 RefreshToken
+     * @return 사용자의 새로운 AccessToken
+     */
+    public String createAccessToken(String refreshToken){
+        //TODO : 추후에 Redis 를 활용할 것.
+        return null;
+    }
+
+
+    /**
      * 사용자 정보를 통해 RefreshToken 을 만드는 메서드
      * @param identity : 사용자 아이디
      * @param userRole : 사용자 권한
@@ -110,4 +134,99 @@ public class JwtProvider {
                 .compact();
     }
 
+    /**
+     * 토큰의 유효성을 판단하는 메소드
+     * @param token : 토큰
+     * @return 토큰이 만료되었는지에 대한 불리언 값
+     * @exception ExpiredJwtException 토큰이 만료되었을 경우에 발생하는 예외
+     */
+    public boolean isUsable(String token) {
+        try {
+            Jwts.parser()
+                    .setSigningKey(generateKey())
+                    .parseClaimsJws(token);
+            return true;
+        } catch (SignatureException e) {
+            log.error("Invalid JWT Signature");
+            throw new JwtTokenInvalidException(ErrorCode.FAIL_INVALID_SIGNATURE);
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token");
+            throw new JwtTokenInvalidException(ErrorCode.FAIL_INVALID_TOKEN);
+        } catch (ExpiredJwtException e) {
+            log.error("Expired JWT token");
+            throw new JwtTokenExpiredException(ErrorCode.FAIL_EXPIRE);
+        } catch (IllegalArgumentException e) {
+            log.error("Empty JWT Claims");
+            throw new JwtTokenInvalidException(ErrorCode.FAIL_INVALID_CLAIMS);
+        }
+    }
+
+    /**
+     * 헤더에 있는 토큰을 추출하는 메서드
+     * 평소에는 AccessToken을 담아서 주고 받다가 만료가 되었다는 예외가 발생하면 그때 Refresh만
+     * @param request 사용자의 요청
+     * @return AccessToken 과 RefreshToken 을 담은 객체를 Optional로 감싼 데이터
+     */
+    public Optional<String> resolveToken(HttpServletRequest request){
+        return Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION)
+                .replace("Bearer", "").trim());
+    }
+
+    /**
+     * 토큰을 통해서 Authentication 객체를 만들어내는 메서드
+     * @param token 토큰
+     * @return 사용자 정보를 담은 UsernamePasswordAuthenticationToken 객체
+     */
+    public Authentication getAuthentication(String token){
+        final String identity = findIdentityByToken(token);
+        final String userRole = findRoleByToken(token);
+        UserDetails userDetails = new User(identity, "", getAuthorities(UserRole.of(userRole)));
+
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    private Set<? extends GrantedAuthority> getAuthorities(UserRole userRole) {
+        Set<GrantedAuthority> set = new HashSet<>();
+        if(userRole.equals(UserRole.ROLE_CORPORATE)) set.add(new SimpleGrantedAuthority("ROLE_CORPORATE"));
+        else set.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        return set;
+    }
+
+    /**
+     * 토큰을 이용하여 사용자 아이디를 찾는 메서드
+     * @param token 토큰
+     * @return 사용자의 아이디
+     */
+    public String findIdentityByToken(String token){
+        return (String) Jwts.parser()
+                .setSigningKey(generateKey())
+                .parseClaimsJws(token)
+                .getBody()
+                .get(USER_IDENTITY);
+    }
+
+    /**
+     * 토큰을 이용하여 사용자 권한을 찾는 메서드
+     * @param token 토큰
+     * @return 사용자의 아이디
+     */
+    public String findRoleByToken(String token){
+        return (String) Jwts.parser()
+                .setSigningKey(generateKey())
+                .parseClaimsJws(token)
+                .getBody()
+                .get(USER_ROLE);
+    }
+
+    /**
+     * 토큰을 통해 UserEntity 객체를 가져오는 메서드
+     * @param token : 토큰
+     * @return : jwt 토큰을 통해 찾은 UserEntity 객체
+     * @Exception UserNotFoundException : 해당 회원을 찾을 수 없는 경우 발생하는 예외
+     */
+    public UserEntity findUserByToken(String token){
+        return userRepository.findByIdentity(findIdentityByToken(token))
+                .orElseThrow(() -> new NotFoundException(ErrorCode.FAIL_INVALID_TOKEN.getMessage()));
+    }
 }

@@ -1,29 +1,28 @@
 package kr.co.popoolserver.user.domain.service;
 
-import kr.co.popoolserver.user.domain.UserEntity;
-import kr.co.popoolserver.user.domain.dto.UserDto;
+import kr.co.popoolserver.user.domain.dto.UserCreateDto;
 
 public interface UserService {
 
     //login
-    UserDto.TOKEN login(UserDto.LOGIN login);
+    default UserCreateDto.TOKEN login(UserCreateDto.LOGIN login){ return null; }
 
     //create
-    void signUp(UserDto.CREATE create);
+    default void signUp(UserCreateDto.CREATE create){}
 
     //update
-    void updateUser(UserDto userDto);
+    default void updateUser(UserCreateDto userCreateDto){}
 
     //get
-    void getUser();
+    default void getUser(){}
 
     //delete
-    void deleteUser();
+    default void deleteUser(){}
 
     //common
-    void checkIdentity(String identity);
-    void checkPhoneNumber(String phoneNumber);
-    void checkPassword(String password, String checkPassword);
-    void checkEncodePassword(String password, String encodePassword);
-    void checkDelete(String delYN);
+    default void checkIdentity(String identity){}
+    default void checkPhoneNumber(String phoneNumber){}
+    default void checkPassword(String password, String checkPassword){}
+    default void checkEncodePassword(String password, String encodePassword){}
+    default void checkDelete(String delYN){}
 }

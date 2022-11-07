@@ -10,51 +10,49 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ResponseFormat<T> {
 
-    @ApiModelProperty(example = "성공은 1 or 실패는 2 or 토큰 만료는 3")
-    private int code;
-
     @ApiModelProperty(example = "true or false")
     private boolean result;
 
     @ApiModelProperty(example = "반환될 데이터")
     private T data;
 
-    @ApiModelProperty(example = "성공 or 에러 메세지 or 토큰이 만료되었습니다.")
-    private String description;
+    @ApiModelProperty(example = "2000(성공, NULL), 2001(성공, VALUE)")
+    private String message;
+    private int status;
 
     public static ResponseFormat ok(){
         return ResponseFormat.builder()
-                .code(ResponseCode.SUCCESS.getCode())
                 .result(true)
                 .data(null)
-                .description("성공적으로 실행 완료")
+                .message(ErrorCode.SUCCESS_NULL.getMessage())
+                .status(ErrorCode.SUCCESS_NULL.getStatus())
                 .build();
     }
 
     public static <T> ResponseFormat ok(T data){
         return ResponseFormat.builder()
-                .code(ResponseCode.SUCCESS.getCode())
                 .result(true)
                 .data(data)
-                .description("성공적으로 실행 완료")
+                .message(ErrorCode.SUCCESS_VALUE.getMessage())
+                .status(ErrorCode.SUCCESS_VALUE.getStatus())
                 .build();
     }
 
     public static ResponseFormat fail(String message){
         return ResponseFormat.builder()
-                .code(ResponseCode.FAIL.getCode())
                 .result(false)
                 .data(null)
-                .description(message)
+                .message(ErrorCode.FAIL_NULL.getMessage())
+                .status(ErrorCode.FAIL_NULL.getStatus())
                 .build();
     }
 
     public static ResponseFormat expire(){
         return ResponseFormat.builder()
-                .code(ResponseCode.TOKEN_EXPIRED.getCode())
                 .result(false)
                 .data(null)
-                .description("토큰이 만료되었습니다.")
+                .message(ErrorCode.FAIL_EXPIRE.getMessage())
+                .status(ErrorCode.FAIL_EXPIRE.getStatus())
                 .build();
     }
 }
