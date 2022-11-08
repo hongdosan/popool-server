@@ -14,6 +14,7 @@ public interface UserService {
 
     //update
     void updateUser(UserUpdateDto.UPDATE update);
+    void updatePassword(UserUpdateDto.PASSWORD password);
 
     //get
     UserGetDto.READ getUser();

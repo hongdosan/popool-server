@@ -90,4 +90,8 @@ public class UserEntity extends BaseEntity {
         this.birth = update.getBirth();
         this.gender = Gender.of(update.getGender());
     }
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
 }

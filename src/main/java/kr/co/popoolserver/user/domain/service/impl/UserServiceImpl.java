@@ -83,8 +83,21 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 본인 비밀번호 수정
+     * @param password
+     */
+    @Override
+    public void updatePassword(UserUpdateDto.PASSWORD password) {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkEncodePassword(password.getOriginalPassword(), userEntity.getPassword());
+        checkPassword(password.getNewPassword(), password.getNewCheckPassword());
+        userEntity.updatePassword(passwordEncoder.encode(password.getNewPassword()));
+        userRepository.save(userEntity);
+    }
+
+    /**
      * 본인 회원 정보 조회
-     * @return
+     * @return : UserGetDto.READ
      */
     @Override
     public UserGetDto.READ getUser() {

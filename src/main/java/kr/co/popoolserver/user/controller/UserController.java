@@ -38,6 +38,12 @@ public class UserController {
         userService.updateUser(update);
     }
 
+    @ApiOperation("일반 회원 비밀번호 변경")
+    @PutMapping("/password")
+    public void updateUserPassword(@RequestBody @Valid UserUpdateDto.PASSWORD password){
+        userService.updatePassword(password);
+    }
+
     @ApiOperation("본인 회원 정보 조회")
     @GetMapping
     public UserGetDto.READ getUser(){
