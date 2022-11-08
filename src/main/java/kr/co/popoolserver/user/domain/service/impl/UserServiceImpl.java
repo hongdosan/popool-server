@@ -1,11 +1,13 @@
 package kr.co.popoolserver.user.domain.service.impl;
 
 import kr.co.popoolserver.common.domain.PhoneNumber;
+import kr.co.popoolserver.common.infra.error.exception.BadRequestException;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
+import kr.co.popoolserver.user.domain.dto.userDto.UserDeleteDto;
 import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
 import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
@@ -78,6 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(UserUpdateDto.UPDATE update) {
         UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
         userEntity.updateInfo(update);
         userRepository.save(userEntity);
     }
@@ -89,6 +92,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(UserUpdateDto.PASSWORD password) {
         UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
         checkEncodePassword(password.getOriginalPassword(), userEntity.getPassword());
         checkPassword(password.getNewPassword(), password.getNewCheckPassword());
         userEntity.updatePassword(passwordEncoder.encode(password.getNewPassword()));
@@ -102,6 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateEmail(UserUpdateDto.EMAIL email) {
         UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
         checkPassword(email.getOriginalPassword(), userEntity.getPassword());
         checkEmail(email.getEmail());
         userEntity.updateEmail(email.getEmail());
@@ -115,6 +120,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePhone(UserUpdateDto.PHONE phone) {
         UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
         checkPassword(phone.getOriginalPassword(), userEntity.getPassword());
         checkPhoneNumber(phone.getNewPhoneNumber());
         userEntity.updatePhone(new PhoneNumber(phone.getNewPhoneNumber()));
@@ -128,6 +134,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateAddress(UserUpdateDto.ADDRESS address) {
         UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
         checkPassword(address.getOriginalPassword(), userEntity.getPassword());
         userEntity.updateAddress(address);
         userRepository.save(userEntity);
@@ -140,12 +147,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserGetDto.READ getUser() {
         UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
         return UserGetDto.READ.of(userEntity);
     }
 
+    /**
+     * 회원 탈퇴
+     * @param delete
+     */
     @Override
-    public void deleteUser() {
-        //TODO: delete user
+    public void deleteUser(UserDeleteDto.DELETE delete) {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
+        checkPassword(delete.getOriginalPassword(), userEntity.getPassword());
+        userEntity.deleted();
+        userRepository.save(userEntity);
+    }
+
+    /**
+     * 탈퇴 회원 복구
+     * @param reCreate
+     */
+    @Override
+    public void reCreateUser(UserDeleteDto.RE_CREATE reCreate) {
+        UserEntity userEntity = userRepository.findByIdentity(reCreate.getIdentity())
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
+        checkReCreate(userEntity.getDeyYN());
+        checkPassword(reCreate.getOriginalPassword(), userEntity.getPassword());
+        userEntity.reCreated();
+        userRepository.save(userEntity);
     }
 
     /**
@@ -202,5 +232,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkDelete(String delYN) {
         if(delYN.equals("Y")) throw new BusinessLogicException(ErrorCode.DELETED_USER);
+    }
+
+    /**
+     * reCreate Check Service
+     * @param delYN
+     */
+    @Override
+    public void checkReCreate(String delYN) {
+        if(delYN.equals("N")) throw new BadRequestException("탈퇴되지 않은 회원입니다.");
     }
 }

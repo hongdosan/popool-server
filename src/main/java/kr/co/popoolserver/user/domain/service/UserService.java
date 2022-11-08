@@ -1,6 +1,7 @@
 package kr.co.popoolserver.user.domain.service;
 
 import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserDeleteDto;
 import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
 import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
 
@@ -23,7 +24,8 @@ public interface UserService {
     UserGetDto.READ getUser();
 
     //delete
-    void deleteUser();
+    void deleteUser(UserDeleteDto.DELETE delete);
+    void reCreateUser(UserDeleteDto.RE_CREATE reCreate);
 
     //common
     void checkIdentity(String identity);
@@ -32,4 +34,5 @@ public interface UserService {
     void checkPassword(String password, String checkPassword);
     void checkEncodePassword(String password, String encodePassword);
     void checkDelete(String delYN);
+    void checkReCreate(String delYN);
 }
