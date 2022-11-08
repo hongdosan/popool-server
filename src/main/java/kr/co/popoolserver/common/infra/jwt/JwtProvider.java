@@ -167,8 +167,7 @@ public class JwtProvider {
      * @return AccessToken 과 RefreshToken 을 담은 객체를 Optional로 감싼 데이터
      */
     public Optional<String> resolveToken(HttpServletRequest request){
-        return Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION)
-                .replace("Bearer", "").trim());
+        return Optional.ofNullable(request.getHeader("token"));
     }
 
     /**

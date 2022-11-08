@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
     public void updateEmail(UserUpdateDto.EMAIL email) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
-        checkPassword(email.getOriginalPassword(), userEntity.getPassword());
+        checkEncodePassword(email.getOriginalPassword(), userEntity.getPassword());
         checkEmail(email.getEmail());
         userEntity.updateEmail(email.getEmail());
         userRepository.save(userEntity);
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
     public void updatePhone(UserUpdateDto.PHONE phone) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
-        checkPassword(phone.getOriginalPassword(), userEntity.getPassword());
+        checkEncodePassword(phone.getOriginalPassword(), userEntity.getPassword());
         checkPhoneNumber(phone.getNewPhoneNumber());
         userEntity.updatePhone(new PhoneNumber(phone.getNewPhoneNumber()));
         userRepository.save(userEntity);
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
     public void updateAddress(UserUpdateDto.ADDRESS address) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
-        checkPassword(address.getOriginalPassword(), userEntity.getPassword());
+        checkEncodePassword(address.getOriginalPassword(), userEntity.getPassword());
         userEntity.updateAddress(address);
         userRepository.save(userEntity);
     }
@@ -153,13 +153,13 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 회원 탈퇴
-     * @param delete
+     * @param password
      */
     @Override
-    public void deleteUser(UserDeleteDto.DELETE delete) {
+    public void deleteUser(String password) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
-        checkPassword(delete.getOriginalPassword(), userEntity.getPassword());
+        checkEncodePassword(password, userEntity.getPassword());
         userEntity.deleted();
         userRepository.save(userEntity);
     }
@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByIdentity(reCreate.getIdentity())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
         checkReCreate(userEntity.getDeyYN());
-        checkPassword(reCreate.getOriginalPassword(), userEntity.getPassword());
+        checkEncodePassword(reCreate.getOriginalPassword(), userEntity.getPassword());
         userEntity.reCreated();
         userRepository.save(userEntity);
     }

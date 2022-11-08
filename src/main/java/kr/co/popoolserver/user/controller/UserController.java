@@ -75,14 +75,14 @@ public class UserController {
 
     @ApiOperation("회원 탈퇴")
     @DeleteMapping
-    public ResponseFormat deleteUser(UserDeleteDto.DELETE delete){
-        userService.deleteUser(delete);
+    public ResponseFormat deleteUser(@RequestParam("password") String password){
+        userService.deleteUser(password);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("회원 복구")
-    @PostMapping("/reCreate")
-    public ResponseFormat deleteUser(UserDeleteDto.RE_CREATE reCreate){
+    @PutMapping("/reCreate")
+    public ResponseFormat deleteUser(@RequestBody @Valid UserDeleteDto.RE_CREATE reCreate){
         userService.reCreateUser(reCreate);
         return ResponseFormat.ok();
     }

@@ -24,7 +24,7 @@ public interface UserService {
     UserGetDto.READ getUser();
 
     //delete
-    void deleteUser(UserDeleteDto.DELETE delete);
+    void deleteUser(String password);
     void reCreateUser(UserDeleteDto.RE_CREATE reCreate);
 
     //common
