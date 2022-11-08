@@ -96,6 +96,44 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Email update service
+     * @param email
+     */
+    @Override
+    public void updateEmail(UserUpdateDto.EMAIL email) {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkPassword(email.getOriginalPassword(), userEntity.getPassword());
+        checkEmail(email.getEmail());
+        userEntity.updateEmail(email.getEmail());
+        userRepository.save(userEntity);
+    }
+
+    /**
+     * Phone update service
+     * @param phone
+     */
+    @Override
+    public void updatePhone(UserUpdateDto.PHONE phone) {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkPassword(phone.getOriginalPassword(), userEntity.getPassword());
+        checkPhoneNumber(phone.getNewPhoneNumber());
+        userEntity.updatePhone(new PhoneNumber(phone.getNewPhoneNumber()));
+        userRepository.save(userEntity);
+    }
+
+    /**
+     * Address update service
+     * @param address
+     */
+    @Override
+    public void updateAddress(UserUpdateDto.ADDRESS address) {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkPassword(address.getOriginalPassword(), userEntity.getPassword());
+        userEntity.updateAddress(address);
+        userRepository.save(userEntity);
+    }
+
+    /**
      * 본인 회원 정보 조회
      * @return : UserGetDto.READ
      */
@@ -126,6 +164,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkPhoneNumber(String phoneNumber) {
         if(userRepository.existsByPhoneNumber(new PhoneNumber(phoneNumber))) throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
+    }
+
+    /**
+     * Email duplicated check
+     * @param email
+     */
+    @Override
+    public void checkEmail(String email) {
+        if(userRepository.existsByEmail(email)) throw new DuplicatedException(ErrorCode.DUPLICATED_EMAIL);
     }
 
     /**

@@ -94,4 +94,20 @@ public class UserEntity extends BaseEntity {
     public void updatePassword(String password){
         this.password = password;
     }
+
+    public void updateEmail(String email){
+        this.email = email;
+    }
+
+    public void updatePhone(PhoneNumber phoneNumber){
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void updateAddress(UserUpdateDto.ADDRESS address){
+        this.address = Address.builder()
+                .zipcode(address.getZipCode())
+                .address1(address.getAddr1())
+                .address2(address.getAddr2())
+                .build();
+    }
 }

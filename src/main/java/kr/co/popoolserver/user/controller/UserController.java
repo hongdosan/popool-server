@@ -44,6 +44,24 @@ public class UserController {
         userService.updatePassword(password);
     }
 
+    @ApiOperation("일반 회원 메일 변경")
+    @PutMapping("/email")
+    public void updateUserEmail(@RequestBody @Valid UserUpdateDto.EMAIL email){
+        userService.updateEmail(email);
+    }
+
+    @ApiOperation("일반 회원 전화번호 변경")
+    @PutMapping("/phone")
+    public void updateUserPhone(@RequestBody @Valid UserUpdateDto.PHONE phone){
+        userService.updatePhone(phone);
+    }
+
+    @ApiOperation("일반 회원 주소 변경")
+    @PutMapping("/address")
+    public void updateUserAddress(@RequestBody @Valid UserUpdateDto.ADDRESS address){
+        userService.updateAddress(address);
+    }
+
     @ApiOperation("본인 회원 정보 조회")
     @GetMapping
     public UserGetDto.READ getUser(){

@@ -15,6 +15,9 @@ public interface UserService {
     //update
     void updateUser(UserUpdateDto.UPDATE update);
     void updatePassword(UserUpdateDto.PASSWORD password);
+    void updateEmail(UserUpdateDto.EMAIL email);
+    void updatePhone(UserUpdateDto.PHONE phone);
+    void updateAddress(UserUpdateDto.ADDRESS address);
 
     //get
     UserGetDto.READ getUser();
@@ -25,6 +28,7 @@ public interface UserService {
     //common
     void checkIdentity(String identity);
     void checkPhoneNumber(String phoneNumber);
+    void checkEmail(String email);
     void checkPassword(String password, String checkPassword);
     void checkEncodePassword(String password, String encodePassword);
     void checkDelete(String delYN);

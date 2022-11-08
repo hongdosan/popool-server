@@ -1,14 +1,10 @@
 package kr.co.popoolserver.user.domain.dto.userDto;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.common.domain.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 
 public class UserUpdateDto {
@@ -37,6 +33,10 @@ public class UserUpdateDto {
         @ApiModelProperty(example = "example@email.com")
         @NotBlank(message = "이메일을 입력해주세요.")
         private String email;
+
+        @ApiModelProperty(example = "현재 비밀번호")
+        @NotBlank(message = "현재 비밀번호를 입력해주세요")
+        private String originalPassword;
     }
 
     @Getter
@@ -46,6 +46,10 @@ public class UserUpdateDto {
         @ApiModelProperty(example = "010-XXXX-XXXX")
         @NotBlank(message = "휴대폰 번호를 입력해주세요")
         private String newPhoneNumber;
+
+        @ApiModelProperty(example = "현재 비밀번호")
+        @NotBlank(message = "현재 비밀번호를 입력해주세요")
+        private String originalPassword;
     }
 
     @Builder
@@ -80,5 +84,9 @@ public class UserUpdateDto {
         @ApiModelProperty(example = "101호")
         @NotBlank(message = "상세 주소를 입력해주세요")
         private String addr2;
+
+        @ApiModelProperty(example = "현재 비밀번호")
+        @NotBlank(message = "현재 비밀번호를 입력해주세요")
+        private String originalPassword;
     }
 }
