@@ -4,7 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
 import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
 import kr.co.popoolserver.user.domain.service.UserService;
+import kr.co.popoolserver.user.domain.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @ApiOperation("Login")
     @PostMapping("/login")
@@ -32,8 +34,8 @@ public class UserController {
 
     @ApiOperation("일반 회원 정보 변경")
     @PutMapping
-    public void updateUser(@RequestBody @Valid UserCreateDto userCreateDto){
-        //TODO : update user
+    public void updateUser(@RequestBody @Valid UserUpdateDto.UPDATE update){
+        userService.updateUser(update);
     }
 
     @ApiOperation("본인 회원 정보 조회")

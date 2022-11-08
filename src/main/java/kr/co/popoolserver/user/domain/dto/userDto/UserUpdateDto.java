@@ -1,13 +1,35 @@
 package kr.co.popoolserver.user.domain.dto.userDto;
 
 import io.swagger.annotations.ApiModelProperty;
+import kr.co.popoolserver.common.domain.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 
 public class UserUpdateDto {
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class UPDATE{
+        @ApiModelProperty(example = "hhj")
+        @NotBlank(message = "이름을 입력해주세요.")
+        private String name;
+
+        @ApiModelProperty(example = "19980101")
+        @NotBlank(message = "생년월일을 입력해주세요.")
+        private String birth;
+
+        @ApiModelProperty(example = "MALE or FEMALE")
+        @NotBlank(message = "성별을 입력하세요.")
+        private String gender;
+    }
+
     @Builder
     @Getter
     @AllArgsConstructor

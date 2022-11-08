@@ -6,6 +6,7 @@ import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
 import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -82,5 +83,11 @@ public class UserEntity extends BaseEntity {
                 .gender(Gender.of(create.getGender()))
                 .userRole(UserRole.ROLE_USER)
                 .build();
+    }
+
+    public void updateInfo(UserUpdateDto.UPDATE update){
+        this.name = update.getName();
+        this.birth = update.getBirth();
+        this.gender = Gender.of(update.getGender());
     }
 }

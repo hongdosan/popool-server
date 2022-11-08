@@ -7,6 +7,7 @@ import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
 import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
 import kr.co.popoolserver.user.domain.service.UserService;
@@ -70,11 +71,21 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userEntity);
     }
 
+    /**
+     * 본인 기본 정보 수정 (이름, 성별, 생년월일)
+     * @param update
+     */
     @Override
-    public void updateUser(UserCreateDto userCreateDto) {
-        //TODO: update user
+    public void updateUser(UserUpdateDto.UPDATE update) {
+        UserEntity userEntity = UserThreadLocal.get();
+        userEntity.updateInfo(update);
+        userRepository.save(userEntity);
     }
 
+    /**
+     * 본인 회원 정보 조회
+     * @return
+     */
     @Override
     public UserGetDto.READ getUser() {
         UserEntity userEntity = UserThreadLocal.get();
