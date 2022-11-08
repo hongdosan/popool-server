@@ -1,6 +1,7 @@
 package kr.co.popoolserver.user.domain.service;
 
 import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
 
 public interface UserService {
 
@@ -14,7 +15,7 @@ public interface UserService {
     void updateUser(UserCreateDto userCreateDto);
 
     //get
-    void getUser();
+    UserGetDto.READ getUser();
 
     //delete
     void deleteUser();

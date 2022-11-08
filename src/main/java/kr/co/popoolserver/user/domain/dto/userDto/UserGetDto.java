@@ -5,6 +5,7 @@ import kr.co.popoolserver.common.domain.Address;
 import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
+import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,9 +18,6 @@ public class UserGetDto {
     @AllArgsConstructor
     @Builder
     public static class READ{
-        @ApiModelProperty(example = "사용자 아이디")
-        private String identity;
-
         @ApiModelProperty(example = "홍길동")
         private String name;
 
@@ -37,6 +35,17 @@ public class UserGetDto {
 
         @ApiModelProperty(example = "2022-01-01")
         private LocalDateTime createAt;
+
+        public static UserGetDto.READ of(UserEntity userEntity){
+            return READ.builder()
+                    .name(userEntity.getName())
+                    .birth(userEntity.getBirth())
+                    .phoneNumber(userEntity.getPhoneNumber())
+                    .gender(userEntity.getGender())
+                    .userRole(userEntity.getUserRole())
+                    .createAt(userEntity.getCreatedAt())
+                    .build();
+        }
     }
 
     @Getter

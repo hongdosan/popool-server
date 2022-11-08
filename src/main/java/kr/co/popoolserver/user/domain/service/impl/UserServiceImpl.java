@@ -4,7 +4,9 @@ import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
+import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
+import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
 import kr.co.popoolserver.user.domain.service.UserService;
@@ -74,8 +76,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void getUser() {
-        //TODO: get user
+    public UserGetDto.READ getUser() {
+        UserEntity userEntity = UserThreadLocal.get();
+        return UserGetDto.READ.of(userEntity);
     }
 
     @Override

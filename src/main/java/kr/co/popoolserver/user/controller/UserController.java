@@ -3,30 +3,30 @@ package kr.co.popoolserver.user.controller;
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
 import kr.co.popoolserver.user.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final List<UserService> userService;
+    private final UserService userService;
 
     @ApiOperation("Login")
     @PostMapping("/login")
     public ResponseFormat<UserCreateDto.TOKEN> login(@RequestBody @Valid UserCreateDto.LOGIN login){
-        return ResponseFormat.ok(userService.get(1).login(login));
+        return ResponseFormat.ok(userService.login(login));
     }
 
     @ApiOperation("일반 회원 회원가입")
     @PostMapping("/signUp")
     public ResponseFormat signUp(@RequestBody @Valid UserCreateDto.CREATE create){
-        userService.get(1).signUp(create);
+        userService.signUp(create);
         return ResponseFormat.ok();
     }
 
@@ -38,8 +38,8 @@ public class UserController {
 
     @ApiOperation("본인 회원 정보 조회")
     @GetMapping
-    public void getUser(){
-        //TODO get user
+    public UserGetDto.READ getUser(){
+        return userService.getUser();
     }
 
     @ApiOperation("회원 탈퇴")
