@@ -1,11 +1,14 @@
 package kr.co.popoolserver.user.domain.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import kr.co.popoolserver.common.domain.Address;
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.PhoneNumber;
+import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
 import kr.co.popoolserver.user.domain.dto.CorporateDto;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
+import kr.co.popoolserver.user.domain.dto.UserDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tbl_corporate")
@@ -95,21 +99,24 @@ public class CorporateEntity extends BaseEntity {
                 .name(create.getName())
                 .userRole(UserRole.ROLE_CORPORATE)
                 .build();
-
     }
 
     public static CorporateDto.READ of(CorporateEntity corporateEntity){
         return CorporateDto.READ.builder()
                 .name(corporateEntity.name)
-                .phoneNumber(corporateEntity.getBusinessPhoneNumber())
-                .address(corporateEntity.getBusinessAddress())
                 .businessName(corporateEntity.businessName)
                 .businessCeoName(corporateEntity.getBusinessCeoName())
-                .businessEmail(corporateEntity.getBusinessEmail())
                 .businessNumber(corporateEntity.getBusinessNumber())
                 .userRole(corporateEntity.userRole)
                 .createAt(corporateEntity.createdAt)
                 .build();
+    }
+
+    public void updateInfo(CorporateDto.UPDATE update){
+        this.name = update.getName();
+        this.businessNumber = update.getBusinessNumber();
+        this.businessName = update.getBusinessName();
+        this.businessCeoName = update.getBusinessCeoName();
     }
 
     public void updatePassword(String password){

@@ -55,7 +55,6 @@ public class CorporateServiceImpl implements CorporateService {
         return new String[]{accessToken, refreshToken};
     }
 
-
     /**
      * signUp Service
      * @param create : corporate info
@@ -72,9 +71,16 @@ public class CorporateServiceImpl implements CorporateService {
         corporateRepository.save(corporateEntity);
     }
 
+    /**
+     * 회사 기본 정보 수정 (이름, 사업자 번호, 사업자 명, 대표 명)
+     * @param update
+     */
     @Override
     public void updateCorporate(CorporateDto.UPDATE update) {
-        //TODO : corporate Service
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        checkDelete(corporateEntity.getDeyYN());
+        corporateEntity.updateInfo(update);
+        corporateRepository.save(corporateEntity);
     }
 
     /**
@@ -132,6 +138,10 @@ public class CorporateServiceImpl implements CorporateService {
         corporateRepository.save(corporateEntity);
     }
 
+    /**
+     * 기업 회원 정보 조회
+     * @return : UserGetDto.READ
+     */
     @Override
     public CorporateDto.READ getCorporate() {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();

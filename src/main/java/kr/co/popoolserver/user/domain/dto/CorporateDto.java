@@ -74,7 +74,21 @@ public class CorporateDto {
     @Getter
     @AllArgsConstructor
     public static class UPDATE{
-        //TODO : Corporate Dto
+        @ApiModelProperty(example = "HongDosan")
+        @NotBlank(message = "이름을 입력해주세요.")
+        private String name;
+
+        @ApiModelProperty(example = "000-00-00000")
+        @NotBlank(message = "사업자 번호를 입력해주세요.")
+        private String businessNumber;
+
+        @ApiModelProperty(example = "사업자명")
+        @NotBlank(message = "사업자명을 입력해주세요.")
+        private String businessName;
+
+        @ApiModelProperty(example = "대표 이름")
+        @NotBlank(message = "대표 이름 입력해주세요.")
+        private String businessCeoName;
     }
 
     @Getter
@@ -92,15 +106,6 @@ public class CorporateDto {
 
         @ApiModelProperty(example = "대표 이름")
         private String businessCeoName;
-
-        @ApiModelProperty(example = "회사 메일")
-        private String businessEmail;
-
-        @ApiModelProperty(example = "010-0000-0000")
-        private PhoneNumber phoneNumber;
-
-        @ApiModelProperty(example = "회사 주소")
-        private Address address;
 
         @ApiModelProperty(example = "ROLE_CORPORATE")
         private UserRole userRole;

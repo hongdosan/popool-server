@@ -24,6 +24,13 @@ public class CorporateController {
         return ResponseFormat.ok();
     }
 
+    @ApiOperation("기업 회원 정보 변경")
+    @PutMapping
+    public ResponseFormat updateCorporate(@RequestBody @Valid CorporateDto.UPDATE update){
+        corporateService.updateCorporate(update);
+        return ResponseFormat.ok();
+    }
+
     @ApiOperation("기업 회원 정보 조회")
     @GetMapping
     public ResponseFormat<CorporateDto.READ> getCorporate(){
