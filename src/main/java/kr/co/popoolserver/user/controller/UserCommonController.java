@@ -62,4 +62,25 @@ public class UserCommonController {
         userCommonService.updateAddress(address);
         return ResponseFormat.ok();
     }
+
+    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 주소 정보")
+    @GetMapping("/{serviceName}/address")
+    public ResponseFormat<UserCommonDto.READ_ADDRESS> getUserAddress(@PathVariable ServiceName serviceName){
+        userCommonService = userCommonServiceProvider.getUserService(serviceName);
+        return ResponseFormat.ok(userCommonService.getAddress());
+    }
+
+    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 메일 정보")
+    @GetMapping("/{serviceName}/email")
+    public ResponseFormat<UserCommonDto.READ_EMAIL> getUserEmail(@PathVariable ServiceName serviceName){
+        userCommonService = userCommonServiceProvider.getUserService(serviceName);
+        return ResponseFormat.ok(userCommonService.getEmail());
+    }
+
+    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 전화번호 정보")
+    @GetMapping("/{serviceName}/phone")
+    public ResponseFormat<UserCommonDto.READ_PHONE> getUserPhone(@PathVariable ServiceName serviceName){
+        userCommonService = userCommonServiceProvider.getUserService(serviceName);
+        return ResponseFormat.ok(userCommonService.getPhone());
+    }
 }
