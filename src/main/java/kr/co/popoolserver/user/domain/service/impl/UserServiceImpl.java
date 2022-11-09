@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
     public UserGetDto.READ getUser() {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
-        return UserGetDto.READ.of(userEntity);
+        return UserEntity.of(userEntity);
     }
 
     /**

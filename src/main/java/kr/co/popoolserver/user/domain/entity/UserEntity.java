@@ -6,6 +6,7 @@ import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
 import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
 import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -82,6 +83,17 @@ public class UserEntity extends BaseEntity {
                 .birth(create.getBirth())
                 .gender(Gender.of(create.getGender()))
                 .userRole(UserRole.ROLE_USER)
+                .build();
+    }
+
+    public static UserGetDto.READ of(UserEntity userEntity){
+        return UserGetDto.READ.builder()
+                .name(userEntity.getName())
+                .birth(userEntity.getBirth())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .gender(userEntity.getGender())
+                .userRole(userEntity.getUserRole())
+                .createAt(userEntity.getCreatedAt())
                 .build();
     }
 

@@ -35,17 +35,6 @@ public class UserGetDto {
 
         @ApiModelProperty(example = "2022-01-01")
         private LocalDateTime createAt;
-
-        public static UserGetDto.READ of(UserEntity userEntity){
-            return READ.builder()
-                    .name(userEntity.getName())
-                    .birth(userEntity.getBirth())
-                    .phoneNumber(userEntity.getPhoneNumber())
-                    .gender(userEntity.getGender())
-                    .userRole(userEntity.getUserRole())
-                    .createAt(userEntity.getCreatedAt())
-                    .build();
-        }
     }
 
     @Getter
