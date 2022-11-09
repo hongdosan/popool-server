@@ -1,10 +1,11 @@
-package kr.co.popoolserver.user.domain.dto;
+package kr.co.popoolserver.user.domain.dto.userDto;
 
 import io.swagger.annotations.ApiModelProperty;
 import kr.co.popoolserver.common.domain.Address;
 import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
+import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,9 +18,6 @@ public class UserGetDto {
     @AllArgsConstructor
     @Builder
     public static class READ{
-        @ApiModelProperty(example = "사용자 아이디")
-        private String identity;
-
         @ApiModelProperty(example = "홍길동")
         private String name;
 

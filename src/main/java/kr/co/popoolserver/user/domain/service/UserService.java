@@ -1,28 +1,38 @@
 package kr.co.popoolserver.user.domain.service;
 
-import kr.co.popoolserver.user.domain.dto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserDeleteDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
 
 public interface UserService {
 
     //login
-    default UserCreateDto.TOKEN login(UserCreateDto.LOGIN login){ return null; }
+    UserCreateDto.TOKEN login(UserCreateDto.LOGIN login);
 
     //create
-    default void signUp(UserCreateDto.CREATE create){}
+    void signUp(UserCreateDto.CREATE create);
 
     //update
-    default void updateUser(UserCreateDto userCreateDto){}
+    void updateUser(UserUpdateDto.UPDATE update);
+    void updatePassword(UserUpdateDto.PASSWORD password);
+    void updateEmail(UserUpdateDto.EMAIL email);
+    void updatePhone(UserUpdateDto.PHONE phone);
+    void updateAddress(UserUpdateDto.ADDRESS address);
 
     //get
-    default void getUser(){}
+    UserGetDto.READ getUser();
 
     //delete
-    default void deleteUser(){}
+    void deleteUser(UserDeleteDto.DELETE delete);
+    void reCreateUser(UserDeleteDto.RE_CREATE reCreate);
 
     //common
-    default void checkIdentity(String identity){}
-    default void checkPhoneNumber(String phoneNumber){}
-    default void checkPassword(String password, String checkPassword){}
-    default void checkEncodePassword(String password, String encodePassword){}
-    default void checkDelete(String delYN){}
+    void checkIdentity(String identity);
+    void checkPhoneNumber(String phoneNumber);
+    void checkEmail(String email);
+    void checkPassword(String password, String checkPassword);
+    void checkEncodePassword(String password, String encodePassword);
+    void checkDelete(String delYN);
+    void checkReCreate(String delYN);
 }

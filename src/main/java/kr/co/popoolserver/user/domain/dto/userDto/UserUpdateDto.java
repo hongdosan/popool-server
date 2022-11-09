@@ -1,4 +1,4 @@
-package kr.co.popoolserver.user.domain.dto;
+package kr.co.popoolserver.user.domain.dto.userDto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,24 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 public class UserUpdateDto {
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class UPDATE{
+        @ApiModelProperty(example = "hhj")
+        @NotBlank(message = "이름을 입력해주세요.")
+        private String name;
+
+        @ApiModelProperty(example = "19980101")
+        @NotBlank(message = "생년월일을 입력해주세요.")
+        private String birth;
+
+        @ApiModelProperty(example = "MALE or FEMALE")
+        @NotBlank(message = "성별을 입력하세요.")
+        private String gender;
+    }
+
     @Builder
     @Getter
     @AllArgsConstructor
@@ -15,6 +33,10 @@ public class UserUpdateDto {
         @ApiModelProperty(example = "example@email.com")
         @NotBlank(message = "이메일을 입력해주세요.")
         private String email;
+
+        @ApiModelProperty(example = "현재 비밀번호")
+        @NotBlank(message = "현재 비밀번호를 입력해주세요")
+        private String originalPassword;
     }
 
     @Getter
@@ -24,6 +46,10 @@ public class UserUpdateDto {
         @ApiModelProperty(example = "010-XXXX-XXXX")
         @NotBlank(message = "휴대폰 번호를 입력해주세요")
         private String newPhoneNumber;
+
+        @ApiModelProperty(example = "현재 비밀번호")
+        @NotBlank(message = "현재 비밀번호를 입력해주세요")
+        private String originalPassword;
     }
 
     @Builder
@@ -58,5 +84,9 @@ public class UserUpdateDto {
         @ApiModelProperty(example = "101호")
         @NotBlank(message = "상세 주소를 입력해주세요")
         private String addr2;
+
+        @ApiModelProperty(example = "현재 비밀번호")
+        @NotBlank(message = "현재 비밀번호를 입력해주세요")
+        private String originalPassword;
     }
 }

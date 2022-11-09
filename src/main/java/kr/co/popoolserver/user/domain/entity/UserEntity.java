@@ -1,11 +1,13 @@
-package kr.co.popoolserver.user.domain;
+package kr.co.popoolserver.user.domain.entity;
 
 import kr.co.popoolserver.common.domain.Address;
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
-import kr.co.popoolserver.user.domain.dto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
+import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -81,6 +83,43 @@ public class UserEntity extends BaseEntity {
                 .birth(create.getBirth())
                 .gender(Gender.of(create.getGender()))
                 .userRole(UserRole.ROLE_USER)
+                .build();
+    }
+
+    public static UserGetDto.READ of(UserEntity userEntity){
+        return UserGetDto.READ.builder()
+                .name(userEntity.getName())
+                .birth(userEntity.getBirth())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .gender(userEntity.getGender())
+                .userRole(userEntity.getUserRole())
+                .createAt(userEntity.getCreatedAt())
+                .build();
+    }
+
+    public void updateInfo(UserUpdateDto.UPDATE update){
+        this.name = update.getName();
+        this.birth = update.getBirth();
+        this.gender = Gender.of(update.getGender());
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
+
+    public void updateEmail(String email){
+        this.email = email;
+    }
+
+    public void updatePhone(PhoneNumber phoneNumber){
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void updateAddress(UserUpdateDto.ADDRESS address){
+        this.address = Address.builder()
+                .zipcode(address.getZipCode())
+                .address1(address.getAddr1())
+                .address2(address.getAddr2())
                 .build();
     }
 }
