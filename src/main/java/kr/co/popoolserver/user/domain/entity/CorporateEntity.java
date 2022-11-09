@@ -1,14 +1,11 @@
 package kr.co.popoolserver.user.domain.entity;
 
-import io.swagger.annotations.ApiModelProperty;
 import kr.co.popoolserver.common.domain.Address;
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.PhoneNumber;
-import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
 import kr.co.popoolserver.user.domain.dto.CorporateDto;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
-import kr.co.popoolserver.user.domain.dto.UserDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +13,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tbl_corporate")

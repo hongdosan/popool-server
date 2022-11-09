@@ -1,9 +1,6 @@
 package kr.co.popoolserver.user.domain.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.common.domain.Address;
-import kr.co.popoolserver.common.domain.PhoneNumber;
-import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -119,13 +116,21 @@ public class CorporateDto {
     @Getter
     @AllArgsConstructor
     public static class DELETE {
-        //TODO : Corporate Dto
+        @ApiModelProperty(example = "현재 비밀번호")
+        @NotBlank(message = "현재 비밀번호를 입력해주세요")
+        private String originalPassword;
     }
 
     @Builder
     @Getter
     @AllArgsConstructor
     public static class RE_CREATE {
-        //TODO : Corporate Dto
+        @ApiModelProperty(example = "복구할 아이디")
+        @NotBlank(message = "복구할 아이디를 입력하세요.")
+        private String identity;
+
+        @ApiModelProperty(example = "복구 할 비밀번호")
+        @NotBlank(message = "복구 할 비밀번호를 입력해주세요")
+        private String originalPassword;
     }
 }

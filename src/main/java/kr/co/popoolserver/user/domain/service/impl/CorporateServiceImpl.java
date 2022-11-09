@@ -188,15 +188,31 @@ public class CorporateServiceImpl implements CorporateService {
                 .build();
     }
 
-
+    /**
+     * 회원 탈퇴
+     * @param delete
+     */
     @Override
     public void deleteCorporate(CorporateDto.DELETE delete) {
-        //TODO : corporate Service
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        checkDelete(corporateEntity.getDeyYN());
+        checkEncodePassword(delete.getOriginalPassword(), corporateEntity.getPassword());
+        corporateEntity.deleted();
+        corporateRepository.save(corporateEntity);
     }
 
+    /**
+     * 탈퇴 회원 복구
+     * @param reCreate
+     */
     @Override
     public void reCreateCorporate(CorporateDto.RE_CREATE reCreate) {
-        //TODO : corporate Service
+        CorporateEntity corporateEntity = corporateRepository.findByIdentity(reCreate.getIdentity())
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
+        checkReCreate(corporateEntity.getDeyYN());
+        checkEncodePassword(reCreate.getOriginalPassword(), corporateEntity.getPassword());
+        corporateEntity.reCreated();
+        corporateRepository.save(corporateEntity);
     }
 
     /**

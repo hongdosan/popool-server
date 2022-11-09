@@ -3,7 +3,6 @@ package kr.co.popoolserver.user.controller;
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import kr.co.popoolserver.user.domain.dto.CorporateDto;
-import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.domain.service.CorporateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +34,19 @@ public class CorporateController {
     @GetMapping
     public ResponseFormat<CorporateDto.READ> getCorporate(){
         return ResponseFormat.ok(corporateService.getCorporate());
+    }
+
+    @ApiOperation("회원 탈퇴")
+    @DeleteMapping
+    public ResponseFormat deleteCorporate(@RequestBody CorporateDto.DELETE delete){
+        corporateService.deleteCorporate(delete);
+        return ResponseFormat.ok();
+    }
+
+    @ApiOperation("회원 복구")
+    @PutMapping("/reCreate")
+    public ResponseFormat deleteCorporate(@RequestBody @Valid CorporateDto.RE_CREATE reCreate){
+        corporateService.reCreateCorporate(reCreate);
+        return ResponseFormat.ok();
     }
 }
