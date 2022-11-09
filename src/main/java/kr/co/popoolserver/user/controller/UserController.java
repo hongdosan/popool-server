@@ -75,8 +75,8 @@ public class UserController {
 
     @ApiOperation("회원 탈퇴")
     @DeleteMapping
-    public ResponseFormat deleteUser(@RequestParam("password") String password){
-        userService.deleteUser(password);
+    public ResponseFormat deleteUser(@RequestBody UserDeleteDto.DELETE delete){
+        userService.deleteUser(delete);
         return ResponseFormat.ok();
     }
 

@@ -153,13 +153,13 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 회원 탈퇴
-     * @param password
+     * @param delete
      */
     @Override
-    public void deleteUser(String password) {
+    public void deleteUser(UserDeleteDto.DELETE delete) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
-        checkEncodePassword(password, userEntity.getPassword());
+        checkEncodePassword(delete.getOriginalPassword(), userEntity.getPassword());
         userEntity.deleted();
         userRepository.save(userEntity);
     }
