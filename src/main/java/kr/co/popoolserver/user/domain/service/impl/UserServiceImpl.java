@@ -1,17 +1,16 @@
 package kr.co.popoolserver.user.domain.service.impl;
 
 import kr.co.popoolserver.common.domain.PhoneNumber;
+import kr.co.popoolserver.common.domain.enums.ServiceName;
 import kr.co.popoolserver.common.infra.error.exception.BadRequestException;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
-import kr.co.popoolserver.user.domain.dto.userDto.UserDeleteDto;
-import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
-import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
+import kr.co.popoolserver.user.domain.dto.UserCommonDto;
+import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
-import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
 import kr.co.popoolserver.user.domain.service.UserService;
 import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +32,14 @@ public class UserServiceImpl implements UserService {
      * @return AccessToken, RefreshToken
      */
     @Override
-    public UserCreateDto.TOKEN login(UserCreateDto.LOGIN login) {
+    public UserCommonDto.TOKEN login(UserCommonDto.LOGIN login) {
         UserEntity userEntity = userRepository.findByIdentity(login.getIdentity())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
         checkEncodePassword(login.getPassword(), userEntity.getPassword());
         checkDelete(userEntity.getDeyYN());
         String[] tokens = generateToken(userEntity);
 
-        return UserCreateDto.TOKEN.builder()
+        return UserCommonDto.TOKEN.builder()
                 .accessToken(tokens[0])
                 .refreshToken(tokens[1])
                 .build();
@@ -64,7 +63,7 @@ public class UserServiceImpl implements UserService {
      * @exception BusinessLogicException : PW Check
      */
     @Override
-    public void signUp(UserCreateDto.CREATE create) {
+    public void signUp(UserDto.CREATE create) {
         checkIdentity(create.getIdentity());
         checkPassword(create.getPassword(), create.getCheckPassword());
         checkPhoneNumber(create.getPhone());
@@ -78,7 +77,7 @@ public class UserServiceImpl implements UserService {
      * @param update
      */
     @Override
-    public void updateUser(UserUpdateDto.UPDATE update) {
+    public void updateUser(UserDto.UPDATE update) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
         userEntity.updateInfo(update);
@@ -90,7 +89,7 @@ public class UserServiceImpl implements UserService {
      * @param password
      */
     @Override
-    public void updatePassword(UserUpdateDto.PASSWORD password) {
+    public void updatePassword(UserCommonDto.UPDATE_PASSWORD password) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
         checkEncodePassword(password.getOriginalPassword(), userEntity.getPassword());
@@ -104,7 +103,7 @@ public class UserServiceImpl implements UserService {
      * @param email
      */
     @Override
-    public void updateEmail(UserUpdateDto.EMAIL email) {
+    public void updateEmail(UserCommonDto.UPDATE_EMAIL email) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
         checkEncodePassword(email.getOriginalPassword(), userEntity.getPassword());
@@ -118,7 +117,7 @@ public class UserServiceImpl implements UserService {
      * @param phone
      */
     @Override
-    public void updatePhone(UserUpdateDto.PHONE phone) {
+    public void updatePhone(UserCommonDto.UPDATE_PHONE phone) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
         checkEncodePassword(phone.getOriginalPassword(), userEntity.getPassword());
@@ -132,7 +131,7 @@ public class UserServiceImpl implements UserService {
      * @param address
      */
     @Override
-    public void updateAddress(UserUpdateDto.ADDRESS address) {
+    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
         checkEncodePassword(address.getOriginalPassword(), userEntity.getPassword());
@@ -145,10 +144,49 @@ public class UserServiceImpl implements UserService {
      * @return : UserGetDto.READ
      */
     @Override
-    public UserGetDto.READ getUser() {
+    public UserDto.READ getUser() {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
         return UserEntity.of(userEntity);
+    }
+
+    /**
+     * 본인 주소 조회
+     * @return READ_ADDRESS
+     */
+    @Override
+    public UserCommonDto.READ_ADDRESS getAddress() {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
+        return UserCommonDto.READ_ADDRESS.builder()
+                .address(userEntity.getAddress())
+                .build();
+    }
+
+    /**
+     * 본인 메일 조회
+     * @return READ_EMAIL
+     */
+    @Override
+    public UserCommonDto.READ_EMAIL getEmail() {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
+        return UserCommonDto.READ_EMAIL.builder()
+                .email(userEntity.getEmail())
+                .build();
+    }
+
+    /**
+     * 본인 번호 조회
+     * @return READ_PHONE
+     */
+    @Override
+    public UserCommonDto.READ_PHONE getPhone() {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
+        return UserCommonDto.READ_PHONE.builder()
+                .phoneNumber(userEntity.getPhoneNumber())
+                .build();
     }
 
     /**
@@ -156,7 +194,7 @@ public class UserServiceImpl implements UserService {
      * @param delete
      */
     @Override
-    public void deleteUser(UserDeleteDto.DELETE delete) {
+    public void deleteUser(UserDto.DELETE delete) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
         checkEncodePassword(delete.getOriginalPassword(), userEntity.getPassword());
@@ -169,7 +207,7 @@ public class UserServiceImpl implements UserService {
      * @param reCreate
      */
     @Override
-    public void reCreateUser(UserDeleteDto.RE_CREATE reCreate) {
+    public void reCreateUser(UserDto.RE_CREATE reCreate) {
         UserEntity userEntity = userRepository.findByIdentity(reCreate.getIdentity())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
         checkReCreate(userEntity.getDeyYN());
@@ -241,5 +279,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkReCreate(String delYN) {
         if(delYN.equals("N")) throw new BadRequestException("탈퇴되지 않은 회원입니다.");
+    }
+
+    @Override
+    public Boolean canHandle(ServiceName serviceName) {
+        return serviceName.equals(ServiceName.USER);
     }
 }

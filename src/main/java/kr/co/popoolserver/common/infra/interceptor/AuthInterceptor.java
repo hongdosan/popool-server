@@ -1,8 +1,6 @@
 package kr.co.popoolserver.common.infra.interceptor;
 
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
-import kr.co.popoolserver.user.domain.entity.UserEntity;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +21,18 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              @NotNull HttpServletResponse response,
-                             @NotNull Object handler) throws Exception {
+                             @NotNull Object handler){
         String token = request.getHeader(HttpHeaders.AUTHORIZATION).replace("Bearer", "").trim();
-        UserEntity userEntity = jwtProvider.findUserByToken(token);
-        UserThreadLocal.set(userEntity);
+        String userRole = jwtProvider.findRoleByToken(token);
 
-        logger.debug("User ThreadLocal Create");
+        if(userRole.equals("ROLE_USER")){
+            UserThreadLocal.set(jwtProvider.findUserByToken(token));
+            logger.debug("User ThreadLocal Create");
+        }else if(userRole.equals("ROLE_CORPORATE")){
+            CorporateThreadLocal.set(jwtProvider.findCorporateByToken(token));
+            logger.debug("Corporate ThreadLocal Create");
+        }
+
         return true;
     }
 
@@ -36,21 +40,27 @@ public class AuthInterceptor implements HandlerInterceptor {
     public void postHandle(@NotNull HttpServletRequest request,
                            @NotNull HttpServletResponse response,
                            @NotNull Object handler,
-                           ModelAndView modelAndView) throws Exception {
-        if(UserThreadLocal.get() == null) return;
-
-        logger.debug("User ThreadLocal PostHandle Remove");
-        UserThreadLocal.remove();
+                           ModelAndView modelAndView) {
+        threadLocalRemoveCheck();
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response,
                                 Object handler,
-                                Exception ex) throws Exception {
-        if(UserThreadLocal.get() == null) return;
+                                Exception ex){
+        threadLocalRemoveCheck();
+    }
 
-        logger.debug("User ThreadLocal AfterCompletion Remove");
-        UserThreadLocal.remove();
+    private void threadLocalRemoveCheck(){
+        if(UserThreadLocal.get() == null && CorporateThreadLocal.get() == null) return;
+        if(UserThreadLocal.get() != null){
+            UserThreadLocal.remove();
+            logger.debug("User ThreadLocal PostHandle Remove");
+        }
+        if(CorporateThreadLocal.get() != null){
+            CorporateThreadLocal.remove();
+            logger.debug("Corporate ThreadLocal PostHandle Remove");
+        }
     }
 }

@@ -1,35 +1,44 @@
-package kr.co.popoolserver.user.domain.dto.userDto;
+package kr.co.popoolserver.user.domain.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import kr.co.popoolserver.common.domain.Address;
+import kr.co.popoolserver.common.domain.PhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 
-public class UserUpdateDto {
+public class UserCommonDto {
 
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class UPDATE{
-        @ApiModelProperty(example = "hhj")
-        @NotBlank(message = "이름을 입력해주세요.")
-        private String name;
+    public static class LOGIN{
+        @ApiModelProperty(example = "User ID")
+        @NotBlank(message = "ID")
+        private String identity;
 
-        @ApiModelProperty(example = "19980101")
-        @NotBlank(message = "생년월일을 입력해주세요.")
-        private String birth;
-
-        @ApiModelProperty(example = "MALE or FEMALE")
-        @NotBlank(message = "성별을 입력하세요.")
-        private String gender;
+        @ApiModelProperty(example = "User PW")
+        @NotBlank(message = "PW")
+        private String password;
     }
 
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class EMAIL{
+    public static class TOKEN {
+        @ApiModelProperty(example = "AccessToken")
+        private String accessToken;
+
+        @ApiModelProperty(example = "RefreshToken")
+        private String refreshToken;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class UPDATE_EMAIL{
         @ApiModelProperty(example = "example@email.com")
         @NotBlank(message = "이메일을 입력해주세요.")
         private String email;
@@ -42,7 +51,7 @@ public class UserUpdateDto {
     @Getter
     @Builder
     @AllArgsConstructor
-    public static class PHONE {
+    public static class UPDATE_PHONE {
         @ApiModelProperty(example = "010-XXXX-XXXX")
         @NotBlank(message = "휴대폰 번호를 입력해주세요")
         private String newPhoneNumber;
@@ -55,7 +64,7 @@ public class UserUpdateDto {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class PASSWORD{
+    public static class UPDATE_PASSWORD{
         @ApiModelProperty(example = "현재 비밀번호")
         @NotBlank(message = "현재 비밀번호를 입력해주세요")
         private String originalPassword;
@@ -72,7 +81,7 @@ public class UserUpdateDto {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class ADDRESS {
+    public static class UPDATE_ADDRESS {
         @ApiModelProperty(example = "12345")
         @NotBlank(message = "우편번호를 입력해주세요")
         private String zipCode;
@@ -89,4 +98,26 @@ public class UserUpdateDto {
         @NotBlank(message = "현재 비밀번호를 입력해주세요")
         private String originalPassword;
     }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class READ_PHONE{
+        private PhoneNumber phoneNumber;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class READ_ADDRESS{
+        private Address address;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class READ_EMAIL{
+        private String email;
+    }
+
 }
