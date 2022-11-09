@@ -79,6 +79,7 @@ public class UserEntity extends BaseEntity {
                 .identity(create.getIdentity())
                 .password(passwordEncoder.encode(create.getPassword()))
                 .name(create.getName())
+                .phoneNumber(new PhoneNumber(create.getPhone()))
                 .birth(create.getBirth())
                 .gender(Gender.of(create.getGender()))
                 .userRole(UserRole.ROLE_USER)

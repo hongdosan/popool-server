@@ -4,11 +4,13 @@ import kr.co.popoolserver.common.domain.Address;
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.UserRole;
+import kr.co.popoolserver.user.domain.dto.CorporateDto;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -61,20 +63,39 @@ public class CorporateEntity extends BaseEntity {
                            String businessName,
                            String businessCeoName,
                            PhoneNumber businessPhoneNumber,
+                           Address businessAddress,
                            String businessEmail,
                            String identity,
                            String password,
                            String name,
-                           Address businessAddress) {
+                           UserRole userRole) {
         this.businessNumber = businessNumber;
         this.businessName = businessName;
         this.businessCeoName = businessCeoName;
         this.businessPhoneNumber = businessPhoneNumber;
+        this.businessAddress = businessAddress;
         this.businessEmail = businessEmail;
         this.identity = identity;
         this.password = password;
         this.name = name;
-        this.businessAddress = businessAddress;
+        this.userRole = userRole;
+    }
+
+    public static CorporateEntity of(CorporateDto.CREATE create,
+                                     PasswordEncoder passwordEncoder){
+        return CorporateEntity.builder()
+                .identity(create.getIdentity())
+                .password(passwordEncoder.encode(create.getPassword()))
+                .businessName(create.getBusinessName())
+                .businessNumber(create.getBusinessNumber())
+                .businessCeoName(create.getBusinessCeoName())
+                .businessEmail(create.getBusinessEmail())
+                .businessPhoneNumber(new PhoneNumber(create.getBusinessPhoneNumber()))
+                .businessAddress(new Address(create.getZipCode(), create.getAddr1(), create.getAddr2()))
+                .name(create.getName())
+                .userRole(UserRole.ROLE_CORPORATE)
+                .build();
+
     }
 
     public void updatePassword(String password){

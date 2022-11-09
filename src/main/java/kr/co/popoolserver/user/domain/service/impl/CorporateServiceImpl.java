@@ -7,13 +7,10 @@ import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.interceptor.CorporateThreadLocal;
-import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
 import kr.co.popoolserver.common.infra.jwt.JwtProvider;
 import kr.co.popoolserver.user.domain.dto.CorporateDto;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
-import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.domain.entity.CorporateEntity;
-import kr.co.popoolserver.user.domain.entity.UserEntity;
 import kr.co.popoolserver.user.domain.service.CorporateService;
 import kr.co.popoolserver.user.repository.CorporateRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,13 +56,24 @@ public class CorporateServiceImpl implements CorporateService {
     }
 
 
+    /**
+     * signUp Service
+     * @param create : corporate info
+     * @exception DuplicatedException : ID, Phone Duplicated
+     * @exception BusinessLogicException : PW Check
+     */
     @Override
-    public void signUp(UserDto.CREATE create) {
-        //TODO : corporate Service
+    public void signUp(CorporateDto.CREATE create) {
+        checkIdentity(create.getIdentity());
+        checkPassword(create.getPassword(), create.getCheckPassword());
+        checkPhoneNumber(create.getBusinessPhoneNumber());
+
+        final CorporateEntity corporateEntity = CorporateEntity.of(create, passwordEncoder);
+        corporateRepository.save(corporateEntity);
     }
 
     @Override
-    public void updateUser(UserDto.UPDATE update) {
+    public void updateCorporate(CorporateDto.UPDATE update) {
         //TODO : corporate Service
     }
 
@@ -125,7 +133,7 @@ public class CorporateServiceImpl implements CorporateService {
     }
 
     @Override
-    public CorporateDto.READ getUser() {
+    public CorporateDto.READ getCorporate() {
         //TODO : corporate Service
         return null;
     }
@@ -171,12 +179,12 @@ public class CorporateServiceImpl implements CorporateService {
 
 
     @Override
-    public void deleteUser(CorporateDto.DELETE delete) {
+    public void deleteCorporate(CorporateDto.DELETE delete) {
         //TODO : corporate Service
     }
 
     @Override
-    public void reCreateUser(CorporateDto.RE_CREATE reCreate) {
+    public void reCreateCorporate(CorporateDto.RE_CREATE reCreate) {
         //TODO : corporate Service
     }
 
