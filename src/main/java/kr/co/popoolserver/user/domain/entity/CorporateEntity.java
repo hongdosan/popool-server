@@ -2,11 +2,15 @@ package kr.co.popoolserver.user.domain.entity;
 
 import kr.co.popoolserver.common.domain.Address;
 import kr.co.popoolserver.common.domain.BaseEntity;
+import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.UserRole;
+import kr.co.popoolserver.user.domain.dto.CorporateDto;
+import kr.co.popoolserver.user.domain.dto.UserCommonDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -26,9 +30,6 @@ public class CorporateEntity extends BaseEntity {
     @Column(name = "business_ceo_name", nullable = false, length = 100)
     private String businessCeoName;
 
-    @Column(name = "business_phone_number", nullable = false, length = 100)
-    private String businessPhoneNumber;
-
     @Column(name = "business_email", nullable = false, length = 100)
     private String businessEmail;
 
@@ -46,6 +47,10 @@ public class CorporateEntity extends BaseEntity {
     private UserRole userRole;
 
     @Embedded
+    @AttributeOverride(name = "phoneNumber", column = @Column(name = "business_phone_number", unique = true))
+    private PhoneNumber businessPhoneNumber;
+
+    @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "zipcode", column = @Column(name = "zipcode")),
             @AttributeOverride(name = "address1", column = @Column(name = "address1")),
@@ -57,20 +62,76 @@ public class CorporateEntity extends BaseEntity {
     public CorporateEntity(String businessNumber,
                            String businessName,
                            String businessCeoName,
-                           String businessPhoneNumber,
+                           PhoneNumber businessPhoneNumber,
+                           Address businessAddress,
                            String businessEmail,
                            String identity,
                            String password,
                            String name,
-                           Address businessAddress) {
+                           UserRole userRole) {
         this.businessNumber = businessNumber;
         this.businessName = businessName;
         this.businessCeoName = businessCeoName;
         this.businessPhoneNumber = businessPhoneNumber;
+        this.businessAddress = businessAddress;
         this.businessEmail = businessEmail;
         this.identity = identity;
         this.password = password;
         this.name = name;
-        this.businessAddress = businessAddress;
+        this.userRole = userRole;
+    }
+
+    public static CorporateEntity of(CorporateDto.CREATE create,
+                                     PasswordEncoder passwordEncoder){
+        return CorporateEntity.builder()
+                .identity(create.getIdentity())
+                .password(passwordEncoder.encode(create.getPassword()))
+                .businessName(create.getBusinessName())
+                .businessNumber(create.getBusinessNumber())
+                .businessCeoName(create.getBusinessCeoName())
+                .businessEmail(create.getBusinessEmail())
+                .businessPhoneNumber(new PhoneNumber(create.getBusinessPhoneNumber()))
+                .businessAddress(new Address(create.getZipCode(), create.getAddr1(), create.getAddr2()))
+                .name(create.getName())
+                .userRole(UserRole.ROLE_CORPORATE)
+                .build();
+    }
+
+    public static CorporateDto.READ of(CorporateEntity corporateEntity){
+        return CorporateDto.READ.builder()
+                .name(corporateEntity.name)
+                .businessName(corporateEntity.businessName)
+                .businessCeoName(corporateEntity.getBusinessCeoName())
+                .businessNumber(corporateEntity.getBusinessNumber())
+                .userRole(corporateEntity.userRole)
+                .createAt(corporateEntity.createdAt)
+                .build();
+    }
+
+    public void updateInfo(CorporateDto.UPDATE update){
+        this.name = update.getName();
+        this.businessNumber = update.getBusinessNumber();
+        this.businessName = update.getBusinessName();
+        this.businessCeoName = update.getBusinessCeoName();
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
+
+    public void updateEmail(String email){
+        this.businessEmail = email;
+    }
+
+    public void updatePhone(PhoneNumber phoneNumber){
+        this.businessPhoneNumber = phoneNumber;
+    }
+
+    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address){
+        this.businessAddress = Address.builder()
+                .zipcode(address.getZipCode())
+                .address1(address.getAddr1())
+                .address2(address.getAddr2())
+                .build();
     }
 }

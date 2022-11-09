@@ -5,9 +5,8 @@ import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.common.domain.PhoneNumber;
 import kr.co.popoolserver.common.domain.enums.Gender;
 import kr.co.popoolserver.common.domain.enums.UserRole;
-import kr.co.popoolserver.user.domain.dto.userDto.UserCreateDto;
-import kr.co.popoolserver.user.domain.dto.userDto.UserGetDto;
-import kr.co.popoolserver.user.domain.dto.userDto.UserUpdateDto;
+import kr.co.popoolserver.user.domain.dto.UserCommonDto;
+import kr.co.popoolserver.user.domain.dto.UserDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -75,19 +74,20 @@ public class UserEntity extends BaseEntity {
         this.userRole = userRole;
     }
 
-    public static UserEntity of(UserCreateDto.CREATE create, PasswordEncoder passwordEncoder){
+    public static UserEntity of(UserDto.CREATE create, PasswordEncoder passwordEncoder){
         return UserEntity.builder()
                 .identity(create.getIdentity())
                 .password(passwordEncoder.encode(create.getPassword()))
                 .name(create.getName())
+                .phoneNumber(new PhoneNumber(create.getPhone()))
                 .birth(create.getBirth())
                 .gender(Gender.of(create.getGender()))
                 .userRole(UserRole.ROLE_USER)
                 .build();
     }
 
-    public static UserGetDto.READ of(UserEntity userEntity){
-        return UserGetDto.READ.builder()
+    public static UserDto.READ of(UserEntity userEntity){
+        return UserDto.READ.builder()
                 .name(userEntity.getName())
                 .birth(userEntity.getBirth())
                 .phoneNumber(userEntity.getPhoneNumber())
@@ -97,7 +97,7 @@ public class UserEntity extends BaseEntity {
                 .build();
     }
 
-    public void updateInfo(UserUpdateDto.UPDATE update){
+    public void updateInfo(UserDto.UPDATE update){
         this.name = update.getName();
         this.birth = update.getBirth();
         this.gender = Gender.of(update.getGender());
@@ -115,7 +115,7 @@ public class UserEntity extends BaseEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public void updateAddress(UserUpdateDto.ADDRESS address){
+    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address){
         this.address = Address.builder()
                 .zipcode(address.getZipCode())
                 .address1(address.getAddr1())

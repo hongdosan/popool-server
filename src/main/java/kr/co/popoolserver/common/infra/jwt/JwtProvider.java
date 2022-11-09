@@ -7,7 +7,9 @@ import kr.co.popoolserver.common.infra.error.exception.JwtTokenInvalidException;
 import kr.co.popoolserver.common.infra.error.exception.NotFoundException;
 import kr.co.popoolserver.common.infra.error.exception.UserDefineException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
+import kr.co.popoolserver.user.domain.entity.CorporateEntity;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
+import kr.co.popoolserver.user.repository.CorporateRepository;
 import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +36,7 @@ public class JwtProvider {
     @Value("$jwt.secret")
     private String SECRET_KEY;
 
-    final String USER_IDENTITY = "identtiy";
+    final String USER_IDENTITY = "identity";
     final String USER_ROLE = "user_role";
     final String USER_NAME = "name";
 
@@ -42,6 +44,7 @@ public class JwtProvider {
     private final long REFRESH_EXPIRE = 1000*60*60*24*7;
 
     private final UserRepository userRepository;
+    private final CorporateRepository corporateRepository;
 
     /**
      * 시크릿 키를 Base64로 인코딩
@@ -207,7 +210,7 @@ public class JwtProvider {
     /**
      * 토큰을 이용하여 사용자 권한을 찾는 메서드
      * @param token 토큰
-     * @return 사용자의 아이디
+     * @return 사용자의 권한
      */
     public String findRoleByToken(String token){
         return (String) Jwts.parser()
@@ -225,6 +228,17 @@ public class JwtProvider {
      */
     public UserEntity findUserByToken(String token){
         return userRepository.findByIdentity(findIdentityByToken(token))
+                .orElseThrow(() -> new NotFoundException(ErrorCode.FAIL_INVALID_TOKEN.getMessage()));
+    }
+
+    /**
+     * 토큰을 통해 CorporateEntity 객체를 가져오는 메서드
+     * @param token : 토큰
+     * @return : jwt 토큰을 통해 찾은 UserEntity 객체
+     * @Exception UserNotFoundException : 해당 회원을 찾을 수 없는 경우 발생하는 예외
+     */
+    public CorporateEntity findCorporateByToken(String token){
+        return corporateRepository.findByIdentity(findIdentityByToken(token))
                 .orElseThrow(() -> new NotFoundException(ErrorCode.FAIL_INVALID_TOKEN.getMessage()));
     }
 }

@@ -15,15 +15,17 @@ public enum ErrorCode {
     FAIL_INVALID_SIGNATURE("응답이 실패했고, 원인은 Invalid JWT Signature 입니다.", 4002),
     FAIL_INVALID_CLAIMS("응답이 실패했고, 원인은 Invalid JWT Claims(EMPTY) 입니다.", 4002),
 
+    NOT_SERVICE("해당 서비스는 존재하지 않습니다.", 4003),
+
     //user
-    WRONG_IDENTITY("존재하지 않는 아이디입니다.", 400),
-    WRONG_PASSWORD("비밀번호를 다시 확인해주세요", 400),
+    WRONG_IDENTITY("존재하지 않는 아이디입니다.", 4100),
+    WRONG_PASSWORD("비밀번호를 다시 확인해주세요", 4100),
 
-    DUPLICATED_ID("중복된 아이디를 사용할 수 없습니다.", 400),
-    DUPLICATED_PHONE("중복된 전화번호를 사용할 수 없습니다.", 400),
-    DUPLICATED_EMAIL("중복된 이메일을 사용할 수 없습니다.", 400),
+    DUPLICATED_ID("중복된 아이디를 사용할 수 없습니다.", 4101),
+    DUPLICATED_PHONE("중복된 전화번호를 사용할 수 없습니다.", 4101),
+    DUPLICATED_EMAIL("중복된 이메일을 사용할 수 없습니다.", 4101),
 
-    DELETED_USER("탈퇴한 회원입니다.", 400);
+    DELETED_USER("탈퇴한 회원입니다.", 4102);
 
     //TODO: corporate, payment, product, inventory, career, score, grade Error Enum
 
