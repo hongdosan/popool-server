@@ -98,6 +98,20 @@ public class CorporateEntity extends BaseEntity {
 
     }
 
+    public static CorporateDto.READ of(CorporateEntity corporateEntity){
+        return CorporateDto.READ.builder()
+                .name(corporateEntity.name)
+                .phoneNumber(corporateEntity.getBusinessPhoneNumber())
+                .address(corporateEntity.getBusinessAddress())
+                .businessName(corporateEntity.businessName)
+                .businessCeoName(corporateEntity.getBusinessCeoName())
+                .businessEmail(corporateEntity.getBusinessEmail())
+                .businessNumber(corporateEntity.getBusinessNumber())
+                .userRole(corporateEntity.userRole)
+                .createAt(corporateEntity.createdAt)
+                .build();
+    }
+
     public void updatePassword(String password){
         this.password = password;
     }

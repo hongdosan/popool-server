@@ -1,12 +1,17 @@
 package kr.co.popoolserver.user.domain.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import kr.co.popoolserver.common.domain.Address;
+import kr.co.popoolserver.common.domain.PhoneNumber;
+import kr.co.popoolserver.common.domain.enums.Gender;
+import kr.co.popoolserver.common.domain.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 public class CorporateDto {
     @Builder
@@ -76,7 +81,32 @@ public class CorporateDto {
     @AllArgsConstructor
     @Builder
     public static class READ{
-        //TODO : Corporate Dto
+        @ApiModelProperty(example = "홍길동")
+        private String name;
+
+        @ApiModelProperty(example = "000-00-00000")
+        private String businessNumber;
+
+        @ApiModelProperty(example = "사업자명")
+        private String businessName;
+
+        @ApiModelProperty(example = "대표 이름")
+        private String businessCeoName;
+
+        @ApiModelProperty(example = "회사 메일")
+        private String businessEmail;
+
+        @ApiModelProperty(example = "010-0000-0000")
+        private PhoneNumber phoneNumber;
+
+        @ApiModelProperty(example = "회사 주소")
+        private Address address;
+
+        @ApiModelProperty(example = "ROLE_CORPORATE")
+        private UserRole userRole;
+
+        @ApiModelProperty(example = "2022-01-01")
+        private LocalDateTime createAt;
     }
 
 

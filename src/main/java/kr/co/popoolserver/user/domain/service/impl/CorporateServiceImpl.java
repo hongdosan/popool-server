@@ -134,8 +134,9 @@ public class CorporateServiceImpl implements CorporateService {
 
     @Override
     public CorporateDto.READ getCorporate() {
-        //TODO : corporate Service
-        return null;
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        checkDelete(corporateEntity.getDeyYN());
+        return CorporateEntity.of(corporateEntity);
     }
 
     /**
