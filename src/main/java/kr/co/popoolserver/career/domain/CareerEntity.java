@@ -28,14 +28,6 @@ public class CareerEntity extends BaseEntity {
     @Column(name = "office_skill")
     private String officeSkill;
 
-    @Column(name = "popool_url")
-    private String popoolUrl;
-
-    //TODO : 이미지 업로드
-    //TODO : 파일 업로드
-    @Column(name = "popool_file")
-    private String popoolFile;
-
     @Column(name = "grade_type")
     @Enumerated(value = EnumType.STRING)
     private GradeType gradeType;
