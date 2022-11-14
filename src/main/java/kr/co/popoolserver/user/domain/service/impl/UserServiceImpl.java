@@ -16,10 +16,11 @@ import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -63,6 +64,7 @@ public class UserServiceImpl implements UserService {
      * @exception BusinessLogicException : PW Check
      */
     @Override
+    @Transactional
     public void signUp(UserDto.CREATE create) {
         checkIdentity(create.getIdentity());
         checkPassword(create.getPassword(), create.getCheckPassword());
@@ -77,6 +79,7 @@ public class UserServiceImpl implements UserService {
      * @param update
      */
     @Override
+    @Transactional
     public void updateUser(UserDto.UPDATE update) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
@@ -89,6 +92,7 @@ public class UserServiceImpl implements UserService {
      * @param password
      */
     @Override
+    @Transactional
     public void updatePassword(UserCommonDto.UPDATE_PASSWORD password) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
@@ -103,6 +107,7 @@ public class UserServiceImpl implements UserService {
      * @param email
      */
     @Override
+    @Transactional
     public void updateEmail(UserCommonDto.UPDATE_EMAIL email) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
@@ -117,6 +122,7 @@ public class UserServiceImpl implements UserService {
      * @param phone
      */
     @Override
+    @Transactional
     public void updatePhone(UserCommonDto.UPDATE_PHONE phone) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
@@ -131,6 +137,7 @@ public class UserServiceImpl implements UserService {
      * @param address
      */
     @Override
+    @Transactional
     public void updateAddress(UserCommonDto.UPDATE_ADDRESS address) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
@@ -194,6 +201,7 @@ public class UserServiceImpl implements UserService {
      * @param delete
      */
     @Override
+    @Transactional
     public void deleteUser(UserDto.DELETE delete) {
         UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
@@ -207,6 +215,7 @@ public class UserServiceImpl implements UserService {
      * @param reCreate
      */
     @Override
+    @Transactional
     public void reCreateUser(UserDto.RE_CREATE reCreate) {
         UserEntity userEntity = userRepository.findByIdentity(reCreate.getIdentity())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
