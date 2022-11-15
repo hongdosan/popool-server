@@ -1,4 +1,4 @@
-package kr.co.popoolserver.career.domain;
+package kr.co.popoolserver.career.domain.entity;
 
 import kr.co.popoolserver.common.domain.BaseEntity;
 import lombok.AccessLevel;
