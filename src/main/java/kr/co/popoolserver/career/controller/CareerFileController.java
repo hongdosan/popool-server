@@ -9,17 +9,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/career")
+@RequestMapping("/careers")
 public class CareerFileController {
 
     private final S3Upload s3Upload;
 
     @PostMapping("/upload")
-    public ResponseFormat<String> uploadImage(@RequestParam("image")MultipartFile multipartFile) throws IOException {
+    public ResponseFormat<String> uploadImage(@RequestParam("image") MultipartFile multipartFile) {
         return ResponseFormat.ok(s3Upload.uploadFile(multipartFile));
     }
 }
