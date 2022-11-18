@@ -1,6 +1,7 @@
 package kr.co.popoolserver.career.domain.entity;
 
 import kr.co.popoolserver.common.domain.BaseEntity;
+import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,33 +32,37 @@ public class CareerFileEntity extends BaseEntity {
     private int fileExtensionIndex;
 
     @ManyToOne
-    @JoinColumn(name = "career_id")
-    private CareerEntity careerEntity;
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 
     @Builder
     public CareerFileEntity(String fileName,
                             long fileSize,
                             String fileUrl,
                             String fileExtension,
-                            int fileExtensionIndex) {
+                            int fileExtensionIndex,
+                            UserEntity userEntity) {
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.fileUrl = fileUrl;
         this.fileExtension = fileExtension;
         this.fileExtensionIndex = fileExtensionIndex;
+        this.userEntity = userEntity;
     }
 
     public static CareerFileEntity of(String fileName,
                                       long fileSize,
                                       String fileUrl,
                                       String fileExtension,
-                                      int fileExtensionIndex){
+                                      int fileExtensionIndex,
+                                      UserEntity userEntity){
         return CareerFileEntity.builder()
                 .fileName(fileName)
                 .fileSize(fileSize)
                 .fileUrl(fileUrl)
                 .fileExtension(fileExtension)
                 .fileExtensionIndex(fileExtensionIndex)
+                .userEntity(userEntity)
                 .build();
     }
 }

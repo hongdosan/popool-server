@@ -17,8 +17,6 @@ public enum ErrorCode {
     FAIL_INVALID_CLAIMS("응답이 실패했고, 원인은 Invalid JWT Claims(EMPTY) 입니다.", 4002),
 
     NOT_SERVICE("해당 서비스는 존재하지 않습니다.", 4003),
-    FAIL_FILE_EMPTY("파일이 존재하지 않습니다.", 4003),
-    FAIL_FILE_UPLOAD("파일 업로드 실패하였습니다.", 4003),
 
     //user
     WRONG_IDENTITY("존재하지 않는 아이디입니다.", 4100),
@@ -28,9 +26,17 @@ public enum ErrorCode {
     DUPLICATED_PHONE("중복된 전화번호를 사용할 수 없습니다.", 4101),
     DUPLICATED_EMAIL("중복된 이메일을 사용할 수 없습니다.", 4101),
 
-    DELETED_USER("탈퇴한 회원입니다.", 4102);
+    DELETED_USER("탈퇴한 회원입니다.", 4102),
 
-    //TODO: payment, product, inventory, career, score, grade Error Enum
+    //career
+    WRONG_CAREER("해당 유저가 작성한 이력서는 없습니다.", 4100),
+
+    //careerFile
+    FAIL_FILE_EMPTY("파일이 존재하지 않습니다.", 4100),
+
+    FAIL_FILE_UPLOAD("파일 업로드 실패하였습니다.", 4101);
+
+    //TODO: payment, product, inventory, score, grade Error Enum
 
     private String message;
     private int status;

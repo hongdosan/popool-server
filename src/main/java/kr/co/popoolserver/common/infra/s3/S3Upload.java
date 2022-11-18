@@ -2,11 +2,16 @@ package kr.co.popoolserver.common.infra.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import kr.co.popoolserver.career.domain.entity.CareerEntity;
 import kr.co.popoolserver.career.domain.entity.CareerFileEntity;
 import kr.co.popoolserver.career.domain.service.CareerFileService;
+import kr.co.popoolserver.career.repository.CareerRepository;
+import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.EmptyFileException;
 import kr.co.popoolserver.common.infra.error.exception.FileUploadFailedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
+import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
+import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +24,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class S3Upload {
 
     private final AmazonS3 amazonS3;
@@ -40,9 +46,12 @@ public class S3Upload {
     public String uploadFile(MultipartFile multipartFile){
         validateFileExists(multipartFile);
 
-        long fileSize;
+        UserEntity userEntity = UserThreadLocal.get();
         String originalFilename = multipartFile.getOriginalFilename();
+
+        long fileSize;
         int fileExtensionIndex = originalFilename.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+
         String fileExtension = originalFilename.substring(fileExtensionIndex);
         String fileName = originalFilename.substring(0, fileExtensionIndex);
         String s3FileName = UUID.randomUUID() + "-" + fileName + fileExtension;
@@ -57,12 +66,14 @@ public class S3Upload {
         }
 
         String s3Url = amazonS3.getUrl(BUCKET_NAME, s3FileName).toString();
+
         careerFileService.createFile(CareerFileEntity.builder()
                 .fileName(fileName)
                 .fileSize(fileSize)
                 .fileUrl(s3Url)
                 .fileExtension(fileExtension)
                 .fileExtensionIndex(fileExtensionIndex)
+                .userEntity(userEntity)
                 .build());
 
         return s3Url;
