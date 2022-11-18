@@ -14,13 +14,13 @@ public class CareerController {
     private final CareerService careerService;
 
     @PostMapping("/create")
-    public ResponseFormat uploadImage(@RequestBody CareerDto.CREATE create) {
+    public ResponseFormat createCareer(@RequestBody CareerDto.CREATE create) {
         careerService.createCareer(create);
         return ResponseFormat.ok();
     }
 
     @GetMapping
-    public ResponseFormat<CareerDto.READ> uploadImage() {
+    public ResponseFormat<CareerDto.READ> getCareer() {
         return ResponseFormat.ok(careerService.getCareer());
     }
 

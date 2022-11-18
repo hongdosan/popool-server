@@ -2,11 +2,9 @@ package kr.co.popoolserver.common.infra.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import kr.co.popoolserver.career.domain.entity.CareerEntity;
+import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.career.domain.entity.CareerFileEntity;
 import kr.co.popoolserver.career.domain.service.CareerFileService;
-import kr.co.popoolserver.career.repository.CareerRepository;
-import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.EmptyFileException;
 import kr.co.popoolserver.common.infra.error.exception.FileUploadFailedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
@@ -25,7 +23,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class S3Upload {
+public class S3Service {
 
     private final AmazonS3 amazonS3;
     private final CareerFileService careerFileService;
@@ -35,10 +33,7 @@ public class S3Upload {
     final String FILE_EXTENSION_SEPARATOR = ".";
 
     /**
-     * s3FileName : S3에 저장되는 파일 이름 (UUID.randomUUID(): 중복 방지)
-     * ObjectMetadata : 업로드하는 파일의 사이즈를 S3에 알려주기 위함.
-     * putObject : S3 API Method 를 사용해 파일 Stream 을 열어 S3에 파일 업로드.
-     * getUrl Method : 해당 메소드를 통해 S3에 업로드된 사진 URL 가져옴.
+     * DB 업로드
      * @param multipartFile
      * @return
      */
@@ -47,13 +42,31 @@ public class S3Upload {
         validateFileExists(multipartFile);
 
         UserEntity userEntity = UserThreadLocal.get();
-        String originalFilename = multipartFile.getOriginalFilename();
+        CareerFileDto.CONVERT convertFile = convertAndS3Put(multipartFile);
+        CareerFileEntity careerFileEntity = CareerFileEntity.of(convertFile, userEntity);
 
+        careerFileService.uploadFile(careerFileEntity);
+
+        return convertFile.getS3Url();
+    }
+
+    /**
+     * 파일화 및 S3 업로드
+     * s3FileName : S3에 저장되는 파일 이름 (UUID.randomUUID(): 중복 방지)
+     * ObjectMetadata : 업로드하는 파일의 사이즈를 S3에 알려주기 위함.
+     * putObject : S3 API Method 를 사용해 파일 Stream 을 열어 S3에 파일 업로드.
+     * getUrl Method : 해당 메소드를 통해 S3에 업로드된 사진 URL 가져옴.
+     * @param multipartFile
+     * @return
+     */
+    private CareerFileDto.CONVERT convertAndS3Put(MultipartFile multipartFile){
         long fileSize;
-        int fileExtensionIndex = originalFilename.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+        String s3Url;
+        String originalFileName = multipartFile.getOriginalFilename();
 
-        String fileExtension = originalFilename.substring(fileExtensionIndex);
-        String fileName = originalFilename.substring(0, fileExtensionIndex);
+        int fileExtensionIndex = originalFileName.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+        String fileExtension = originalFileName.substring(fileExtensionIndex);
+        String fileName = originalFileName.substring(0, fileExtensionIndex);
         String s3FileName = UUID.randomUUID() + "-" + fileName + fileExtension;
 
         try (InputStream inputStream = multipartFile.getInputStream()){
@@ -61,22 +74,26 @@ public class S3Upload {
             objectMetadata.setContentLength(inputStream.available());
             amazonS3.putObject(BUCKET_NAME, s3FileName, inputStream, objectMetadata);
             fileSize = objectMetadata.getContentLength();
+            s3Url = amazonS3.getUrl(BUCKET_NAME, s3FileName).toString();
         }catch (IOException e){
             throw new FileUploadFailedException(ErrorCode.FAIL_FILE_UPLOAD);
         }
 
-        String s3Url = amazonS3.getUrl(BUCKET_NAME, s3FileName).toString();
-
-        careerFileService.createFile(CareerFileEntity.builder()
+        return CareerFileDto.CONVERT.builder()
                 .fileName(fileName)
-                .fileSize(fileSize)
-                .fileUrl(s3Url)
+                .s3FileName(s3FileName)
+                .s3Url(s3Url)
                 .fileExtension(fileExtension)
                 .fileExtensionIndex(fileExtensionIndex)
-                .userEntity(userEntity)
-                .build());
+                .fileSize(fileSize)
+                .build();
+    }
 
-        return s3Url;
+    /**
+     * S3 삭제
+     */
+    private void removeS3File(){
+        //TODO : S3 데이터 삭제
     }
 
     /**

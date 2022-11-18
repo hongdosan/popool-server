@@ -1,5 +1,7 @@
 package kr.co.popoolserver.career.domain.entity;
 
+import kr.co.popoolserver.career.domain.dto.CareerDto;
+import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.AccessLevel;
@@ -50,18 +52,13 @@ public class CareerFileEntity extends BaseEntity {
         this.userEntity = userEntity;
     }
 
-    public static CareerFileEntity of(String fileName,
-                                      long fileSize,
-                                      String fileUrl,
-                                      String fileExtension,
-                                      int fileExtensionIndex,
-                                      UserEntity userEntity){
+    public static CareerFileEntity of(CareerFileDto.CONVERT convert, UserEntity userEntity) {
         return CareerFileEntity.builder()
-                .fileName(fileName)
-                .fileSize(fileSize)
-                .fileUrl(fileUrl)
-                .fileExtension(fileExtension)
-                .fileExtensionIndex(fileExtensionIndex)
+                .fileName(convert.getFileName())
+                .fileSize(convert.getFileSize())
+                .fileUrl(convert.getS3Url())
+                .fileExtension(convert.getFileExtension())
+                .fileExtensionIndex(convert.getFileExtensionIndex())
                 .userEntity(userEntity)
                 .build();
     }

@@ -84,4 +84,7 @@ public class CareerEntity extends BaseEntity {
                 .build();
     }
 
+    public void updateFile(CareerFileEntity careerFileEntity){
+        this.careerFileEntity = careerFileEntity;
+    }
 }
