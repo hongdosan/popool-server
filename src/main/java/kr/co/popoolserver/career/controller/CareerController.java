@@ -6,6 +6,8 @@ import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/careers")
@@ -20,8 +22,25 @@ public class CareerController {
     }
 
     @GetMapping
-    public ResponseFormat<CareerDto.READ> getCareer() {
-        return ResponseFormat.ok(careerService.getCareer());
+    public ResponseFormat<List<CareerDto.READ>> getAllCareers() {
+        return ResponseFormat.ok(careerService.getAllCareers());
+    }
+
+    @GetMapping("/one")
+    public ResponseFormat getCareer(@RequestParam("id") Long id) {
+        return ResponseFormat.ok(careerService.getCareer(id));
+    }
+
+    @PutMapping
+    public ResponseFormat updateCareer() {
+        //TODO Update Career
+        return ResponseFormat.ok();
+    }
+
+    @DeleteMapping
+    public ResponseFormat deleteCareer() {
+        //TODO Delete S3
+        return ResponseFormat.ok();
     }
 
 }

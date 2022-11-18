@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,12 +32,22 @@ public class CareerService {
     }
 
     /**
+     * 본인의 모든 이력서 조회
+     * @return
+     */
+    public List<CareerDto.READ> getAllCareers(){
+        UserEntity userEntity = UserThreadLocal.get();
+        List<CareerEntity> careerEntities = careerRepository.findByUserEntity(userEntity);
+        return CareerEntity.of(careerEntities);
+    }
+
+    /**
      * 본인 이력서 조회
      * @return
      */
-    public CareerDto.READ getCareer(){
+    public CareerDto.READ getCareer(Long id){
         UserEntity userEntity = UserThreadLocal.get();
-        CareerEntity careerEntity = careerRepository.findByUserEntity(userEntity)
+        CareerEntity careerEntity = careerRepository.findByIdAndUserEntity(id, userEntity)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CAREER));
         return CareerEntity.of(careerEntity);
     }

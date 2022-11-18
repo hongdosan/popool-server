@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_career")
@@ -40,10 +42,6 @@ public class CareerEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
-
-    @OneToOne
-    @JoinColumn(name = "career_file_id")
-    private CareerFileEntity careerFileEntity = null;
 
     @Builder
     public CareerEntity(String officePeriod,
@@ -80,11 +78,15 @@ public class CareerEntity extends BaseEntity {
                 .popolUrl(careerEntity.getPopolUrl())
                 .createAt(careerEntity.createdAt)
                 .name(careerEntity.userEntity.getName())
-                .careerFileEntity(careerEntity.careerFileEntity)
                 .build();
     }
 
-    public void updateFile(CareerFileEntity careerFileEntity){
-        this.careerFileEntity = careerFileEntity;
+    public static List<CareerDto.READ> of(List<CareerEntity> careerEntities){
+        List<CareerDto.READ> reads = new ArrayList<>();
+        for(CareerEntity careerEntity : careerEntities){
+            CareerDto.READ read = of(careerEntity);
+            reads.add(read);
+        }
+        return reads;
     }
 }

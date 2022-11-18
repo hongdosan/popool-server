@@ -1,6 +1,5 @@
 package kr.co.popoolserver.career.domain.entity;
 
-import kr.co.popoolserver.career.domain.dto.CareerDto;
 import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
@@ -62,4 +61,15 @@ public class CareerFileEntity extends BaseEntity {
                 .userEntity(userEntity)
                 .build();
     }
+
+    public static CareerFileDto.READ_INFO of(CareerFileEntity careerFileEntity) {
+        return CareerFileDto.READ_INFO.builder()
+                .fileName(careerFileEntity.getFileName())
+                .fileSize(careerFileEntity.getFileSize())
+                .fileExtension(careerFileEntity.getFileExtension())
+                .identity(careerFileEntity.getUserEntity().getIdentity())
+                .createAt(careerFileEntity.createdAt)
+                .build();
+    }
+
 }
