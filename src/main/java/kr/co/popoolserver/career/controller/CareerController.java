@@ -39,7 +39,7 @@ public class CareerController {
 
     @DeleteMapping
     public ResponseFormat deleteCareer() {
-        //TODO Delete S3
+        //TODO Delete Career
         return ResponseFormat.ok();
     }
 
