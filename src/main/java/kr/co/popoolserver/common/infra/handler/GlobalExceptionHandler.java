@@ -1,6 +1,7 @@
 package kr.co.popoolserver.common.infra.handler;
 
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
+import kr.co.popoolserver.common.infra.error.exception.MaxUploadSizeExceededException;
 import kr.co.popoolserver.common.infra.error.exception.UserDefineException;
 import kr.co.popoolserver.common.infra.error.model.ErrorResponse;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
@@ -20,6 +21,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserDefineException.class)
     public ResponseEntity<ErrorResponse> handlerUserDefineException(UserDefineException e){
+        ResponseFormat responseFormat = ResponseFormat.fail(e.getMessage());
+        return new ResponseEntity(responseFormat, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handlerMaxUploadSizeExceededException(MaxUploadSizeExceededException e){
         ResponseFormat responseFormat = ResponseFormat.fail(e.getMessage());
         return new ResponseEntity(responseFormat, HttpStatus.OK);
     }

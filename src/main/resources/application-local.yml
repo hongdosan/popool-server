@@ -22,3 +22,15 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       format_sql: true
+
+aws:
+  key:
+    access: AKIAVJU7C54W5O2IIZHC
+    secret: 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
+  s3:
+    bucket: dosan-bucket
+  region:
+    static: ap-northeast-2
+  stack:
+    auto: false
+

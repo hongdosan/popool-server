@@ -16,9 +16,11 @@ import kr.co.popoolserver.user.repository.CorporateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CorporateServiceImpl implements CorporateService {
 
     private final CorporateRepository corporateRepository;
@@ -62,6 +64,7 @@ public class CorporateServiceImpl implements CorporateService {
      * @exception BusinessLogicException : PW Check
      */
     @Override
+    @Transactional
     public void signUp(CorporateDto.CREATE create) {
         checkIdentity(create.getIdentity());
         checkPassword(create.getPassword(), create.getCheckPassword());
@@ -76,6 +79,7 @@ public class CorporateServiceImpl implements CorporateService {
      * @param update
      */
     @Override
+    @Transactional
     public void updateCorporate(CorporateDto.UPDATE update) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
@@ -88,6 +92,7 @@ public class CorporateServiceImpl implements CorporateService {
      * @param password
      */
     @Override
+    @Transactional
     public void updatePassword(UserCommonDto.UPDATE_PASSWORD password) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
@@ -102,6 +107,7 @@ public class CorporateServiceImpl implements CorporateService {
      * @param email
      */
     @Override
+    @Transactional
     public void updateEmail(UserCommonDto.UPDATE_EMAIL email) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
@@ -116,6 +122,7 @@ public class CorporateServiceImpl implements CorporateService {
      * @param phone
      */
     @Override
+    @Transactional
     public void updatePhone(UserCommonDto.UPDATE_PHONE phone) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
@@ -130,6 +137,7 @@ public class CorporateServiceImpl implements CorporateService {
      * @param address
      */
     @Override
+    @Transactional
     public void updateAddress(UserCommonDto.UPDATE_ADDRESS address) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
@@ -193,6 +201,7 @@ public class CorporateServiceImpl implements CorporateService {
      * @param delete
      */
     @Override
+    @Transactional
     public void deleteCorporate(CorporateDto.DELETE delete) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
@@ -206,6 +215,7 @@ public class CorporateServiceImpl implements CorporateService {
      * @param reCreate
      */
     @Override
+    @Transactional
     public void reCreateCorporate(CorporateDto.RE_CREATE reCreate) {
         CorporateEntity corporateEntity = corporateRepository.findByIdentity(reCreate.getIdentity())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));

@@ -9,10 +9,6 @@ public class UserDefineException extends RuntimeException{
     private ErrorCode errorCode;
     private String originalMessage;
 
-    public UserDefineException(String message){
-        super(message);
-    }
-
     public UserDefineException(String message, String originalMessage){
         super(message);
         this.originalMessage = originalMessage;
