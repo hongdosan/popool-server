@@ -51,9 +51,7 @@ public class S3Service {
      * @param multipartFile
      * @return
      */
-    @Transactional
-    public CareerFileDto.CONVERT convertPutS3(MultipartFile multipartFile){
-        validateFileExists(multipartFile);
+    private CareerFileDto.CONVERT convertPutS3(MultipartFile multipartFile){
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         String originalFileName = multipartFile.getOriginalFilename();
