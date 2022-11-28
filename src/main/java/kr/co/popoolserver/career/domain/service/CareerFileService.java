@@ -19,7 +19,7 @@ public class CareerFileService {
     private final CareerFileRepository careerFileRepository;
 
     /**
-     * File Create
+     * File Create Service
      * @param convert
      * @param userEntity
      */
@@ -38,5 +38,16 @@ public class CareerFileService {
         CareerFileEntity careerFileEntity = careerFileRepository.findByUserEntity(userEntity)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_UPLOAD));
         return CareerFileEntity.of(careerFileEntity);
+    }
+
+    /**
+     * File Delete Service
+     */
+    @Transactional
+    public void deleteCareerFile(){
+        UserEntity userEntity = UserThreadLocal.get();
+        CareerFileEntity careerFileEntity = careerFileRepository.findByUserEntity(userEntity)
+                        .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_EMPTY));
+        careerFileRepository.delete(careerFileEntity);
     }
 }

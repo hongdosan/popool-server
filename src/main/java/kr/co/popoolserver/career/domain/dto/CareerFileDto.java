@@ -1,7 +1,6 @@
 package kr.co.popoolserver.career.domain.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +30,10 @@ public class CareerFileDto {
 
         @ApiModelProperty(example = "파일 크기")
         private long fileSize;
+
+        public void setFileSize(long fileSize) {
+            this.fileSize = fileSize;
+        }
     }
 
     @Builder

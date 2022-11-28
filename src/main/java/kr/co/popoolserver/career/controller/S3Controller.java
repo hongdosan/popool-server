@@ -1,5 +1,6 @@
 package kr.co.popoolserver.career.controller;
 
+import kr.co.popoolserver.career.domain.dto.S3Dto;
 import kr.co.popoolserver.career.domain.service.S3Service;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,11 @@ public class S3Controller {
         return ResponseFormat.ok(s3Service.uploadS3(multipartFile));
     }
 
+    @GetMapping("/s3/download")
+    public ResponseFormat<S3Dto.DOWNLOAD> download(String fileUrl){
+        return ResponseFormat.ok(s3Service.download(fileUrl));
+    }
+
     @PutMapping("/s3")
     public ResponseFormat updateS3() {
         //TODO Update S3
@@ -25,8 +31,8 @@ public class S3Controller {
     }
 
     @DeleteMapping("/s3")
-    public ResponseFormat deleteS3() {
-        //TODO Delete S3
+    public ResponseFormat deleteS3(String fileS3Path) {
+        s3Service.removeS3(fileS3Path);
         return ResponseFormat.ok();
     }
 }

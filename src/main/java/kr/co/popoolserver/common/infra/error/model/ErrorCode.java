@@ -33,6 +33,7 @@ public enum ErrorCode {
 
     //careerFile
     FAIL_FILE_EMPTY("파일이 존재하지 않습니다.", 4100),
+    FAIL_FILE_INVALID_CONTENT_TYPE("확장자가 없습니다.", 4100),
 
     FAIL_FILE_UPLOAD("파일 업로드 실패하였습니다.", 4101);
 
