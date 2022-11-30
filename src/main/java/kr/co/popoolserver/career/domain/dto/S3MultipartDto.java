@@ -9,17 +9,6 @@ public class S3MultipartDto {
     @Getter
     @Builder
     @AllArgsConstructor
-    public static class INIT_UPLOAD{
-        private String originFileName;
-
-        private String targetBucket;
-
-        private String targetObjectDir;
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
     public static class UPLOAD{
         private String fileName;
 
@@ -34,17 +23,27 @@ public class S3MultipartDto {
 
         private String fileUploadId;
 
-        private String targetBucket;
-
-        private String targetObjectDir;
-
         private Integer partNumber;
     }
 
     @Getter
     @Builder
     @AllArgsConstructor
-    public static class PRE_SIGNED_URL{
-        private String preSignedRequestUrl;
+    public static class COMPLETED_UPLOAD{
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class UPLOAD_RESULT{
+
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class UPLOAD_DETAIL{
+
+    }
+
 }

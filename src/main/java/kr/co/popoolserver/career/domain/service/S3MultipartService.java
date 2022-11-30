@@ -7,16 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
-import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
-import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
-import software.amazon.awssdk.services.s3.model.UploadPartRequest;
+import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedUploadPartRequest;
 import software.amazon.awssdk.services.s3.presigner.model.UploadPartPresignRequest;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,21 +27,23 @@ public class S3MultipartService {
 
     @Value("${aws.s3.bucket}")
     private String BUCKET_NAME;
+    @Value("{spring.s3.upload-dir")
+    private String OBJECT_DIR;
     final String FILE_EXTENSION_SEPARATOR = ".";
 
     /**
      * Multipart Upload Start
      * Upload ID는 부분 업로드, 업로드 완료, 업로드 중지 등에 사용된다.
-     * @param initUpload
+     * @param fileName
      * @return Upload ID, File Name
      */
     @Transactional
-    public S3MultipartDto.UPLOAD initUpload(S3MultipartDto.INIT_UPLOAD initUpload){
-        String newFileName = createFileName(initUpload.getOriginFileName());
+    public S3MultipartDto.UPLOAD initUpload(String fileName){
+        String newFileName = createFileName(fileName);
 
         CreateMultipartUploadRequest request = CreateMultipartUploadRequest.builder()
-                .bucket(initUpload.getTargetBucket()) //Bucket 설정
-                .key(initUpload.getTargetObjectDir() + "/" + newFileName) //업로드 경로 설정
+                .bucket(BUCKET_NAME) //Bucket 설정
+                .key(OBJECT_DIR + "/" + newFileName) //업로드 경로 설정
                 .acl(ObjectCannedACL.PUBLIC_READ) //Public_Read로 ACL 설정
                 .expires(Instant.now().plusSeconds(60*20)) //객체 캐시 만료 시간 설정
                 .build();
@@ -61,10 +61,10 @@ public class S3MultipartService {
      * @param uploadSignUrl
      * @return
      */
-    public S3MultipartDto.PRE_SIGNED_URL getUploadSignedUrl(S3MultipartDto.UPLOAD_SIGN_URL uploadSignUrl){
+    public String getUploadSignedUrl(S3MultipartDto.UPLOAD_SIGN_URL uploadSignUrl){
         UploadPartRequest request = UploadPartRequest.builder()
-                .bucket(uploadSignUrl.getTargetBucket())
-                .key(uploadSignUrl.getTargetObjectDir() + "/" + uploadSignUrl.getFileName())
+                .bucket(BUCKET_NAME)
+                .key(OBJECT_DIR + "/" + uploadSignUrl.getFileName())
                 .uploadId(uploadSignUrl.getFileUploadId())
                 .partNumber(uploadSignUrl.getPartNumber())
                 .build();
@@ -75,11 +75,13 @@ public class S3MultipartService {
                 .build(); //미리 서명된 URL 요청
 
         //클라이언트에서 S3로 직접 업로드하기 위해 사용할 인증된 URL 요청
-        PresignedUploadPartRequest preSignedUploadRequest = s3Presigner.presignUploadPart(preSignRequest);
+        return s3Presigner.presignUploadPart(preSignRequest).url().toString();
+    }
 
-        return S3MultipartDto.PRE_SIGNED_URL.builder()
-                .preSignedRequestUrl(preSignedUploadRequest.url().toString())
-                .build();
+    public S3MultipartDto.UPLOAD_RESULT completeUpload(S3MultipartDto.COMPLETED_UPLOAD completedUpload){
+        List<CompletedPart> completedParts = new ArrayList<>();
+
+        return null;
     }
 
     /**

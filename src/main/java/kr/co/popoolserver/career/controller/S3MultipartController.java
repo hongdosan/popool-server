@@ -13,12 +13,12 @@ public class S3MultipartController {
     private final S3MultipartService s3MultipartService;
 
     @PostMapping("/init-upload")
-    public S3MultipartDto.UPLOAD initUpload(@RequestBody S3MultipartDto.INIT_UPLOAD initUpload){
-        return s3MultipartService.initUpload(initUpload);
+    public S3MultipartDto.UPLOAD initUpload(@RequestParam("fileName") String fileName){
+        return s3MultipartService.initUpload(fileName);
     }
 
     @PostMapping("/signed-url")
-    public S3MultipartDto.PRE_SIGNED_URL getUploadSignedUrl(@RequestBody S3MultipartDto.UPLOAD_SIGN_URL uploadSignUrl){
+    public String getUploadSignedUrl(@RequestBody S3MultipartDto.UPLOAD_SIGN_URL uploadSignUrl){
         return s3MultipartService.getUploadSignedUrl(uploadSignUrl);
     }
 }
