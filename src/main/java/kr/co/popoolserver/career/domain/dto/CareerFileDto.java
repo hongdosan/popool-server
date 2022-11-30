@@ -30,10 +30,6 @@ public class CareerFileDto {
 
         @ApiModelProperty(example = "파일 크기")
         private long fileSize;
-
-        public void setFileSize(long fileSize) {
-            this.fileSize = fileSize;
-        }
     }
 
     @Builder
