@@ -22,21 +22,10 @@ public class S3Controller {
         return "s3-image";
     }
 
-    @GetMapping("/video")
-    public String video(){
-        return "s3-video";
-    }
-
     @PostMapping("/s3-image")
     @ResponseBody
     public String uploadS3Image(@RequestParam("data") MultipartFile multipartFile) {
         return s3Service.uploadS3(multipartFile, "image");
-    }
-
-    @PostMapping("/s3-video")
-    @ResponseBody
-    public String uploadS3Video(@RequestParam("data") MultipartFile multipartFile) {
-        return s3Service.uploadS3(multipartFile, "video");
     }
 
     @DeleteMapping("/s3-image")
