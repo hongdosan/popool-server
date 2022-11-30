@@ -1,18 +1,15 @@
+
 package kr.co.popoolserver.career.domain.service;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.career.domain.dto.S3Dto;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.EmptyFileException;
-import kr.co.popoolserver.common.infra.error.exception.FileUploadFailedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
-import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
-import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,8 +29,7 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class S3Service {
 
-    private final AmazonS3Client amazonS3Client;
-    private final CareerFileService careerFileService;
+    private final AmazonS3 amazonS3;
 
     @Value("${aws.s3.bucket}")
     private String BUCKET_NAME;
@@ -48,38 +43,47 @@ public class S3Service {
     @Transactional
     public String uploadS3(MultipartFile multipartFile){
         validateFileExists(multipartFile);
+        String fileName = createFileName(multipartFile.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        InputStream inputStream;
 
-        UserEntity userEntity = UserThreadLocal.get();
-        CareerFileDto.CONVERT convertFile = convert(multipartFile)
-                .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_UPLOAD));
+        try {
+            inputStream = multipartFile.getInputStream();
+            objectMetadata.setContentLength(inputStream.available());
+        } catch (IOException e){
+            throw new BusinessLogicException(ErrorCode.FAIL_FILE_UPLOAD);
+        }
 
-        convertFile.setFileSize(putS3(multipartFile, convertFile.getS3FileName()));
-        careerFileService.createCareerFile(convertFile, userEntity);
-
-        return convertFile.getS3Url();
+        amazonS3.putObject(BUCKET_NAME, fileName, inputStream, objectMetadata);
+        return amazonS3.getUrl(BUCKET_NAME, fileName).toString();
     }
 
     /**
-     * file Download Path
-     * @param fileS3Url
+     * File Delete Service
+     * @param fileName : 폴더명/FileName.File_확장자
+     */
+    @Transactional
+    public void deleteS3(String fileName){
+        amazonS3.deleteObject(BUCKET_NAME, fileName);
+    }
+
+    /**
+     * File Download Service
+     * @param fileName
      * @return
      */
-    public S3Dto.DOWNLOAD download(String fileS3Url){
-        S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(BUCKET_NAME, fileS3Url));
+    public S3Dto.DOWNLOAD downloadS3(String fileName){
+        S3Object s3Object = amazonS3.getObject(BUCKET_NAME, fileName);
         S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
 
         try {
             byte[] bytes = IOUtils.toByteArray(objectInputStream);
+            String downloadFileName = downloadS3Name(fileName);
+
             HttpHeaders httpHeaders = new HttpHeaders();
-
-            httpHeaders.setContentType(contentType(fileS3Url));
+            httpHeaders.setContentType(contentType(fileName));
             httpHeaders.setContentLength(bytes.length);
-
-            String[] fileArr = fileS3Url.split("/");
-            String type = fileArr[fileArr.length - 1];
-            String fileName = URLEncoder.encode(type, "UTF-8").replaceAll("\\+", "%20");
-
-            httpHeaders.setContentDispositionFormData("attachment", fileName); //File Name 지정
+            httpHeaders.setContentDispositionFormData("attachment", downloadFileName);
 
             return S3Dto.DOWNLOAD.builder()
                     .bytes(bytes)
@@ -91,64 +95,42 @@ public class S3Service {
     }
 
     /**
-     * File Delete Service
-     * @param fileS3Path : 폴더명/FileName.File_확장자
+     * file name 난수화 Service
+     * @param fileName
+     * @return
      */
-    @Transactional
-    public void removeS3(String fileS3Path){
+    private String createFileName(String fileName){
+        return UUID.randomUUID().toString().concat(getFileExtension(fileName));
+    }
+
+    /**
+     * file 형식 Check Service
+     * @param fileName
+     * @return
+     */
+    private String getFileExtension(String fileName){
         try {
-            amazonS3Client.deleteObject(new DeleteObjectRequest(BUCKET_NAME, fileS3Path));
-        }catch (AmazonServiceException e){
-            e.printStackTrace();
-        }catch (SdkClientException e){
-            e.printStackTrace();
+            return fileName.substring(fileName.lastIndexOf(FILE_EXTENSION_SEPARATOR));
+        }catch (StringIndexOutOfBoundsException e){
+            throw new BusinessLogicException(ErrorCode.FAIL_FILE_INVALID_NAME);
         }
-        careerFileService.deleteCareerFile();
     }
 
     /**
-     * File S3 업로드
-     * @param multipartFile
-     * @param s3FileName
+     * File Name 지정
+     * @param fileName
      * @return
      */
-    private long putS3(MultipartFile multipartFile, String s3FileName){
-        try (InputStream inputStream = multipartFile.getInputStream()){
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(inputStream.available());
+    private String downloadS3Name(String fileName) {
+        String[] fileArr = fileName.split("/");
+        String type = fileArr[fileArr.length-1];
 
-            amazonS3Client.putObject(
-                    new PutObjectRequest(BUCKET_NAME, s3FileName, inputStream, objectMetadata)
-                            .withCannedAcl(CannedAccessControlList.PublicRead)
-            );
-
-            return objectMetadata.getContentLength();
+        try {
+            return URLEncoder.encode(type, "UTF-8")
+                    .replaceAll("\\+", "%20");
         }catch (IOException e){
-            throw new FileUploadFailedException(ErrorCode.FAIL_FILE_UPLOAD);
+            throw new EmptyFileException(ErrorCode.FAIL_FILE_EMPTY);
         }
-    }
-
-    /**
-     * 파일화
-     * @param multipartFile
-     * @return
-     */
-    private Optional<CareerFileDto.CONVERT> convert(MultipartFile multipartFile){
-
-        String originalFileName = multipartFile.getOriginalFilename();
-        int fileExtensionIndex = originalFileName.lastIndexOf(FILE_EXTENSION_SEPARATOR);
-
-        String fileExtension = originalFileName.substring(fileExtensionIndex);
-        String fileName = originalFileName.substring(0, fileExtensionIndex);
-        String s3FileName = UUID.randomUUID() + "-" + fileName + fileExtension;
-
-        return Optional.ofNullable(CareerFileDto.CONVERT.builder()
-                .fileName(fileName)
-                .s3FileName(s3FileName)
-                .s3Url(amazonS3Client.getUrl(BUCKET_NAME, s3FileName).toString())
-                .fileExtension(fileExtension)
-                .fileExtensionIndex(fileExtensionIndex)
-                .build());
     }
 
     /**
