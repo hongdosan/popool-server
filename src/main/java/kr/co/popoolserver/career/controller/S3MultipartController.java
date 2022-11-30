@@ -21,4 +21,9 @@ public class S3MultipartController {
     public String getUploadSignedUrl(@RequestBody S3MultipartDto.UPLOAD_SIGN_URL uploadSignUrl){
         return s3MultipartService.getUploadSignedUrl(uploadSignUrl);
     }
+
+    @PostMapping("/complete-upload")
+    public S3MultipartDto.UPLOAD_RESULT completeUpload(@RequestBody S3MultipartDto.COMPLETED_UPLOAD completedUpload){
+        return s3MultipartService.completeUpload(completedUpload);
+    }
 }

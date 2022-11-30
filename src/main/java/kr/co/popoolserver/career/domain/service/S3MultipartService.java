@@ -1,6 +1,8 @@
 package kr.co.popoolserver.career.domain.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import kr.co.popoolserver.career.domain.dto.S3MultipartDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,10 +80,44 @@ public class S3MultipartService {
         return s3Presigner.presignUploadPart(preSignRequest).url().toString();
     }
 
+    /**
+     * Multipart Upload Completed Request Service
+     * @param completedUpload
+     * @return
+     */
     public S3MultipartDto.UPLOAD_RESULT completeUpload(S3MultipartDto.COMPLETED_UPLOAD completedUpload){
         List<CompletedPart> completedParts = new ArrayList<>();
 
-        return null;
+        //모든 부분들에 부분 번호와 Etag 설정
+        for(S3MultipartDto.UPLOAD_DETAIL detail : completedUpload.getDetails()){
+            CompletedPart completedPart = CompletedPart.builder()
+                    .partNumber(detail.getPartNumber())
+                    .eTag(detail.getAwsETag())
+                    .build();
+            completedParts.add(completedPart);
+        }
+
+        CompletedMultipartUpload completedMultipartUpload = CompletedMultipartUpload.builder()
+                .parts(completedParts)
+                .build(); //Multipart 업로드 완료 요청 AWS 서버에 응답.
+
+        CompleteMultipartUploadRequest request = CompleteMultipartUploadRequest.builder()
+                .bucket(BUCKET_NAME)                                    //bucket 설정
+                .key(OBJECT_DIR + "/" + completedUpload.getFileName())  //File Name 설정
+                .uploadId(completedUpload.getUploadId())                //업로드 아이디
+                .multipartUpload(completedMultipartUpload)              //파일 모든 부분 번호, Etag
+                .build();
+
+        CompleteMultipartUploadResponse response = s3Client.completeMultipartUpload(request);
+        String objectKey = response.key();                                      //S3에 업로드된 파일 이름
+        String url = amazonS3Client.getUrl(BUCKET_NAME, objectKey).toString();  //S3에 업로드된 파일 URL
+        long fileSize = getFileSizeFromS3Url(response.bucket(), objectKey);     //파일 사이즈
+
+        return S3MultipartDto.UPLOAD_RESULT.builder()
+                .fileName(completedUpload.getFileName())
+                .uri(url)
+                .fileSize(fileSize)
+                .build();
     }
 
     /**
@@ -100,5 +136,17 @@ public class S3MultipartService {
      */
     private String createFileName(String originFileName){
         return System.currentTimeMillis() + fileTypeCheck(originFileName);
+    }
+
+    /**
+     * File Size Get Service
+     * @param bucketName
+     * @param fileName
+     * @return
+     */
+    private long getFileSizeFromS3Url(String bucketName, String fileName){
+        GetObjectMetadataRequest request = new GetObjectMetadataRequest(bucketName, fileName);
+        ObjectMetadata objectMetadata = amazonS3Client.getObjectMetadata(request);
+        return objectMetadata.getContentLength();
     }
 }
