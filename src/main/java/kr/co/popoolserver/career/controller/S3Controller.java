@@ -6,36 +6,55 @@ import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("/careers")
+@RequestMapping
+@Controller
 public class S3Controller {
 
     private final S3Service s3Service;
 
-    @PostMapping("/s3/file")
-    public ResponseFormat<String> uploadS3File(@RequestParam("image") MultipartFile multipartFile) {
-        return ResponseFormat.ok(s3Service.uploadS3(multipartFile));
+    @GetMapping("/image")
+    public String image(){
+        return "s3-image";
     }
 
-    @DeleteMapping("/s3/file")
-    public ResponseFormat deleteS3File(@RequestParam("fileName") String fileName) {
+    @GetMapping("/video")
+    public String video(){
+        return "s3-video";
+    }
+
+    @PostMapping("/s3-image")
+    @ResponseBody
+    public String uploadS3Image(@RequestParam("data") MultipartFile multipartFile) {
+        return s3Service.uploadS3(multipartFile, "image");
+    }
+
+    @PostMapping("/s3-video")
+    @ResponseBody
+    public String uploadS3Video(@RequestParam("data") MultipartFile multipartFile) {
+        return s3Service.uploadS3(multipartFile, "video");
+    }
+
+    @DeleteMapping("/s3-image")
+    @ResponseBody
+    public ResponseFormat deleteS3Image(@RequestParam("fileName") String fileName) {
         s3Service.deleteS3(fileName);
         return ResponseFormat.ok();
     }
 
-    @GetMapping("/s3/file/info/{fileName}")
-    public ResponseFormat<S3Dto.DOWNLOAD> getFileInfo(@PathVariable String fileName){
+    @GetMapping("/s3-image/info")
+    @ResponseBody
+    public ResponseFormat<S3Dto.DOWNLOAD> downloadInfo(@RequestParam("fileName") String fileName){
         return ResponseFormat.ok(s3Service.downloadS3(fileName));
     }
 
-    @GetMapping("/s3/file/{fileName}")
-    public ResponseEntity<byte[]> downloadImage(@PathVariable String fileName){
+    @GetMapping("/s3-image")
+    @ResponseBody
+    public ResponseEntity<byte[]> downloadImage(@RequestParam("fileName") String fileName){
         S3Dto.DOWNLOAD download = s3Service.downloadS3(fileName);
         return new ResponseEntity<>(download.getBytes(), download.getHttpHeaders(), HttpStatus.OK);
     }
