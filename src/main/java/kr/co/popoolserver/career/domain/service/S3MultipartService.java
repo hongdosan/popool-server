@@ -5,16 +5,22 @@ import kr.co.popoolserver.career.domain.dto.S3MultipartDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
+import software.amazon.awssdk.services.s3.model.UploadPartRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedUploadPartRequest;
+import software.amazon.awssdk.services.s3.presigner.model.UploadPartPresignRequest;
 
+import java.time.Duration;
 import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class S3MultipartService {
 
     private final S3Client s3Client;
@@ -31,7 +37,8 @@ public class S3MultipartService {
      * @param initUpload
      * @return Upload ID, File Name
      */
-    public S3MultipartDto.S3_UPLOAD initUpload(S3MultipartDto.INIT_UPLOAD initUpload){
+    @Transactional
+    public S3MultipartDto.UPLOAD initUpload(S3MultipartDto.INIT_UPLOAD initUpload){
         String newFileName = createFileName(initUpload.getOriginFileName());
 
         CreateMultipartUploadRequest request = CreateMultipartUploadRequest.builder()
@@ -43,9 +50,35 @@ public class S3MultipartService {
 
         CreateMultipartUploadResponse response = s3Client.createMultipartUpload(request);
 
-        return S3MultipartDto.S3_UPLOAD.builder()
+        return S3MultipartDto.UPLOAD.builder()
                 .fileName(newFileName)
                 .fileUploadId(response.uploadId())
+                .build();
+    }
+
+    /**
+     * 부분 업로드할 서명된 URL 발급 요청
+     * @param uploadSignUrl
+     * @return
+     */
+    public S3MultipartDto.PRE_SIGNED_URL getUploadSignedUrl(S3MultipartDto.UPLOAD_SIGN_URL uploadSignUrl){
+        UploadPartRequest request = UploadPartRequest.builder()
+                .bucket(uploadSignUrl.getTargetBucket())
+                .key(uploadSignUrl.getTargetObjectDir() + "/" + uploadSignUrl.getFileName())
+                .uploadId(uploadSignUrl.getFileUploadId())
+                .partNumber(uploadSignUrl.getPartNumber())
+                .build();
+
+        UploadPartPresignRequest preSignRequest = UploadPartPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(10))
+                .uploadPartRequest(request)
+                .build(); //미리 서명된 URL 요청
+
+        //클라이언트에서 S3로 직접 업로드하기 위해 사용할 인증된 URL 요청
+        PresignedUploadPartRequest preSignedUploadRequest = s3Presigner.presignUploadPart(preSignRequest);
+
+        return S3MultipartDto.PRE_SIGNED_URL.builder()
+                .preSignedRequestUrl(preSignedUploadRequest.url().toString())
                 .build();
     }
 
