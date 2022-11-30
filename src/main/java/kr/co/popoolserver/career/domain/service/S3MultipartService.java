@@ -44,10 +44,10 @@ public class S3MultipartService {
         String newFileName = createFileName(fileName);
 
         CreateMultipartUploadRequest request = CreateMultipartUploadRequest.builder()
-                .bucket(BUCKET_NAME) //Bucket 설정
-                .key(OBJECT_DIR + "/" + newFileName) //업로드 경로 설정
-                .acl(ObjectCannedACL.PUBLIC_READ) //Public_Read로 ACL 설정
-                .expires(Instant.now().plusSeconds(60*20)) //객체 캐시 만료 시간 설정
+                .bucket(BUCKET_NAME)                        //Bucket 설정
+                .key(createKey(newFileName))                //업로드 경로 설정
+                .acl(ObjectCannedACL.PUBLIC_READ)           //Public_Read로 ACL 설정
+                .expires(Instant.now().plusSeconds(60*20))  //객체 캐시 만료 시간 설정
                 .build();
 
         CreateMultipartUploadResponse response = s3Client.createMultipartUpload(request);
@@ -61,12 +61,12 @@ public class S3MultipartService {
     /**
      * 부분 업로드할 서명된 URL 발급 요청
      * @param uploadSignUrl
-     * @return
+     * @return 클라이언트에서 S3로 직접 업로드하기 위해 사용할 인증된 URL 요청
      */
     public String getUploadSignedUrl(S3MultipartDto.UPLOAD_SIGN_URL uploadSignUrl){
         UploadPartRequest request = UploadPartRequest.builder()
                 .bucket(BUCKET_NAME)
-                .key(OBJECT_DIR + "/" + uploadSignUrl.getFileName())
+                .key(createKey(uploadSignUrl.getFileName()))
                 .uploadId(uploadSignUrl.getFileUploadId())
                 .partNumber(uploadSignUrl.getPartNumber())
                 .build();
@@ -76,7 +76,6 @@ public class S3MultipartService {
                 .uploadPartRequest(request)
                 .build(); //미리 서명된 URL 요청
 
-        //클라이언트에서 S3로 직접 업로드하기 위해 사용할 인증된 URL 요청
         return s3Presigner.presignUploadPart(preSignRequest).url().toString();
     }
 
@@ -86,16 +85,7 @@ public class S3MultipartService {
      * @return
      */
     public S3MultipartDto.UPLOAD_RESULT completeUpload(S3MultipartDto.COMPLETED_UPLOAD completedUpload){
-        List<CompletedPart> completedParts = new ArrayList<>();
-
-        //모든 부분들에 부분 번호와 Etag 설정
-        for(S3MultipartDto.UPLOAD_DETAIL detail : completedUpload.getDetails()){
-            CompletedPart completedPart = CompletedPart.builder()
-                    .partNumber(detail.getPartNumber())
-                    .eTag(detail.getAwsETag())
-                    .build();
-            completedParts.add(completedPart);
-        }
+        List<CompletedPart> completedParts = createCompletePart(completedUpload.getDetails());
 
         CompletedMultipartUpload completedMultipartUpload = CompletedMultipartUpload.builder()
                 .parts(completedParts)
@@ -103,7 +93,7 @@ public class S3MultipartService {
 
         CompleteMultipartUploadRequest request = CompleteMultipartUploadRequest.builder()
                 .bucket(BUCKET_NAME)                                    //bucket 설정
-                .key(OBJECT_DIR + "/" + completedUpload.getFileName())  //File Name 설정
+                .key(createKey(completedUpload.getFileName()))          //File Name 설정
                 .uploadId(completedUpload.getUploadId())                //업로드 아이디
                 .multipartUpload(completedMultipartUpload)              //파일 모든 부분 번호, Etag
                 .build();
@@ -118,6 +108,48 @@ public class S3MultipartService {
                 .uri(url)
                 .fileSize(fileSize)
                 .build();
+    }
+
+    /**
+     * Multipart Upload 중지
+     * @param upload
+     */
+    public void abortUpload(S3MultipartDto.UPLOAD upload){
+        AbortMultipartUploadRequest request = AbortMultipartUploadRequest.builder()
+                .bucket(BUCKET_NAME)
+                .key(createKey(upload.getFileName()))
+                .uploadId(upload.getFileUploadId())
+                .build();
+
+        s3Client.abortMultipartUpload(request);
+    }
+
+    /**
+     * 모든 부분들에 부분 번호와 Etag 설정
+     * @param details
+     * @return
+     */
+    private ArrayList<CompletedPart> createCompletePart(List<S3MultipartDto.UPLOAD_DETAIL> details){
+        ArrayList<CompletedPart> completedParts = new ArrayList<>();
+
+        for(S3MultipartDto.UPLOAD_DETAIL detail : details){
+            CompletedPart completedPart = CompletedPart.builder()
+                    .partNumber(detail.getPartNumber())
+                    .eTag(detail.getAwsETag())
+                    .build();
+            completedParts.add(completedPart);
+        }
+
+        return completedParts;
+    }
+
+    /**
+     * File Name 설정 Service
+     * @param fileName
+     * @return
+     */
+    private String createKey(String fileName){
+        return OBJECT_DIR + "/" + fileName;
     }
 
     /**

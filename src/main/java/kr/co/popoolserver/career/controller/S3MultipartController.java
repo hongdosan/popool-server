@@ -2,6 +2,7 @@ package kr.co.popoolserver.career.controller;
 
 import kr.co.popoolserver.career.domain.dto.S3MultipartDto;
 import kr.co.popoolserver.career.domain.service.S3MultipartService;
+import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,5 +26,11 @@ public class S3MultipartController {
     @PostMapping("/complete-upload")
     public S3MultipartDto.UPLOAD_RESULT completeUpload(@RequestBody S3MultipartDto.COMPLETED_UPLOAD completedUpload){
         return s3MultipartService.completeUpload(completedUpload);
+    }
+
+    @PostMapping("/abort-upload")
+    public ResponseFormat abortUpload(@RequestBody S3MultipartDto.UPLOAD upload){
+        s3MultipartService.abortUpload(upload);
+        return ResponseFormat.ok();
     }
 }
