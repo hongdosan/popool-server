@@ -21,6 +21,15 @@ public class WebConfig implements WebMvcConfigurer {
             "favicon.ico"
     };
 
+    private static final String[] S3_AUTH_ARR = {
+            "/image",
+            "/video",
+            "/s3/**",
+            "/s3-image/**",
+            "/s3-video/**",
+            "/s3-image-info/**"
+    };
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor())
@@ -28,7 +37,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/users/**/signUp")
                 .excludePathPatterns("/users/**/login")
                 .excludePathPatterns("/users/reCreate")
-                .excludePathPatterns("/careers/s3/file/**")
+                .excludePathPatterns(S3_AUTH_ARR)
                 .excludePathPatterns(AUTH_ARR);
     }
 
