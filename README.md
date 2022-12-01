@@ -16,11 +16,11 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 
 ## 기술 스택
 > 해당 프로젝트를 수행하며 사용할 기술 스택
-- [ ] Java 11, MySQL, Gradle, Spring Boot 2.6.7 
-- [ ] Spring Security, Json Web Token
-- [ ] Spirng Swagger, Spring Interceptor
-- [ ] AWS S3, AWS
-- [ ] Sping Data JPA
+- [x] Java 11, MySQL, Gradle, Spring Boot 2.6.7 
+- [x] Spring Security, Json Web Token
+- [x] Spirng Swagger, Spring Interceptor
+- [x] AWS S3, AWS
+- [x] Sping Data JPA
 - [ ] Querydsl
 - [ ] Redis
 - [ ] Spring Batch, [ ] RabbitMQ, [ ] Kafka
