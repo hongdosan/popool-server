@@ -16,15 +16,19 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 
 ## 기술 스택
 > 해당 프로젝트를 수행하며 사용할 기술 스택
-- [ ] Java 11
-- [ ] MySQL, [ ] Redis
-- [ ] Gradle, [ ] Spring Boot 2.6.7 
-- [ ] Sping Data JPA, [ ] Querydsl
-- [ ] Spring Security, [ ] Json Web Token
-- [ ] Spirng Swagger, [ ] Spring Interceptor
+- [ ] Java 11, MySQL, Gradle, Spring Boot 2.6.7 
+- [ ] Spring Security, Json Web Token
+- [ ] Spirng Swagger, Spring Interceptor
+- [ ] AWS S3, AWS
+- [ ] Sping Data JPA
+- [ ] Querydsl
+- [ ] Redis
 - [ ] Spring Batch, [ ] RabbitMQ, [ ] Kafka
-- [ ] AWS S3, [ ] AWS, [ ] Docker, [ ] Jenkins,
+- [ ] Docker, Jenkins
 
 ## 서비스 소개
 회원들이 자신의 이력을 올리면, 기업에서 이력을 찾아보는 서비스입니다.
+
+## 설계 (바뀔 수 있습니다.)
+<img width="643" alt="image" src="https://user-images.githubusercontent.com/31675711/204999575-fe15db57-7df4-4c7b-ae61-0f55cae48252.png">
 
