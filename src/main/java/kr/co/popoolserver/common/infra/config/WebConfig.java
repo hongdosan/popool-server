@@ -24,6 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
     private static final String[] S3_AUTH_ARR = {
             "/image",
             "/video",
+            "/s3/**",
             "/s3-image/**",
             "/s3-video/**",
             "/s3-image-info/**"
