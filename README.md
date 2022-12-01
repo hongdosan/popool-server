@@ -1,5 +1,8 @@
 # popool-server 
-개인 프로젝트 (기존 MSA Project 리팩토링)
+> 인사내역을 거래하고 관리하는 시스템
+> 한이음 프로젝트에서 개발한 MSA 기반 인사내역 거래 시스템을 바탕으로 리팩토링하는 서버입니다.
+
+- 프로젝트 기간 : 2022.11.~ing
 
 ## 개요
 한이음 MSA Project 진행을 했습니다.
@@ -11,5 +14,16 @@
 때문에, 아직 완벽하지 않은 자신을 되돌아보며, 기술 하나씩 다시 깊게 공부하기 위해,
 Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습니다.
 
+## 기술 스택
+> 해당 프로젝트를 수행하며 사용할 기술 스택
+- [ ]Java 11
+- [ ]MySQL, [ ]Redis, [ ]AWS S3
+- [ ]Gradle, [ ]Spring Boot 2.6.7, [ ]Sping Data JPA, [ ]Querydsl
+- [ ]Spring Security, [ ]Json Web Token
+- [ ]Spirng Swagger
+- [ ]Spring Batch, [ ]RabbitMQ, [ ]Kafka
+- [ ]AWS, [ ]Docker, [ ]Jenkins,
+
 ## 서비스 소개
 회원들이 자신의 이력을 올리면, 기업에서 이력을 찾아보는 서비스입니다.
+
