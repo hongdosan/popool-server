@@ -23,7 +23,7 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 - [x] Sping Data JPA
 - [ ] Querydsl
 - [ ] Redis
-- [ ] Spring Batch, [ ] RabbitMQ, [ ] Kafka
+- [ ] Spring Batch, RabbitMQ, Kafka
 - [ ] Docker, Jenkins
 
 ## 서비스 소개
