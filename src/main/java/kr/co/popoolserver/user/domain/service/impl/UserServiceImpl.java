@@ -232,6 +232,15 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Redis에 저장된 RefreshToken 삭제
+     * @param identity
+     */
+    @Override
+    public void deleteRefreshToken(String identity){
+        redisService.deleteData(identity);
+    }
+
+    /**
      * ID duplicated check
      * @param identity
      */

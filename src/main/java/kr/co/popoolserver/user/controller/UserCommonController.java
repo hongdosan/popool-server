@@ -83,4 +83,13 @@ public class UserCommonController {
         userCommonService = userCommonServiceProvider.getUserService(serviceName);
         return ResponseFormat.ok(userCommonService.getPhone());
     }
+
+    @ApiOperation("Redis Data 삭제")
+    @DeleteMapping("/{serviceName}/refresh")
+    public ResponseFormat deleteRefreshToken(@PathVariable ServiceName serviceName,
+                                             @RequestParam("identity") String identity){
+        userCommonService = userCommonServiceProvider.getUserService(serviceName);
+        userCommonService.deleteRefreshToken(identity);
+        return ResponseFormat.ok();
+    }
 }
