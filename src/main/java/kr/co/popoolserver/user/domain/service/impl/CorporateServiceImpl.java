@@ -12,6 +12,7 @@ import kr.co.popoolserver.user.domain.dto.CorporateDto;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
 import kr.co.popoolserver.user.domain.entity.CorporateEntity;
 import kr.co.popoolserver.user.domain.service.CorporateService;
+import kr.co.popoolserver.user.domain.service.RedisService;
 import kr.co.popoolserver.user.repository.CorporateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,9 @@ public class CorporateServiceImpl implements CorporateService {
     private final CorporateRepository corporateRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final RedisService redisService;
+
+    private final long REFRESH_EXPIRE = 1000*60*60*24*7;
 
     /**
      * login service
@@ -38,7 +42,9 @@ public class CorporateServiceImpl implements CorporateService {
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
         checkEncodePassword(login.getPassword(), corporateEntity.getPassword());
         checkDelete(corporateEntity.getDeyYN());
+
         String[] tokens = generateToken(corporateEntity);
+        redisService.createData(corporateEntity.getIdentity(), tokens[1], REFRESH_EXPIRE);
 
         return UserCommonDto.TOKEN.builder()
                 .accessToken(tokens[0])
