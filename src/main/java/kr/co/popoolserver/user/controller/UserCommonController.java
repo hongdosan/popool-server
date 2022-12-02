@@ -5,7 +5,7 @@ import kr.co.popoolserver.common.domain.enums.ServiceName;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
 import kr.co.popoolserver.user.domain.service.UserCommonService;
-import kr.co.popoolserver.user.domain.service.impl.UserCommonServiceProvider;
+import kr.co.popoolserver.user.domain.service.provider.UserCommonServiceProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

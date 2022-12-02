@@ -1,4 +1,4 @@
-package kr.co.popoolserver.user.domain.service.impl;
+package kr.co.popoolserver.user.domain.service.provider;
 
 import kr.co.popoolserver.common.domain.enums.ServiceName;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
@@ -22,5 +22,4 @@ public class UserCommonServiceProvider {
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.NOT_SERVICE));
         return userCommonService;
     }
-
 }
