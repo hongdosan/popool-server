@@ -2,6 +2,7 @@ package kr.co.popoolserver.user.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
+import kr.co.popoolserver.common.infra.jwt.JwtProvider;
 import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,19 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final JwtProvider jwtProvider;
 
     @ApiOperation("일반 회원 회원가입")
     @PostMapping("/signUp")
     public ResponseFormat signUp(@RequestBody @Valid UserDto.CREATE create){
         userService.signUp(create);
         return ResponseFormat.ok();
+    }
+
+    @ApiOperation("AccessToken 재발급")
+    @PostMapping("/refresh-token")
+    public ResponseFormat<String> resetRefreshToken(@RequestHeader("refreshToken") String refreshToken){
+        return ResponseFormat.ok(jwtProvider.createUserAccessToken(refreshToken));
     }
 
     @ApiOperation("일반 회원 정보 변경")
