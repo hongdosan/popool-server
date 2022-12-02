@@ -11,6 +11,7 @@ import kr.co.popoolserver.common.infra.jwt.JwtProvider;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
 import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
+import kr.co.popoolserver.user.domain.service.RedisService;
 import kr.co.popoolserver.user.domain.service.UserService;
 import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
+    private final RedisService redisService;
+
+    private final long REFRESH_EXPIRE = 1000*60*60*24*7;
 
     /**
      * login service
@@ -38,7 +42,9 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
         checkEncodePassword(login.getPassword(), userEntity.getPassword());
         checkDelete(userEntity.getDeyYN());
+
         String[] tokens = generateToken(userEntity);
+        redisService.createData(userEntity.getIdentity(), tokens[1], REFRESH_EXPIRE);
 
         return UserCommonDto.TOKEN.builder()
                 .accessToken(tokens[0])
