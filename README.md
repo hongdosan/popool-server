@@ -2,7 +2,7 @@
 > 인사내역을 거래하고 관리하는 시스템
 > 한이음 프로젝트에서 개발한 MSA 기반 인사내역 거래 시스템을 바탕으로 리팩토링하는 서버입니다.
 
-- 프로젝트 기간 : 2022.11.~ing
+- 프로젝트 기간 : 2022.11.-continue
 
 ## 개요
 한이음 MSA Project 진행을 했습니다.
@@ -24,7 +24,7 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 - [x] Redis
 - [ ] Querydsl
 - [ ] Spring Batch, RabbitMQ, Kafka
-- [ ] Docker, Jenkins
+- [ ] Docker, Jenkins, NginX
 
 ## 서비스 소개
 회원들이 자신의 이력을 올리면, 기업에서 이력을 찾아보는 서비스입니다.
