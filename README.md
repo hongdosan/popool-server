@@ -19,11 +19,12 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 - [x] Java 11, MySQL, Gradle, Spring Boot 2.6.7 
 - [x] Spring Security, Json Web Token
 - [x] Spirng Swagger, Spring Interceptor
-- [x] AWS S3, AWS
+- [x] AWS S3
 - [x] Sping Data JPA
 - [x] Redis
 - [ ] Querydsl
 - [ ] Spring Batch, RabbitMQ, Kafka
+- [ ] AWS EC2, RDS
 - [ ] Docker, Jenkins, NginX
 
 ## 서비스 소개
