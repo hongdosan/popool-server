@@ -21,8 +21,8 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 - [x] Spirng Swagger, Spring Interceptor
 - [x] AWS S3, AWS
 - [x] Sping Data JPA
+- [x] Redis
 - [ ] Querydsl
-- [ ] Redis
 - [ ] Spring Batch, RabbitMQ, Kafka
 - [ ] Docker, Jenkins
 
