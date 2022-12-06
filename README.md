@@ -36,8 +36,7 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 ## API (바뀔 수 있습니다.)
 
 > 회원 API
-<img width="747" alt="image" src="https://user-images.githubusercontent.com/31675711/205000184-7470fb9a-d55a-4c5a-8481-701b82edc9c0.png">
-<img width="415" alt="image" src="https://user-images.githubusercontent.com/31675711/205000125-0bc985dc-b5b6-445b-a274-14c8543a5e39.png">
+<img width="745" alt="image" src="https://user-images.githubusercontent.com/31675711/205797908-4897fc7f-c030-4c15-94bd-ade291d2133f.png">
+![image](https://user-images.githubusercontent.com/31675711/205798065-3f9139fe-3c16-44f9-9e9f-eac99a63c9cb.png)
 <img width="448" alt="image" src="https://user-images.githubusercontent.com/31675711/205000227-7ecba9a7-b978-45eb-95fc-2443e84dcada.png">
-
 
