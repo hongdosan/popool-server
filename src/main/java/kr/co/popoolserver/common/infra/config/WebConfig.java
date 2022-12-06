@@ -25,7 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
             "/users/**/signUp",
             "/users/**/login",
             "/users/reCreate",
-            "/users/**/refresh",
             "/users/refresh-token",
             "/corporates/refresh-token"
     };
