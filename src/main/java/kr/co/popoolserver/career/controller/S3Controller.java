@@ -1,5 +1,6 @@
 package kr.co.popoolserver.career.controller;
 
+import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.career.domain.dto.S3Dto;
 import kr.co.popoolserver.career.domain.service.S3Service;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
@@ -17,17 +18,20 @@ public class S3Controller {
 
     private final S3Service s3Service;
 
+    @ApiOperation("S3 Upload UI")
     @GetMapping("/image")
     public String image(){
         return "s3-image";
     }
 
+    @ApiOperation("S3 Upload API /이미지 파일 업로드")
     @PostMapping("/s3-image")
     @ResponseBody
     public String uploadS3Image(@RequestParam("data") MultipartFile multipartFile) {
         return s3Service.uploadS3(multipartFile, "image");
     }
 
+    @ApiOperation("S3 Delete API /이미지 파일 삭제")
     @DeleteMapping("/s3-image")
     @ResponseBody
     public ResponseFormat deleteS3Image(@RequestParam("fileName") String fileName) {
@@ -35,12 +39,14 @@ public class S3Controller {
         return ResponseFormat.ok();
     }
 
+    @ApiOperation("S3 File Info Read API/이미지 파일 정보 읽기")
     @GetMapping("/s3-image/info")
     @ResponseBody
     public ResponseFormat<S3Dto.DOWNLOAD> downloadInfo(@RequestParam("fileName") String fileName){
         return ResponseFormat.ok(s3Service.downloadS3(fileName));
     }
 
+    @ApiOperation("S3 File Download API/이미지 파일 다운로드")
     @GetMapping("/s3-image")
     @ResponseBody
     public ResponseEntity<byte[]> downloadImage(@RequestParam("fileName") String fileName){
