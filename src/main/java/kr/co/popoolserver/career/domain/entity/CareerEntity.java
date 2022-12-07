@@ -2,7 +2,6 @@ package kr.co.popoolserver.career.domain.entity;
 
 import kr.co.popoolserver.career.domain.dto.CareerDto;
 import kr.co.popoolserver.common.domain.BaseEntity;
-import kr.co.popoolserver.common.domain.enums.GradeType;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,10 +33,6 @@ public class CareerEntity extends BaseEntity {
 
     @Column(name = "popool_url")
     private String popolUrl;
-
-    @Column(name = "grade_type")
-    @Enumerated(value = EnumType.STRING)
-    private GradeType gradeType;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
