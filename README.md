@@ -25,7 +25,7 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 - [ ] Querydsl
 - [ ] Spring Batch, RabbitMQ, Kafka
 - [ ] AWS EC2, RDS
-- [ ] Docker, Jenkins, NginX
+- [ ] Docker, Jenkins, nginx
 
 ## 서비스 소개
 회원들이 자신의 이력을 올리면, 기업에서 이력을 찾아보는 서비스입니다.
