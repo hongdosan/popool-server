@@ -32,8 +32,8 @@ public class CareerController {
     }
 
     @PutMapping
-    public ResponseFormat updateCareer() {
-        //TODO Update Career
+    public ResponseFormat updateCareer(@RequestBody CareerDto.UPDATE update) {
+        careerService.updateCareer(update);
         return ResponseFormat.ok();
     }
 

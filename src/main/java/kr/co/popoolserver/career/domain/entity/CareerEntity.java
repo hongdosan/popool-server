@@ -89,4 +89,12 @@ public class CareerEntity extends BaseEntity {
         }
         return reads;
     }
+
+    public void updateCareer(CareerDto.UPDATE update){
+        this.officePeriod = update.getOfficePeriod();
+        this.officeContext = update.getOfficeContext();
+        this.officeName = update.getOfficeName();
+        this.officeSkill = update.getOfficeSkill();
+        this.popolUrl = update.getPopolUrl();
+    }
 }
