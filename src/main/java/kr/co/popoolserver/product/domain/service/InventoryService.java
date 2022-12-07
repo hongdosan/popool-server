@@ -1,4 +1,4 @@
 package kr.co.popoolserver.product.domain.service;
 
-public class ProductServiceImpl {
+public class InventoryService {
 }

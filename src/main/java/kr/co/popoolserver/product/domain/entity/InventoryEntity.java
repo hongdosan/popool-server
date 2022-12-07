@@ -1,4 +1,4 @@
-package kr.co.popoolserver.inventory.domain;
+package kr.co.popoolserver.product.domain.entity;
 
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.user.domain.entity.CorporateEntity;
