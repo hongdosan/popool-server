@@ -1,8 +1,8 @@
-package kr.co.popoolserver.career.controller;
+package kr.co.popoolserver.common.s3.test;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.career.domain.dto.S3Dto;
-import kr.co.popoolserver.career.domain.service.S3Service;
+import kr.co.popoolserver.common.s3.S3Dto;
+import kr.co.popoolserver.common.s3.S3Service;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping
 @Controller
-public class S3Controller {
+public class S3TestController {
 
     private final S3Service s3Service;
 

@@ -1,10 +1,9 @@
 
-package kr.co.popoolserver.career.domain.service;
+package kr.co.popoolserver.common.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import kr.co.popoolserver.career.domain.dto.S3Dto;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.EmptyFileException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;

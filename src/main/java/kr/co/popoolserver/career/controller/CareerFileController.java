@@ -4,8 +4,10 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.career.domain.service.CareerFileService;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
+import kr.co.popoolserver.common.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -13,10 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class CareerFileController {
 
     private final CareerFileService careerFileService;
+    private final S3Service s3Service;
 
     @ApiOperation("CareerFile 생성")
     @PostMapping
-    public ResponseFormat createCareerFile(){
+    public ResponseFormat createCareerFile(@RequestParam("data") MultipartFile multipartFile){
         //TODO Create Career File;
         return ResponseFormat.ok();
     }

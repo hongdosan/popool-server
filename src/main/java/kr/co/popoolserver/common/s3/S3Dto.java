@@ -1,4 +1,4 @@
-package kr.co.popoolserver.career.domain.dto;
+package kr.co.popoolserver.common.s3;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

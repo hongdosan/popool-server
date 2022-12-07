@@ -45,10 +45,10 @@ public class CareerFileDto {
         @ApiModelProperty(example = "파일 크기")
         private long fileSize;
 
-        @ApiModelProperty(example = "ID")
+        @ApiModelProperty(example = "User ID")
         private String identity;
 
-        @ApiModelProperty(example = "create date")
+        @ApiModelProperty(example = "생성일")
         private LocalDateTime createAt;
     }
 }
