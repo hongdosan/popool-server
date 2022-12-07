@@ -2,7 +2,7 @@ package kr.co.popoolserver.user.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
-import kr.co.popoolserver.common.infra.jwt.JwtProvider;
+import kr.co.popoolserver.common.jwt.JwtProvider;
 import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.domain.service.UserService;
 import lombok.RequiredArgsConstructor;

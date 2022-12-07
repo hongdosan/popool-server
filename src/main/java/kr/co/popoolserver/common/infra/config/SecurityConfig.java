@@ -1,6 +1,6 @@
 package kr.co.popoolserver.common.infra.config;
 
-import kr.co.popoolserver.common.infra.jwt.JwtProvider;
+import kr.co.popoolserver.common.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

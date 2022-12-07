@@ -1,4 +1,4 @@
-package kr.co.popoolserver.common.infra.jwt;
+package kr.co.popoolserver.common.jwt;
 
 import io.jsonwebtoken.*;
 import kr.co.popoolserver.common.domain.enums.UserRole;
@@ -15,7 +15,6 @@ import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

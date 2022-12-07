@@ -7,7 +7,7 @@ import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.DuplicatedException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
-import kr.co.popoolserver.common.infra.jwt.JwtProvider;
+import kr.co.popoolserver.common.jwt.JwtProvider;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
 import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.domain.entity.UserEntity;

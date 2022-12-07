@@ -1,4 +1,4 @@
-package kr.co.popoolserver.common.infra.jwt;
+package kr.co.popoolserver.common.jwt;
 
 import kr.co.popoolserver.common.infra.error.exception.JwtTokenExpiredException;
 import kr.co.popoolserver.common.infra.error.exception.JwtTokenInvalidException;
