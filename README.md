@@ -31,7 +31,7 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 회원들이 자신의 이력을 올리면, 기업에서 이력을 찾아보는 서비스입니다.
 
 ## 설계 (바뀔 수 있습니다.)
-<img width="880" alt="image" src="https://user-images.githubusercontent.com/31675711/206105149-dd6cbeb1-d5eb-41d6-88ef-ca371743fe5f.png">
+<img width="794" alt="image" src="https://user-images.githubusercontent.com/31675711/206113602-1c0a4aad-13dc-4391-96f3-0bc5377e3023.png">
 
 ## API (바뀔 수 있습니다.)
 
