@@ -27,8 +27,8 @@ public class CareerController {
     }
 
     @GetMapping("/one")
-    public ResponseFormat getCareer(@RequestParam("id") Long id) {
-        return ResponseFormat.ok(careerService.getCareer(id));
+    public ResponseFormat getCareer(@RequestParam("career_id") Long careerId) {
+        return ResponseFormat.ok(careerService.getCareer(careerId));
     }
 
     @PutMapping
@@ -38,9 +38,8 @@ public class CareerController {
     }
 
     @DeleteMapping
-    public ResponseFormat deleteCareer() {
-        //TODO Delete Career
+    public ResponseFormat deleteCareer(@RequestParam("career_id") Long careerId) {
+        careerService.deleteCareer(careerId);
         return ResponseFormat.ok();
     }
-
 }

@@ -64,4 +64,17 @@ public class CareerService {
 
         careerEntity.updateCareer(update);
     }
+
+    /**
+     * 이력서 삭제 서비스
+     * @param id
+     */
+    @Transactional
+    public void deleteCareer(Long id){
+        UserEntity userEntity = UserThreadLocal.get();
+        CareerEntity careerEntity = careerRepository.findByIdAndUserEntity(id, userEntity)
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CAREER));
+
+        careerRepository.delete(careerEntity);
+    }
 }
