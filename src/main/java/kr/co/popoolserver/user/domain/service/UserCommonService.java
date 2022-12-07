@@ -19,6 +19,9 @@ public interface UserCommonService {
     UserCommonDto.READ_EMAIL getEmail();
     UserCommonDto.READ_PHONE getPhone();
 
+    //delete
+    void deleteRefreshToken(String identity);
+
     //common
     void checkIdentity(String identity);
     void checkPhoneNumber(String phoneNumber);

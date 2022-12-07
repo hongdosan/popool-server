@@ -9,6 +9,7 @@ import kr.co.popoolserver.common.infra.error.exception.UserDefineException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.user.domain.entity.CorporateEntity;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
+import kr.co.popoolserver.user.domain.service.RedisService;
 import kr.co.popoolserver.user.repository.CorporateRepository;
 import kr.co.popoolserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class JwtProvider {
     private final long ACCESS_EXPIRE = 1000*60*30;
     private final long REFRESH_EXPIRE = 1000*60*60*24*7;
 
+    private final RedisService redisService;
     private final UserRepository userRepository;
     private final CorporateRepository corporateRepository;
 
@@ -104,15 +106,28 @@ public class JwtProvider {
     }
 
     /**
-     * RefreshToken 을 이용하여 AccessToken 을 만들어내는 메서드
+     * RefreshToken 을 이용하여 User 의 AccessToken 을 만들어내는 메서드
      * @param refreshToken 사용자의 RefreshToken
      * @return 사용자의 새로운 AccessToken
      */
-    public String createAccessToken(String refreshToken){
-        //TODO : 추후에 Redis 를 활용할 것.
-        return null;
+    public String createUserAccessToken(String refreshToken){
+        UserEntity userEntity = findUserByToken(refreshToken);
+        redisService.checkValue(refreshToken, redisService.getValue(userEntity.getIdentity()));
+
+        return createAccessToken(userEntity.getIdentity(), userEntity.getUserRole(), userEntity.getName());
     }
 
+    /**
+     * RefreshToken 을 이용하여 Corporate 의 AccessToken 을 만들어내는 메서드
+     * @param refreshToken 사용자의 RefreshToken
+     * @return 사용자의 새로운 AccessToken
+     */
+    public String createCorporateAccessToken(String refreshToken){
+        CorporateEntity corporateEntity = findCorporateByToken(refreshToken);
+        redisService.checkValue(refreshToken, redisService.getValue(corporateEntity.getIdentity()));
+
+        return createAccessToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
+    }
 
     /**
      * 사용자 정보를 통해 RefreshToken 을 만드는 메서드
