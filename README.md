@@ -31,7 +31,7 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 회원들이 자신의 이력을 올리면, 기업에서 이력을 찾아보는 서비스입니다.
 
 ## 설계 (바뀔 수 있습니다.)
-<img width="643" alt="image" src="https://user-images.githubusercontent.com/31675711/204999575-fe15db57-7df4-4c7b-ae61-0f55cae48252.png">
+<img width="880" alt="image" src="https://user-images.githubusercontent.com/31675711/206105149-dd6cbeb1-d5eb-41d6-88ef-ca371743fe5f.png">
 
 ## API (바뀔 수 있습니다.)
 
@@ -39,3 +39,8 @@ Monolithic Architecture를 먼저 내껄로 만들어야겠다고 생각했습�
 <img width="745" alt="image" src="https://user-images.githubusercontent.com/31675711/205797908-4897fc7f-c030-4c15-94bd-ade291d2133f.png">
 <img width="479" alt="image" src="https://user-images.githubusercontent.com/31675711/205798634-c1d6dff8-8930-4481-9215-5194f149fa92.png">
 <img width="536" alt="image" src="https://user-images.githubusercontent.com/31675711/205798832-79e2f658-cc43-4444-84ec-9afacb56acf1.png">
+
+> 이력서 API
+<img width="387" alt="image" src="https://user-images.githubusercontent.com/31675711/206105826-38abe2b5-6441-447a-8f41-cd5fc1ac92c3.png">
+<img width="608" alt="image" src="https://user-images.githubusercontent.com/31675711/206105865-e661c0ca-9e49-4cd5-8c86-955f81220df8.png">
+
