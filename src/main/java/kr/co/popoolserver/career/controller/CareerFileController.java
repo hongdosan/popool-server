@@ -5,6 +5,8 @@ import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.career.domain.service.CareerFileService;
 import kr.co.popoolserver.common.infra.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,18 +24,17 @@ public class CareerFileController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("CareerFile Info 읽기")
+    @ApiOperation("Career File Meta Data 읽기")
     @GetMapping("/info")
     public ResponseFormat<CareerFileDto.READ_INFO> getCareerFileInfo() {
-        //TODO IMAGE INFO READ
         return ResponseFormat.ok(careerFileService.getCareerFileInfo());
     }
 
-    @ApiOperation("CareerFile Image 읽기")
+    @ApiOperation("Career File S3 Image 다운로드")
     @GetMapping
-    public ResponseFormat getCareerFile() {
-        //TODO IMAGE READ
-        return ResponseFormat.ok();
+    public ResponseEntity<byte[]> getCareerFile() {
+        CareerFileDto.DOWNLOAD download = careerFileService.getCareerFileDownload();
+        return new ResponseEntity<>(download.getBytes(), download.getHttpHeaders(), HttpStatus.OK);
     }
 
     @ApiOperation("S3 Image File 삭제 & DB Image Meta Data 삭제 Service")

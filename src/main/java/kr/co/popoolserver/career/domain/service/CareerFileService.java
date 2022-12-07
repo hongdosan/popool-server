@@ -35,15 +35,7 @@ public class CareerFileService {
     }
 
     /**
-     * 기존 이미지 데이터가 있다면 삭제 후 재업로드
-     * @param userEntity
-     */
-    private void checkFile(UserEntity userEntity){
-        if(careerFileRepository.existsByUserEntity(userEntity)) deleteCareerFile();
-    }
-
-    /**
-     * File Info Read
+     * Career File Meta Data 읽기
      * @return
      */
     public CareerFileDto.READ_INFO getCareerFileInfo(){
@@ -51,6 +43,18 @@ public class CareerFileService {
         CareerFileEntity careerFileEntity = careerFileRepository.findByUserEntity(userEntity)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_UPLOAD));
         return CareerFileEntity.of(careerFileEntity);
+    }
+
+    /**
+     * Career File S3 Image 다운로드
+     * @return
+     */
+    public CareerFileDto.DOWNLOAD getCareerFileDownload(){
+        UserEntity userEntity = UserThreadLocal.get();
+        CareerFileEntity careerFileEntity = careerFileRepository.findByUserEntity(userEntity)
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_EMPTY));
+
+        return s3Service.downloadS3(careerFileEntity.getFileName());
     }
 
     /**
@@ -64,5 +68,13 @@ public class CareerFileService {
 
         s3Service.deleteS3(careerFileEntity.getFileName());
         careerFileRepository.delete(careerFileEntity);
+    }
+
+    /**
+     * 기존 이미지 데이터가 있다면 삭제 후 재업로드
+     * @param userEntity
+     */
+    private void checkFile(UserEntity userEntity){
+        if(careerFileRepository.existsByUserEntity(userEntity)) deleteCareerFile();
     }
 }
