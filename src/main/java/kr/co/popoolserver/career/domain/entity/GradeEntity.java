@@ -1,4 +1,4 @@
-package kr.co.popoolserver.grade.domain;
+package kr.co.popoolserver.career.domain.entity;
 
 import kr.co.popoolserver.common.domain.BaseEntity;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
