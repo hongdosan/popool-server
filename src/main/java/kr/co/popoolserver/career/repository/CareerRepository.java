@@ -11,7 +11,10 @@ import java.util.Optional;
 @Repository
 public interface CareerRepository extends JpaRepository<CareerEntity, Long> {
 
-    //find
+    //find others
+    Optional<CareerEntity> findById(Long id);
+
+    //find me
     Optional<CareerEntity> findByIdAndUserEntity(Long id, UserEntity userEntity);
     List<CareerEntity> findByUserEntity(UserEntity userEntity);
 }

@@ -24,12 +24,6 @@ public class CareerFileController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("Career File Meta Data 읽기")
-    @GetMapping("/info")
-    public ResponseFormat<CareerFileDto.READ_INFO> getCareerFileInfo() {
-        return ResponseFormat.ok(careerFileService.getCareerFileInfo());
-    }
-
     @ApiOperation("Career File S3 Image 다운로드")
     @GetMapping
     public ResponseEntity<byte[]> getCareerFile() {

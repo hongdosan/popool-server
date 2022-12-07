@@ -6,6 +6,7 @@ import kr.co.popoolserver.career.repository.CareerRepository;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
+import kr.co.popoolserver.common.jwt.JwtProvider;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 public class CareerService {
 
     private final CareerRepository careerRepository;
+    private final JwtProvider jwtProvider;
 
     /**
      * 이력서 생성
@@ -53,6 +55,19 @@ public class CareerService {
     }
 
     /**
+     * 다른 사람 이력서 중 하나 조회 (권한 : 기업)
+     * @return
+     */
+    public CareerDto.READ getOthersCareer(Long id){
+        UserEntity userEntity = UserThreadLocal.get();
+        jwtProvider.checkUserRole(userEntity.getUserRole());
+
+        CareerEntity careerEntity = careerRepository.findById(id)
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CAREER));
+        return CareerEntity.of(careerEntity);
+    }
+
+    /**
      * 이력서 정보 변경 서비스
      * @param update
      */
@@ -66,7 +81,7 @@ public class CareerService {
     }
 
     /**
-     * 이력서 삭제 서비스
+     * 본인 이력서 삭제 서비스
      * @param id
      */
     @Transactional

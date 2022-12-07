@@ -35,6 +35,12 @@ public class CareerController {
         return ResponseFormat.ok(careerService.getCareer(careerId));
     }
 
+    @ApiOperation("다른 사람의 이력서 조회(권한: 기업)")
+    @GetMapping("/others")
+    public ResponseFormat getOthersCareer(@RequestParam("career_id") Long careerId) {
+        return ResponseFormat.ok(careerService.getCareer(careerId));
+    }
+
     @ApiOperation("이력서 수정")
     @PutMapping
     public ResponseFormat updateCareer(@RequestBody CareerDto.UPDATE update) {

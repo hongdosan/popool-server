@@ -35,17 +35,6 @@ public class CareerFileService {
     }
 
     /**
-     * Career File Meta Data 읽기
-     * @return
-     */
-    public CareerFileDto.READ_INFO getCareerFileInfo(){
-        UserEntity userEntity = UserThreadLocal.get();
-        CareerFileEntity careerFileEntity = careerFileRepository.findByUserEntity(userEntity)
-                .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_UPLOAD));
-        return CareerFileEntity.of(careerFileEntity);
-    }
-
-    /**
      * Career File S3 Image 다운로드
      * @return
      */

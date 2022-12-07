@@ -234,6 +234,15 @@ public class JwtProvider {
                 .get(USER_ROLE);
     }
 
+
+    /**
+     * 일반 회원일 시 예외 발생
+     * @param userRole
+     */
+    public void checkUserRole(UserRole userRole){
+        if(userRole.equals(UserRole.ROLE_USER)) throw new UserDefineException(ErrorCode.FAIL_USER_ROLE);
+    }
+
     /**
      * 토큰을 통해 UserEntity 객체를 가져오는 메서드
      * @param token : 토큰

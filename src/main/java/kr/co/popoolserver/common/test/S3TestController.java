@@ -1,4 +1,4 @@
-package kr.co.popoolserver.common.s3.test;
+package kr.co.popoolserver.common.test;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.career.domain.dto.CareerFileDto;
