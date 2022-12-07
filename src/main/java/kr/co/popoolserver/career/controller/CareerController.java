@@ -29,8 +29,8 @@ public class CareerController {
         return ResponseFormat.ok(careerService.getAllCareers());
     }
 
-    @ApiOperation("나의 이력서 1개 조회")
-    @GetMapping("/one")
+    @ApiOperation("나의 이력서 세부 조회")
+    @GetMapping("/detail")
     public ResponseFormat getCareer(@RequestParam("career_id") Long careerId) {
         return ResponseFormat.ok(careerService.getCareer(careerId));
     }
