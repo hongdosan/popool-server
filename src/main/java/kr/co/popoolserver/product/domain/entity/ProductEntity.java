@@ -15,6 +15,15 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity extends BaseEntity {
 
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "product_price")
+    private long productPrice;
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "product_type")
     @Enumerated(value = EnumType.STRING)
     private ProductType productType;
