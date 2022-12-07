@@ -6,10 +6,12 @@ import kr.co.popoolserver.career.repository.CareerFileRepository;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
 import kr.co.popoolserver.common.infra.interceptor.UserThreadLocal;
+import kr.co.popoolserver.common.s3.S3Service;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -17,16 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class CareerFileService {
 
     private final CareerFileRepository careerFileRepository;
+    private final S3Service s3Service;
 
     /**
-     * File Create Service
-     * @param convert
-     * @param userEntity
+     * S3 Image File 저장 & DB Image Meta Data 저장 Service
+     * @param multipartFile
      */
     @Transactional
-    public void createCareerFile(CareerFileDto.CONVERT convert, UserEntity userEntity){
-        CareerFileEntity careerFileEntity = CareerFileEntity.of(convert, userEntity);
-        careerFileRepository.save(careerFileEntity);
+    public void createCareerFile(MultipartFile multipartFile){
+        CareerFileDto.CONVERT convert = s3Service.uploadS3(multipartFile, "image");
+        UserEntity userEntity = UserThreadLocal.get();
+
+        careerFileRepository.save(CareerFileEntity.of(convert, userEntity));
     }
 
     /**
