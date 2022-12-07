@@ -17,7 +17,7 @@ public class CareerController {
     private final CareerService careerService;
 
     @ApiOperation("이력서 생성")
-    @PostMapping("/create")
+    @PostMapping
     public ResponseFormat createCareer(@RequestBody CareerDto.CREATE create) {
         careerService.createCareer(create);
         return ResponseFormat.ok();
