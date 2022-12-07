@@ -22,13 +22,6 @@ public class CareerFileController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("CareerFile 수정")
-    @PutMapping
-    public ResponseFormat updateCareerFile(){
-        //TODO Update Career File;
-        return ResponseFormat.ok();
-    }
-
     @ApiOperation("CareerFile Info 읽기")
     @GetMapping("/info")
     public ResponseFormat<CareerFileDto.READ_INFO> getCareerFileInfo() {
@@ -43,10 +36,10 @@ public class CareerFileController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("CareerFile 삭제")
+    @ApiOperation("S3 Image File 삭제 & DB Image Meta Data 삭제 Service")
     @DeleteMapping
     public ResponseFormat deleteCareerFile(){
-        //TODO Delete Career File;
+        careerFileService.deleteCareerFile();
         return ResponseFormat.ok();
     }
 }

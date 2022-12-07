@@ -27,10 +27,19 @@ public class CareerFileService {
      */
     @Transactional
     public void createCareerFile(MultipartFile multipartFile){
-        CareerFileDto.CONVERT convert = s3Service.uploadS3(multipartFile, "image");
         UserEntity userEntity = UserThreadLocal.get();
+        checkFile(userEntity);
 
+        CareerFileDto.CONVERT convert = s3Service.uploadS3(multipartFile, "image");
         careerFileRepository.save(CareerFileEntity.of(convert, userEntity));
+    }
+
+    /**
+     * 기존 이미지 데이터가 있다면 삭제 후 재업로드
+     * @param userEntity
+     */
+    private void checkFile(UserEntity userEntity){
+        if(careerFileRepository.existsByUserEntity(userEntity)) deleteCareerFile();
     }
 
     /**
@@ -45,13 +54,15 @@ public class CareerFileService {
     }
 
     /**
-     * File Delete Service
+     * S3 Image File 삭제 & DB Image Meta Data 삭제 Service
      */
     @Transactional
     public void deleteCareerFile(){
         UserEntity userEntity = UserThreadLocal.get();
         CareerFileEntity careerFileEntity = careerFileRepository.findByUserEntity(userEntity)
                         .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_EMPTY));
+
+        s3Service.deleteS3(careerFileEntity.getFileName());
         careerFileRepository.delete(careerFileEntity);
     }
 }

@@ -29,7 +29,7 @@ public class CareerFileEntity extends BaseEntity {
     @Column(name = "file_extension")
     private String fileExtension;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 

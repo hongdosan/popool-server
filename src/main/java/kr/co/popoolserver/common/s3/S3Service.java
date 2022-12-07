@@ -65,7 +65,7 @@ public class S3Service {
                 .fileName(fileName)
                 .fileUrl(uploadImageUrl)
                 .fileSize(uploadFile.length())
-                .fileExtension(getFileExtension(fileName))
+                .fileExtension(contentType(fileName).toString())
                 .build();
 
         removeNewFile(uploadFile);
