@@ -1,55 +1,145 @@
-plugins {
-    id 'org.springframework.boot' version '2.6.7'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
+//Build
+buildscript {
+    ext{
+        //ext: build.gradle 에서 사용하는 전역 변수 설정
+        springBootVersion = '2.6.7'
+        springDependencyManagementVersion = '1.0.11.RELEASE'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}"
+    }
+
+//    configurations {
+//        compileOnly {
+//            extendsFrom annotationProcessor
+//        }
+//    }
+
+//    tasks.named('test') {
+//        useJUnitPlatform()
+//    }
 }
 
-group = 'kr.co'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+allprojects {
+    /*
+        전체 프로젝트 내 전체 모듈 공통 설정
+        -root project 까지 설정이 필요한 경우 사용.
+     */
+}
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+//Sub Project 내 전체 모듈 공통 설정
+subprojects {
+    group 'kr.co.popoolserver'
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        mavenCentral()
+    }
+
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
+
+    ext{
+        springBootVersion = '2.6.7'
+        springDependencyManagementVersion = '1.0.11.RELEASE'
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
+
+    // sub-project 등록시 디렉토리가 존재하지 않으면 자동 생성
+    task initSourceFolders {
+        sourceSets*.java.srcDirs*.each {
+            if (!it.exists()) {
+                it.mkdirs()
+            }
+        }
+        sourceSets*.resources.srcDirs*.each {
+            if (!it.exists()) {
+                it.mkdirs()
+            }
+        }
     }
 }
 
-repositories {
-    mavenCentral()
+project(':core'){
+    bootJar.enabled = false
+    jar.enabled = true
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+        //swagger
+        implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    }
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+project(':api'){
+    dependencies {
+        compileOnly project(':core')
 
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    //thymeleaf
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
-    //DB
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'mysql:mysql-connector-java'
-
-    //redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-    //aws
-    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.341'
-
-    //Swagger & Validation
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-    //Security & JWT
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.security:spring-security-test'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+    }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+project(':batch'){
+    dependencies {
+        compileOnly project(':core')
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+    }
+}
+
+project(':admin'){
+    dependencies {
+        compileOnly project(':core')
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+    }
+}
+
+project(':consumer'){
+    dependencies {
+        compileOnly project(':core')
+
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+        //thymeleaf
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+        //DB
+        runtimeOnly 'com.h2database:h2'
+        runtimeOnly 'mysql:mysql-connector-java'
+
+        //redis
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+        //aws
+        implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.341'
+
+        //Swagger & Validation
+        implementation 'io.springfox:springfox-boot-starter:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        //Security & JWT
+        implementation 'io.jsonwebtoken:jjwt:0.9.1'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        testImplementation 'org.springframework.security:spring-security-test'
+    }
 }
