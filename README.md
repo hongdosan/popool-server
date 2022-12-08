@@ -14,6 +14,13 @@
 때문에, 아직 완벽하지 않은 자신을 되돌아보며, 기술 하나씩 다시 깊게 공부하기 위해,
 Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습해야겠다 생각했습니다.
 
+## 멀티 모듈
+- Admin Module
+- Consumer Module
+- Batch Module
+- Api Module
+- Core Module
+
 ## 기술 스택
 > 해당 프로젝트를 수행하며 사용할 기술 스택
 - [x] Java 11, MySQL, Gradle, Spring Boot 2.6.7 
@@ -31,12 +38,22 @@ Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습�
 회원들이 자신의 이력을 올리면, 기업에서 이력을 찾아보는 서비스입니다.
 
 ## 설계 (바뀔 수 있습니다.)
-<img width="794" alt="image" src="https://user-images.githubusercontent.com/31675711/206113602-1c0a4aad-13dc-4391-96f3-0bc5377e3023.png">
+<img width="753" alt="image" src="https://user-images.githubusercontent.com/31675711/206408233-c821a435-c771-490a-9c65-69ccd3f3ec0e.png">
 
 ## API (바뀔 수 있습니다.)
 
-> 회원 API
-<img width="873" alt="image" src="https://user-images.githubusercontent.com/31675711/206115200-6552cd05-f9c6-4871-877c-1c08a92e92cd.png">
+### [Consumer Module]
 
-> 이력서 API
-<img width="877" alt="image" src="https://user-images.githubusercontent.com/31675711/206115548-3e3fb783-daee-4753-b6c3-7f09f78b4e3a.png">
+#### - 회원 API
+<img width="1072" alt="image" src="https://user-images.githubusercontent.com/31675711/206407061-e89827e0-17d6-44b0-a0be-18650dd9842a.png">
+
+#### - 이력서 API
+<img width="616" alt="image" src="https://user-images.githubusercontent.com/31675711/206406394-7f10ea57-0a46-43dc-b6f4-8bb6f7225d6d.png">
+
+#### - 상품 API
+<img width="1072" alt="image" src="https://user-images.githubusercontent.com/31675711/206407558-03a7fa06-31ae-4155-aca5-07b5957d7927.png">
+
+### [Admin Module]
+
+#### - Continue...
+
