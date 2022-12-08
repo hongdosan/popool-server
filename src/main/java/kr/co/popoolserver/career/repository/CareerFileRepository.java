@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface CareerFileRepository extends JpaRepository<CareerFileEntity, Long> {
     //find
     Optional<CareerFileEntity> findByUserEntity(UserEntity userEntity);
+
+    //exists
+    boolean existsByUserEntity(UserEntity userEntity);
 }

@@ -1,10 +1,10 @@
 
-package kr.co.popoolserver.career.domain.service;
+package kr.co.popoolserver.common.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import kr.co.popoolserver.career.domain.dto.S3Dto;
+import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.common.infra.error.exception.BusinessLogicException;
 import kr.co.popoolserver.common.infra.error.exception.EmptyFileException;
 import kr.co.popoolserver.common.infra.error.model.ErrorCode;
@@ -55,14 +55,22 @@ public class S3Service {
      * @return
      */
     @Transactional
-    public String uploadS3(MultipartFile multipartFile, String dirName){
+    public CareerFileDto.CONVERT uploadS3(MultipartFile multipartFile, String dirName){
         File uploadFile = validateFileExists(multipartFile)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_CONVERT));
         String fileName = dirName + "/" + createFileName(multipartFile.getOriginalFilename()) + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
+
+        CareerFileDto.CONVERT convert = CareerFileDto.CONVERT.builder()
+                .fileName(fileName)
+                .fileUrl(uploadImageUrl)
+                .fileSize(uploadFile.length())
+                .fileExtension(contentType(fileName).toString())
+                .build();
+
         removeNewFile(uploadFile);
 
-        return uploadImageUrl;
+        return convert;
     }
 
     /**
@@ -122,7 +130,7 @@ public class S3Service {
      * @param fileName
      * @return
      */
-    public S3Dto.DOWNLOAD downloadS3(String fileName){
+    public CareerFileDto.DOWNLOAD downloadS3(String fileName){
         S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(BUCKET_NAME, fileName));
         S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
 
@@ -135,7 +143,7 @@ public class S3Service {
             httpHeaders.setContentLength(bytes.length);
             httpHeaders.setContentDispositionFormData("attachment", downloadFileName);
 
-            return S3Dto.DOWNLOAD.builder()
+            return CareerFileDto.DOWNLOAD.builder()
                     .bytes(bytes)
                     .httpHeaders(httpHeaders)
                     .build();

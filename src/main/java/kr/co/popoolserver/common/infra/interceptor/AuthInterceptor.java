@@ -1,6 +1,6 @@
 package kr.co.popoolserver.common.infra.interceptor;
 
-import kr.co.popoolserver.common.infra.jwt.JwtProvider;
+import kr.co.popoolserver.common.jwt.JwtProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

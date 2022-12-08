@@ -29,10 +29,7 @@ public class CareerFileEntity extends BaseEntity {
     @Column(name = "file_extension")
     private String fileExtension;
 
-    @Column(name = "file_extension_index")
-    private int fileExtensionIndex;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
@@ -41,23 +38,21 @@ public class CareerFileEntity extends BaseEntity {
                             long fileSize,
                             String fileUrl,
                             String fileExtension,
-                            int fileExtensionIndex,
                             UserEntity userEntity) {
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.fileUrl = fileUrl;
         this.fileExtension = fileExtension;
-        this.fileExtensionIndex = fileExtensionIndex;
         this.userEntity = userEntity;
     }
 
-    public static CareerFileEntity of(CareerFileDto.CONVERT convert, UserEntity userEntity) {
+    public static CareerFileEntity of(CareerFileDto.CONVERT convert,
+                                      UserEntity userEntity) {
         return CareerFileEntity.builder()
                 .fileName(convert.getFileName())
                 .fileSize(convert.getFileSize())
-                .fileUrl(convert.getS3Url())
+                .fileUrl(convert.getFileUrl())
                 .fileExtension(convert.getFileExtension())
-                .fileExtensionIndex(convert.getFileExtensionIndex())
                 .userEntity(userEntity)
                 .build();
     }
