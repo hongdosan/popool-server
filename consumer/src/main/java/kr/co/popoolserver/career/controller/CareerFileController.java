@@ -17,21 +17,21 @@ public class CareerFileController {
 
     private final CareerFileService careerFileService;
 
-    @ApiOperation("S3 Image File 저장 & DB Image Meta Data 저장 Service")
+    @ApiOperation("프로필 이미지 생성 및 변경 / S3, DB 모두 저장됨 / 권한 : 일반 회원 이상")
     @PostMapping
     public ResponseFormat createCareerFile(@RequestParam("data") MultipartFile multipartFile){
         careerFileService.createCareerFile(multipartFile);
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("Career File S3 Image 다운로드")
+    @ApiOperation("프로필 이미지 다운로드 / 권한 : 일반 회원 이상")
     @GetMapping
     public ResponseEntity<byte[]> getCareerFile() {
         CareerFileDto.DOWNLOAD download = careerFileService.getCareerFileDownload();
         return new ResponseEntity<>(download.getBytes(), download.getHttpHeaders(), HttpStatus.OK);
     }
 
-    @ApiOperation("S3 Image File 삭제 & DB Image Meta Data 삭제 Service")
+    @ApiOperation("프로필 이미지 삭제 / S3, DB 모두 삭제됨 / 권한 : 일반 회원 이상")
     @DeleteMapping
     public ResponseFormat deleteCareerFile(){
         careerFileService.deleteCareerFile();

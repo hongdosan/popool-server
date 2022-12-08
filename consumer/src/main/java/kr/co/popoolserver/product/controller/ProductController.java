@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/products")
 public class ProductController {
 
-    @ApiOperation("모든 상품 조회")
+    @ApiOperation("모든 상품 조회 / 권한 : 일반 회원 이상")
     @GetMapping
-    public ResponseFormat getAllProduct(){
-        ///TODO get all Product
+    public ResponseFormat getAllProducts(){
+        ///TODO get all Products
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("상품 세부사항 조회")
+    @ApiOperation("상품 세부사항 조회 / 권한 : 일반 회원 이상")
     @GetMapping("/detail")
     public ResponseFormat getProduct(){
         ///TODO get detail Product

@@ -25,35 +25,35 @@ public class CorporateController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("AccessToken 재발급")
+    @ApiOperation("AccessToken 재발급 / 권한 : 기업 본인")
     @PostMapping("/refresh-token")
     public ResponseFormat<String> resetRefreshToken(@RequestHeader("refreshToken") String refreshToken){
         return ResponseFormat.ok(jwtProvider.createCorporateAccessToken(refreshToken));
     }
 
-    @ApiOperation("기업 회원 정보 변경")
+    @ApiOperation("회원 정보 변경 / 권한 : 기업 본인")
     @PutMapping
     public ResponseFormat updateCorporate(@RequestBody @Valid CorporateDto.UPDATE update){
         corporateService.updateCorporate(update);
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("기업 회원 정보 조회")
+    @ApiOperation("회원 정보 조회 / 권한 : 기업 본인")
     @GetMapping
     public ResponseFormat<CorporateDto.READ> getCorporate(){
         return ResponseFormat.ok(corporateService.getCorporate());
     }
 
-    @ApiOperation("회원 탈퇴")
+    @ApiOperation("회원 탈퇴 / 권한 : 기업 본인")
     @DeleteMapping
     public ResponseFormat deleteCorporate(@RequestBody CorporateDto.DELETE delete){
         corporateService.deleteCorporate(delete);
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("회원 복구")
+    @ApiOperation("기업 회원 복구")
     @PutMapping("/reCreate")
-    public ResponseFormat deleteCorporate(@RequestBody @Valid CorporateDto.RE_CREATE reCreate){
+    public ResponseFormat reCreateCorporate(@RequestBody @Valid CorporateDto.RE_CREATE reCreate){
         corporateService.reCreateCorporate(reCreate);
         return ResponseFormat.ok();
     }

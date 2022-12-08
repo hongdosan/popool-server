@@ -25,35 +25,35 @@ public class UserController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("AccessToken 재발급")
+    @ApiOperation("AccessToken 재발급 / 권한 : 본인 일반")
     @PostMapping("/refresh-token")
     public ResponseFormat<String> resetRefreshToken(@RequestHeader("refreshToken") String refreshToken){
         return ResponseFormat.ok(jwtProvider.createUserAccessToken(refreshToken));
     }
 
-    @ApiOperation("일반 회원 정보 변경")
+    @ApiOperation("회원 정보 변경 / 권한 : 본인 일반")
     @PutMapping
     public ResponseFormat updateUser(@RequestBody @Valid UserDto.UPDATE update){
         userService.updateUser(update);
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("본인 회원 정보 조회")
+    @ApiOperation("회원 정보 조회 / 권한 : 본인 일반")
     @GetMapping
     public ResponseFormat<UserDto.READ> getUser(){
         return ResponseFormat.ok(userService.getUser());
     }
 
-    @ApiOperation("회원 탈퇴")
+    @ApiOperation("회원 탈퇴 / 권한 : 본인 일반")
     @DeleteMapping
     public ResponseFormat deleteUser(@RequestBody UserDto.DELETE delete){
         userService.deleteUser(delete);
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("회원 복구")
+    @ApiOperation("일반 회원 복구")
     @PutMapping("/reCreate")
-    public ResponseFormat deleteUser(@RequestBody @Valid UserDto.RE_CREATE reCreate){
+    public ResponseFormat reCreateUser(@RequestBody @Valid UserDto.RE_CREATE reCreate){
         userService.reCreateUser(reCreate);
         return ResponseFormat.ok();
     }

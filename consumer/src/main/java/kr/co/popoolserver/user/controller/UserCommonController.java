@@ -22,7 +22,7 @@ public class UserCommonController {
 
     private UserCommonService userCommonService;
 
-    @ApiOperation("{USER or CORPORATE or ADMIN} / 로그인")
+    @ApiOperation("{USER or CORPORATE}/ 로그인")
     @PostMapping("/{serviceName}/login")
     public ResponseFormat<UserCommonDto.TOKEN> login(@PathVariable ServiceName serviceName,
                                                      @RequestBody @Valid UserCommonDto.LOGIN login){
@@ -30,7 +30,7 @@ public class UserCommonController {
         return ResponseFormat.ok(userCommonService.login(login));
     }
 
-    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 비밀번호 변경")
+    @ApiOperation("{USER or CORPORATE} / 회원 비밀번호 변경 / 권한 : 본인 일반, 기업")
     @PutMapping("/{serviceName}/password")
     public ResponseFormat updateUserPassword(@PathVariable ServiceName serviceName,
                                              @RequestBody @Valid UserCommonDto.UPDATE_PASSWORD password){
@@ -39,7 +39,7 @@ public class UserCommonController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 메일 변경")
+    @ApiOperation("{USER or CORPORATE} / 회원 메일 변경 / 권한 : 본인 일반, 기업")
     @PutMapping("/email")
     public ResponseFormat updateUserEmail(@PathVariable ServiceName serviceName,
                                           @RequestBody @Valid UserCommonDto.UPDATE_EMAIL email){
@@ -48,7 +48,7 @@ public class UserCommonController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 전화번호 변경")
+    @ApiOperation("{USER or CORPORATE} / 회원 전화번호 변경 / 권한 : 본인 일반, 기업")
     @PutMapping("/phone")
     public ResponseFormat updateUserPhone(@PathVariable ServiceName serviceName,
                                           @RequestBody @Valid UserCommonDto.UPDATE_PHONE phone){
@@ -57,7 +57,7 @@ public class UserCommonController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 주소 변경")
+    @ApiOperation("{USER or CORPORATE} / 회원 주소 변경 / 권한 : 본인 일반, 기업")
     @PutMapping("/address")
     public ResponseFormat updateUserAddress(@PathVariable ServiceName serviceName,
                                             @RequestBody @Valid UserCommonDto.UPDATE_ADDRESS address){
@@ -66,35 +66,35 @@ public class UserCommonController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 주소 정보")
+    @ApiOperation("{USER or CORPORATE} / 회원 주소 정보 조회 / 권한 : 본인 일반, 기업")
     @GetMapping("/{serviceName}/address")
     public ResponseFormat<UserCommonDto.READ_ADDRESS> getUserAddress(@PathVariable ServiceName serviceName){
         userCommonService = userCommonServiceProvider.getUserService(serviceName);
         return ResponseFormat.ok(userCommonService.getAddress());
     }
 
-    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 메일 정보")
+    @ApiOperation("{USER or CORPORATE} / 회원 메일 정보 조회 / 권한 : 본인 일반, 기업")
     @GetMapping("/{serviceName}/email")
     public ResponseFormat<UserCommonDto.READ_EMAIL> getUserEmail(@PathVariable ServiceName serviceName){
         userCommonService = userCommonServiceProvider.getUserService(serviceName);
         return ResponseFormat.ok(userCommonService.getEmail());
     }
 
-    @ApiOperation("{USER or CORPORATE or ADMIN} / 회원 전화번호 정보")
+    @ApiOperation("{USER or CORPORATE} / 전화번호 정보 조회 / 권한 : 본인 일반, 기업")
     @GetMapping("/{serviceName}/phone")
     public ResponseFormat<UserCommonDto.READ_PHONE> getUserPhone(@PathVariable ServiceName serviceName){
         userCommonService = userCommonServiceProvider.getUserService(serviceName);
         return ResponseFormat.ok(userCommonService.getPhone());
     }
 
-    @ApiOperation("Redis Data 조회 (테스트를 위해 넣어놨음.)")
+    @ApiOperation("{USER or CORPORATE} / Redis Data 조회 (테스트를 위해 넣어놨음.)")
     @PostMapping("/{serviceName}/refresh")
     public ResponseFormat<String> getRefreshToken(@PathVariable ServiceName serviceName,
                                              @RequestParam("identity") String identity){
         return ResponseFormat.ok(redisService.getValue(identity));
     }
 
-    @ApiOperation("Redis Data 삭제")
+    @ApiOperation("{USER or CORPORATE} / Redis Data 삭제")
     @DeleteMapping("/{serviceName}/refresh")
     public ResponseFormat deleteRefreshToken(@PathVariable ServiceName serviceName,
                                              @RequestParam("identity") String identity){
