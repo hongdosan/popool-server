@@ -42,7 +42,7 @@ public class CareerService {
     }
 
     /**
-     * 본인 이력서 조회
+     * 본인 이력서 중 하나 조회
      * @return
      */
     public CareerDto.READ getCareer(Long id){
@@ -50,5 +50,31 @@ public class CareerService {
         CareerEntity careerEntity = careerRepository.findByIdAndUserEntity(id, userEntity)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CAREER));
         return CareerEntity.of(careerEntity);
+    }
+
+    /**
+     * 이력서 정보 변경 서비스
+     * @param update
+     */
+    @Transactional
+    public void updateCareer(CareerDto.UPDATE update){
+        UserEntity userEntity = UserThreadLocal.get();
+        CareerEntity careerEntity = careerRepository.findByIdAndUserEntity(update.getId(), userEntity)
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CAREER));
+
+        careerEntity.updateCareer(update);
+    }
+
+    /**
+     * 이력서 삭제 서비스
+     * @param id
+     */
+    @Transactional
+    public void deleteCareer(Long id){
+        UserEntity userEntity = UserThreadLocal.get();
+        CareerEntity careerEntity = careerRepository.findByIdAndUserEntity(id, userEntity)
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CAREER));
+
+        careerRepository.delete(careerEntity);
     }
 }

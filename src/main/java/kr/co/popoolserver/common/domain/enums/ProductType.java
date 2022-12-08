@@ -10,7 +10,6 @@ import java.util.Arrays;
 public enum ProductType {
 
     PRODUCT_COUPON("이용권"),
-    PRODUCT_PERIOD_COUPON("기간권"),
     PRODUCT_SUBSCRIPTION("구독권");
 
     private String product;
