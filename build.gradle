@@ -20,10 +20,6 @@ buildscript {
 //            extendsFrom annotationProcessor
 //        }
 //    }
-
-//    tasks.named('test') {
-//        useJUnitPlatform()
-//    }
 }
 
 allprojects {
