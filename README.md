@@ -14,12 +14,24 @@
 때문에, 아직 완벽하지 않은 자신을 되돌아보며, 기술 하나씩 다시 깊게 공부하기 위해,
 Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습해야겠다 생각했습니다.
 
-## 멀티 모듈
-- Admin Module
-- Consumer Module
-- Batch Module
-- Api Module
-- Core Module
+## Folder Structure
+```
+├── popool-server
+│   │   ├── .github
+│   │   ├── admin           # 관리자 모듈
+│   │   ├── api             # API 모듈
+│   │   ├── batch           # Batch 모듈
+│   │   ├── consumer        # 사용자 모듈        
+│   │   ├── core            # Core 모듈
+│   │   ├── files
+│   │   ├── gradle
+│   ├── .gitignore
+│   ├── build.gradle
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── README.md
+└───└── settings.gradle
+```
 
 ## 기술 스택
 > 해당 프로젝트를 수행하며 사용할 기술 스택
