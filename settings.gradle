@@ -1,7 +1,6 @@
 rootProject.name = 'popool-server'
-include 'admin'
-include 'consumer'
-include 'core'
-include 'api'
-include 'batch'
-
+include 'p-application'
+include 'p-internal'
+include 'p-domain-admin'
+include 'p-domain-consumer'
+include 'p-core'
