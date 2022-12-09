@@ -4,6 +4,9 @@
 
 - 프로젝트 기간 : 2022.11.-continue
 
+## 프로젝트를 진행하며 정리한 글
+<a href="https://hongdosan.tistory.com/entry/%EC%9A%B0%EC%95%84%ED%95%9C-%EB%A9%80%ED%8B%B0-%EB%AA%A8%EB%93%88-%EC%84%B8%EB%AF%B8%EB%82%98-%EC%A0%95%EB%A6%AC-%ED%95%9C%EC%9D%B4%EC%9D%8C%EC%9D%84-%ED%86%B5%ED%95%B4-%EC%8B%9C%EC%9E%91%ED%95%9C-MSA%EC%99%80-%EB%A9%80%ED%8B%B0-%EB%AA%A8%EB%93%88">멀티 </a><br/><br/>
+
 ## 개요
 한이음 MSA Project 진행을 했습니다.
 이 프로젝트에서 Eureka, API Gateway, Kafka, Spring OAuth, Spring Batch, Redis, Spring Security, Json Web Token 등 기술을 공부하고 적용했습니다.
