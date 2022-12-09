@@ -19,21 +19,43 @@ Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습�
 
 ## Folder Structure
 ```
-├── popool-server
-│   │   ├── .github
-│   │   ├── admin           # 관리자 모듈
-│   │   ├── api             # API 모듈
-│   │   ├── batch           # Batch 모듈
-│   │   ├── consumer        # 사용자 모듈        
-│   │   ├── core            # Core 모듈
-│   │   ├── files
-│   │   ├── gradle
-│   ├── .gitignore
-│   ├── build.gradle
-│   ├── gradlew
-│   ├── gradlew.bat
-│   ├── README.md
-└───└── settings.gradle
+.
+├── p-application
+│   ├── build
+│   ├── build.gradle
+│   └── src
+│       ├── main
+│       │   ├── java.kr.co.popoolserver
+│       │   │               ├── ApiApplication.java
+│       │   │               └── controllers.consumer
+│       │   └── resources
+│       └── test
+├── p-core
+│   ├── build
+│   ├── build.gradle
+│   └── src
+│       ├── main
+│       │   ├── java.kr.co.popoolserver
+│       │   │               ├── enums
+│       │   │               └── error
+│       │   └── resources
+│       └── test
+├── p-domain-admin
+├── p-domain-consumer
+│   ├── build
+│   ├── build.gradle
+│   └── src
+│       ├── main
+│       │   ├── java.kr.co.popoolserver
+│       │   │               ├── DomainConsumerApplication.java
+│       │   │               ├── career
+│       │   │               ├── infrastructure
+│       │   │               ├── product
+│       │   │               └── user
+│       │   └── resources
+│       └── test
+├── p-internal
+└── settings.gradle
 ```
 
 ## 기술 스택
