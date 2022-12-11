@@ -1,8 +1,8 @@
-package kr.co.popoolserver.controllers.careers;
+package kr.co.popoolserver.consumer.careers;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.career.service.CareerFileService;
+import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class CareerFileController {
     @ApiOperation("프로필 이미지 다운로드 / 권한 : 일반 회원 이상")
     @GetMapping
     public ResponseEntity<byte[]> getCareerFile() {
-        CareerFileDto.DOWNLOAD download = careerFileService.getCareerFileDownload();
+        S3Dto.DOWNLOAD download = careerFileService.getCareerFileDownload();
         return new ResponseEntity<>(download.getBytes(), download.getHttpHeaders(), HttpStatus.OK);
     }
 

@@ -29,21 +29,11 @@ public class WebConfig implements WebMvcConfigurer {
             "/corporates/refresh-token"
     };
 
-    private static final String[] S3_AUTH_ARR = {
-            "/image",
-            "/video",
-            "/s3/**",
-            "/s3-image/**",
-            "/s3-video/**",
-            "/s3-image-info/**"
-    };
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(USER_AUTH_ARR)
-                .excludePathPatterns(S3_AUTH_ARR)
                 .excludePathPatterns(AUTH_ARR);
     }
 

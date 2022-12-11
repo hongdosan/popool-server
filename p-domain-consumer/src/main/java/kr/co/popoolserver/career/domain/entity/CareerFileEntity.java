@@ -1,6 +1,7 @@
 package kr.co.popoolserver.career.domain.entity;
 
 import kr.co.popoolserver.career.domain.dto.CareerFileDto;
+import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import kr.co.popoolserver.infrastructure.shared.BaseEntity;
 import lombok.AccessLevel;
@@ -46,7 +47,7 @@ public class CareerFileEntity extends BaseEntity {
         this.userEntity = userEntity;
     }
 
-    public static CareerFileEntity of(CareerFileDto.CONVERT convert,
+    public static CareerFileEntity of(S3Dto.CONVERT convert,
                                       UserEntity userEntity) {
         return CareerFileEntity.builder()
                 .fileName(convert.getFileName())

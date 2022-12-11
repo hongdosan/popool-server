@@ -1,4 +1,4 @@
-package kr.co.popoolserver.controllers.careers;
+package kr.co.popoolserver.consumer.careers;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.career.domain.dto.CareerDto;

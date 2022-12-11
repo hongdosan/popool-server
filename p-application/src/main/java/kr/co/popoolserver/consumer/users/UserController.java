@@ -1,4 +1,4 @@
-package kr.co.popoolserver.controllers.users;
+package kr.co.popoolserver.consumer.users;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.error.model.ResponseFormat;

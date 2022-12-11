@@ -1,9 +1,9 @@
-package kr.co.popoolserver.controllers.test;
+package kr.co.popoolserver.admin;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.career.domain.dto.CareerFileDto;
+import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.error.model.ResponseFormat;
-import kr.co.popoolserver.infrastructure.s3.S3Service;
+import kr.co.popoolserver.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class S3TestController {
     @ApiOperation("S3 Upload API /이미지 파일 업로드")
     @PostMapping("/s3-image")
     @ResponseBody
-    public CareerFileDto.CONVERT uploadS3Image(@RequestParam("data") MultipartFile multipartFile) {
+    public S3Dto.CONVERT uploadS3Image(@RequestParam("data") MultipartFile multipartFile) {
         return s3Service.uploadS3(multipartFile, "image");
     }
 
@@ -42,7 +42,7 @@ public class S3TestController {
     @ApiOperation("S3 File Info Read API/이미지 파일 정보 읽기")
     @GetMapping("/s3-image/info")
     @ResponseBody
-    public ResponseFormat<CareerFileDto.DOWNLOAD> downloadInfo(@RequestParam("fileName") String fileName){
+    public ResponseFormat<S3Dto.DOWNLOAD> downloadInfo(@RequestParam("fileName") String fileName){
         return ResponseFormat.ok(s3Service.downloadS3(fileName));
     }
 
@@ -50,7 +50,7 @@ public class S3TestController {
     @GetMapping("/s3-image")
     @ResponseBody
     public ResponseEntity<byte[]> downloadImage(@RequestParam("fileName") String fileName){
-        CareerFileDto.DOWNLOAD download = s3Service.downloadS3(fileName);
+        S3Dto.DOWNLOAD download = s3Service.downloadS3(fileName);
         return new ResponseEntity<>(download.getBytes(), download.getHttpHeaders(), HttpStatus.OK);
     }
 }

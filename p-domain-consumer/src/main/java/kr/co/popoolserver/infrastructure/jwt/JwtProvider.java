@@ -5,7 +5,7 @@ import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.error.exception.JwtTokenInvalidException;
 import kr.co.popoolserver.error.exception.UserDefineException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.infrastructure.redis.RedisService;
+import kr.co.popoolserver.service.RedisService;
 import kr.co.popoolserver.user.domain.entity.CorporateEntity;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import kr.co.popoolserver.user.repository.CorporateRepository;

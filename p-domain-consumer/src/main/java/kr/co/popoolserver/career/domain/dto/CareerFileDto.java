@@ -13,32 +13,6 @@ public class CareerFileDto {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class DOWNLOAD {
-        private byte[] bytes;
-
-        private HttpHeaders httpHeaders;
-    }
-
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    public static class CONVERT{
-        @ApiModelProperty(example = "S3 URL")
-        private String fileUrl;
-
-        @ApiModelProperty(example = "파일명")
-        private String fileName;
-
-        @ApiModelProperty(example = "파일 확장자")
-        private String fileExtension;
-
-        @ApiModelProperty(example = "파일 크기")
-        private long fileSize;
-    }
-
-    @Builder
-    @Getter
-    @AllArgsConstructor
     public static class READ_INFO{
         @ApiModelProperty(example = "파일명")
         private String fileName;

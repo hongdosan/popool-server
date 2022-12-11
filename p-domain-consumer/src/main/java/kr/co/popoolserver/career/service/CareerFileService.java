@@ -1,13 +1,13 @@
 package kr.co.popoolserver.career.service;
 
-import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.career.domain.entity.CareerFileEntity;
 import kr.co.popoolserver.career.repository.CareerFileRepository;
-import kr.co.popoolserver.infrastructure.interceptor.UserThreadLocal;
-import kr.co.popoolserver.user.domain.entity.UserEntity;
+import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.infrastructure.s3.S3Service;
+import kr.co.popoolserver.infrastructure.interceptor.UserThreadLocal;
+import kr.co.popoolserver.service.S3Service;
+import kr.co.popoolserver.user.domain.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class CareerFileService {
         UserEntity userEntity = UserThreadLocal.get();
         checkFile(userEntity);
 
-        CareerFileDto.CONVERT convert = s3Service.uploadS3(multipartFile, "image");
+        S3Dto.CONVERT convert = s3Service.uploadS3(multipartFile, "image");
         careerFileRepository.save(CareerFileEntity.of(convert, userEntity));
     }
 
@@ -38,7 +38,7 @@ public class CareerFileService {
      * Career File S3 Image 다운로드
      * @return
      */
-    public CareerFileDto.DOWNLOAD getCareerFileDownload(){
+    public S3Dto.DOWNLOAD getCareerFileDownload(){
         UserEntity userEntity = UserThreadLocal.get();
         CareerFileEntity careerFileEntity = careerFileRepository.findByUserEntity(userEntity)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_EMPTY));
