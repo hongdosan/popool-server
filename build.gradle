@@ -101,9 +101,25 @@ project(':p-internal'){
 project(':p-domain-admin'){
     dependencies {
         implementation project(':p-core')
+        implementation project(':p-domain-jwt')
         implementation project(':p-domain-redis')
+        implementation project(':p-domain-s3')
 
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-web'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+        //DB
+        runtimeOnly 'com.h2database:h2'
+        runtimeOnly 'mysql:mysql-connector-java'
+
+        //Swagger & Validation
+        implementation 'io.springfox:springfox-boot-starter:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        //Security
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        testImplementation 'org.springframework.security:spring-security-test'
     }
 }
 
