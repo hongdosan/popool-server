@@ -1,9 +1,9 @@
-package kr.co.popoolserver.infrastructure.s3;
+package kr.co.popoolserver.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import kr.co.popoolserver.career.domain.dto.CareerFileDto;
+import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.error.exception.EmptyFileException;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +26,6 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class S3Service {
 
     private final AmazonS3Client amazonS3Client;
@@ -53,14 +51,13 @@ public class S3Service {
      * @param multipartFile
      * @return
      */
-    @Transactional
-    public CareerFileDto.CONVERT uploadS3(MultipartFile multipartFile, String dirName){
+    public S3Dto.CONVERT uploadS3(MultipartFile multipartFile, String dirName){
         File uploadFile = validateFileExists(multipartFile)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_CONVERT));
         String fileName = dirName + "/" + createFileName(multipartFile.getOriginalFilename()) + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
 
-        CareerFileDto.CONVERT convert = CareerFileDto.CONVERT.builder()
+        S3Dto.CONVERT convert = S3Dto.CONVERT.builder()
                 .fileName(fileName)
                 .fileUrl(uploadImageUrl)
                 .fileSize(uploadFile.length())
@@ -119,7 +116,6 @@ public class S3Service {
      * S3 File Delete Service
      * @param fileName
      */
-    @Transactional
     public void deleteS3(String fileName){
         amazonS3Client.deleteObject(new DeleteObjectRequest(BUCKET_NAME, fileName));
     }
@@ -129,7 +125,7 @@ public class S3Service {
      * @param fileName
      * @return
      */
-    public CareerFileDto.DOWNLOAD downloadS3(String fileName){
+    public S3Dto.DOWNLOAD downloadS3(String fileName){
         S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(BUCKET_NAME, fileName));
         S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
 
@@ -142,7 +138,7 @@ public class S3Service {
             httpHeaders.setContentLength(bytes.length);
             httpHeaders.setContentDispositionFormData("attachment", downloadFileName);
 
-            return CareerFileDto.DOWNLOAD.builder()
+            return S3Dto.DOWNLOAD.builder()
                     .bytes(bytes)
                     .httpHeaders(httpHeaders)
                     .build();

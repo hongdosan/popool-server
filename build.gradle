@@ -75,6 +75,8 @@ project(':p-application'){
         implementation project(':p-internal')
         implementation project(':p-domain-admin')
         implementation project(':p-domain-consumer')
+        implementation project(':p-domain-redis')
+        implementation project(':p-domain-s3')
         implementation project(':p-core')
 
         implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -98,6 +100,7 @@ project(':p-internal'){
 project(':p-domain-admin'){
     dependencies {
         implementation project(':p-core')
+        implementation project(':p-domain-redis')
 
         implementation 'org.springframework.boot:spring-boot-starter-web'
     }
@@ -106,6 +109,8 @@ project(':p-domain-admin'){
 project(':p-domain-consumer'){
     dependencies {
         implementation project(':p-core')
+        implementation project(':p-domain-redis')
+        implementation project(':p-domain-s3')
 
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -120,12 +125,6 @@ project(':p-domain-consumer'){
         runtimeOnly 'com.h2database:h2'
         runtimeOnly 'mysql:mysql-connector-java'
 
-        //redis
-        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-        //aws
-        implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.341'
-
         //Swagger & Validation
         implementation 'io.springfox:springfox-boot-starter:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -134,6 +133,28 @@ project(':p-domain-consumer'){
         implementation 'io.jsonwebtoken:jjwt:0.9.1'
         implementation 'org.springframework.boot:spring-boot-starter-security'
         testImplementation 'org.springframework.security:spring-security-test'
+    }
+
+    project(':p-domain-redis'){
+        dependencies {
+            implementation project(':p-core')
+
+            implementation 'org.springframework.boot:spring-boot-starter-web'
+
+            //redis
+            implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        }
+    }
+
+    project(':p-domain-s3'){
+        dependencies {
+            implementation project(':p-core')
+
+            implementation 'org.springframework.boot:spring-boot-starter-web'
+
+            //aws
+            implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.341'
+        }
     }
 
     project(':p-core'){

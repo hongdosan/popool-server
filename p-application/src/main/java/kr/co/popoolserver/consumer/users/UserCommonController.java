@@ -1,10 +1,10 @@
-package kr.co.popoolserver.controllers.users;
+package kr.co.popoolserver.consumer.users;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.enums.ServiceName;
 import kr.co.popoolserver.error.model.ResponseFormat;
+import kr.co.popoolserver.service.RedisService;
 import kr.co.popoolserver.user.domain.dto.UserCommonDto;
-import kr.co.popoolserver.infrastructure.redis.RedisService;
 import kr.co.popoolserver.user.service.UserCommonService;
 import kr.co.popoolserver.user.service.provider.UserCommonServiceProvider;
 import lombok.RequiredArgsConstructor;
