@@ -7,7 +7,7 @@ import kr.co.popoolserver.infrastructure.interceptor.UserThreadLocal;
 import kr.co.popoolserver.user.domain.entity.UserEntity;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.infrastructure.jwt.JwtProvider;
+import kr.co.popoolserver.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -75,6 +75,7 @@ project(':p-application'){
         implementation project(':p-internal')
         implementation project(':p-domain-admin')
         implementation project(':p-domain-consumer')
+        implementation project(':p-domain-jwt')
         implementation project(':p-domain-redis')
         implementation project(':p-domain-s3')
         implementation project(':p-core')
@@ -109,6 +110,7 @@ project(':p-domain-admin'){
 project(':p-domain-consumer'){
     dependencies {
         implementation project(':p-core')
+        implementation project(':p-domain-jwt')
         implementation project(':p-domain-redis')
         implementation project(':p-domain-s3')
 
@@ -129,10 +131,20 @@ project(':p-domain-consumer'){
         implementation 'io.springfox:springfox-boot-starter:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-        //Security & JWT
-        implementation 'io.jsonwebtoken:jjwt:0.9.1'
+        //Security
         implementation 'org.springframework.boot:spring-boot-starter-security'
         testImplementation 'org.springframework.security:spring-security-test'
+    }
+
+    project(':p-domain-jwt'){
+        dependencies {
+            implementation project(':p-core')
+
+            implementation 'org.springframework.boot:spring-boot-starter-web'
+            
+            //JWT
+            implementation 'io.jsonwebtoken:jjwt:0.9.1'
+        }
     }
 
     project(':p-domain-redis'){

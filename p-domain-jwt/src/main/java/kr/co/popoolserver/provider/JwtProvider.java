@@ -1,26 +1,14 @@
-package kr.co.popoolserver.infrastructure.jwt;
+package kr.co.popoolserver.provider;
 
 import io.jsonwebtoken.*;
 import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.error.exception.JwtTokenInvalidException;
 import kr.co.popoolserver.error.exception.UserDefineException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.service.RedisService;
-import kr.co.popoolserver.user.domain.entity.CorporateEntity;
-import kr.co.popoolserver.user.domain.entity.UserEntity;
-import kr.co.popoolserver.user.repository.CorporateRepository;
-import kr.co.popoolserver.user.repository.UserRepository;
 import kr.co.popoolserver.error.exception.JwtTokenExpiredException;
-import kr.co.popoolserver.error.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -43,9 +31,6 @@ public class JwtProvider {
     private final long ACCESS_EXPIRE = 1000*60*30;
     private final long REFRESH_EXPIRE = 1000*60*60*24*7;
 
-    private final RedisService redisService;
-    private final UserRepository userRepository;
-    private final CorporateRepository corporateRepository;
 
     /**
      * 시크릿 키를 Base64로 인코딩
@@ -102,30 +87,6 @@ public class JwtProvider {
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS256, generateKey())
                 .compact();
-    }
-
-    /**
-     * RefreshToken 을 이용하여 User 의 AccessToken 을 만들어내는 메서드
-     * @param refreshToken 사용자의 RefreshToken
-     * @return 사용자의 새로운 AccessToken
-     */
-    public String createUserAccessToken(String refreshToken){
-        UserEntity userEntity = findUserByToken(refreshToken);
-        redisService.checkValue(refreshToken, redisService.getValue(userEntity.getIdentity()));
-
-        return createAccessToken(userEntity.getIdentity(), userEntity.getUserRole(), userEntity.getName());
-    }
-
-    /**
-     * RefreshToken 을 이용하여 Corporate 의 AccessToken 을 만들어내는 메서드
-     * @param refreshToken 사용자의 RefreshToken
-     * @return 사용자의 새로운 AccessToken
-     */
-    public String createCorporateAccessToken(String refreshToken){
-        CorporateEntity corporateEntity = findCorporateByToken(refreshToken);
-        redisService.checkValue(refreshToken, redisService.getValue(corporateEntity.getIdentity()));
-
-        return createAccessToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
     }
 
     /**
@@ -188,27 +149,6 @@ public class JwtProvider {
     }
 
     /**
-     * 토큰을 통해서 Authentication 객체를 만들어내는 메서드
-     * @param token 토큰
-     * @return 사용자 정보를 담은 UsernamePasswordAuthenticationToken 객체
-     */
-    public Authentication getAuthentication(String token){
-        final String identity = findIdentityByToken(token);
-        final String userRole = findRoleByToken(token);
-        UserDetails userDetails = new User(identity, "", getAuthorities(UserRole.of(userRole)));
-
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    private Set<? extends GrantedAuthority> getAuthorities(UserRole userRole) {
-        Set<GrantedAuthority> set = new HashSet<>();
-        if(userRole.equals(UserRole.ROLE_CORPORATE)) set.add(new SimpleGrantedAuthority("ROLE_CORPORATE"));
-        else set.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-        return set;
-    }
-
-    /**
      * 토큰을 이용하여 사용자 아이디를 찾는 메서드
      * @param token 토큰
      * @return 사용자의 아이디
@@ -234,34 +174,11 @@ public class JwtProvider {
                 .get(USER_ROLE);
     }
 
-
     /**
      * 일반 회원일 시 예외 발생
      * @param userRole
      */
     public void checkUserRole(UserRole userRole){
         if(userRole.equals(UserRole.ROLE_USER)) throw new UserDefineException(ErrorCode.FAIL_USER_ROLE);
-    }
-
-    /**
-     * 토큰을 통해 UserEntity 객체를 가져오는 메서드
-     * @param token : 토큰
-     * @return : jwt 토큰을 통해 찾은 UserEntity 객체
-     * @Exception UserNotFoundException : 해당 회원을 찾을 수 없는 경우 발생하는 예외
-     */
-    public UserEntity findUserByToken(String token){
-        return userRepository.findByIdentity(findIdentityByToken(token))
-                .orElseThrow(() -> new NotFoundException(ErrorCode.FAIL_INVALID_TOKEN.getMessage()));
-    }
-
-    /**
-     * 토큰을 통해 CorporateEntity 객체를 가져오는 메서드
-     * @param token : 토큰
-     * @return : jwt 토큰을 통해 찾은 UserEntity 객체
-     * @Exception UserNotFoundException : 해당 회원을 찾을 수 없는 경우 발생하는 예외
-     */
-    public CorporateEntity findCorporateByToken(String token){
-        return corporateRepository.findByIdentity(findIdentityByToken(token))
-                .orElseThrow(() -> new NotFoundException(ErrorCode.FAIL_INVALID_TOKEN.getMessage()));
     }
 }
