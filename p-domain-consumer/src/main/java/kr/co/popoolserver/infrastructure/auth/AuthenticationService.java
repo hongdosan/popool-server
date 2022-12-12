@@ -23,7 +23,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class ConsumerAuthService {
+public class AuthenticationService {
 
     private final RedisService redisService;
     private final UserRepository userRepository;

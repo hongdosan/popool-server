@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private final ConsumerAuthService consumerAuthService;
+    private final AuthenticationService authenticationService;
     private final JwtProvider jwtProvider;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
@@ -33,7 +33,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         final Optional<String> token = jwtProvider.resolveToken(request);
         try {
             if(token.isPresent() && jwtProvider.isUsable(token.get())){
-                Authentication authentication = consumerAuthService.getAuthentication(token.get());
+                Authentication authentication = authenticationService.getAuthentication(token.get());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }catch (JwtTokenExpiredException | JwtTokenInvalidException e){

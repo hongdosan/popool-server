@@ -2,7 +2,7 @@ package kr.co.popoolserver.consumer.users;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.error.model.ResponseFormat;
-import kr.co.popoolserver.infrastructure.auth.ConsumerAuthService;
+import kr.co.popoolserver.infrastructure.auth.AuthenticationService;
 import kr.co.popoolserver.user.domain.dto.CorporateDto;
 import kr.co.popoolserver.user.service.CorporateService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class CorporateController {
 
-    private final ConsumerAuthService consumerAuthService;
+    private final AuthenticationService authenticationService;
     private final CorporateService corporateService;
 
     @ApiOperation("기업 회원 회원가입")
@@ -28,7 +28,7 @@ public class CorporateController {
     @ApiOperation("AccessToken 재발급 / 권한 : 기업 본인")
     @PostMapping("/refresh-token")
     public ResponseFormat<String> resetRefreshToken(@RequestHeader("refreshToken") String refreshToken){
-        return ResponseFormat.ok(consumerAuthService.createCorporateAccessToken(refreshToken));
+        return ResponseFormat.ok(authenticationService.createCorporateAccessToken(refreshToken));
     }
 
     @ApiOperation("회원 정보 변경 / 권한 : 기업 본인")

@@ -1,8 +1,7 @@
 package kr.co.popoolserver.infrastructure.interceptor;
 
-import kr.co.popoolserver.infrastructure.auth.ConsumerAuthService;
+import kr.co.popoolserver.infrastructure.auth.AuthenticationService;
 import kr.co.popoolserver.provider.JwtProvider;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private ConsumerAuthService consumerAuthService;
+    private AuthenticationService authenticationService;
     @Autowired
     private JwtProvider jwtProvider;
 
@@ -31,10 +30,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         String userRole = jwtProvider.findRoleByToken(token);
 
         if(userRole.equals("ROLE_USER")){
-            UserThreadLocal.set(consumerAuthService.findUserByToken(token));
+            UserThreadLocal.set(authenticationService.findUserByToken(token));
             logger.debug("User ThreadLocal Create");
         }else if(userRole.equals("ROLE_CORPORATE")){
-            CorporateThreadLocal.set(consumerAuthService.findCorporateByToken(token));
+            CorporateThreadLocal.set(authenticationService.findCorporateByToken(token));
             logger.debug("Corporate ThreadLocal Create");
         }
 
