@@ -10,7 +10,8 @@ import java.util.Arrays;
 public enum UserRole {
 
     ROLE_USER("일반회원"),
-    ROLE_CORPORATE("기업회원");
+    ROLE_CORPORATE("기업회원"),
+    ROLE_ADMIN("관리자");
 
     private String role;
 

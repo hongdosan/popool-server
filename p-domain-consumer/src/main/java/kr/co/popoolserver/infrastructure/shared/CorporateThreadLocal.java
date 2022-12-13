@@ -1,4 +1,4 @@
-package kr.co.popoolserver.infrastructure.interceptor;
+package kr.co.popoolserver.infrastructure.shared;
 
 import kr.co.popoolserver.user.domain.entity.CorporateEntity;
 

@@ -18,8 +18,6 @@ import javax.validation.Valid;
 public class UserCommonController {
 
     private final UserCommonServiceProvider userCommonServiceProvider;
-    private final RedisService redisService;
-
     private UserCommonService userCommonService;
 
     @ApiOperation("{USER or CORPORATE}/ 로그인")
@@ -85,13 +83,6 @@ public class UserCommonController {
     public ResponseFormat<UserCommonDto.READ_PHONE> getUserPhone(@PathVariable ServiceName serviceName){
         userCommonService = userCommonServiceProvider.getUserService(serviceName);
         return ResponseFormat.ok(userCommonService.getPhone());
-    }
-
-    @ApiOperation("{USER or CORPORATE} / Redis Data 조회 (테스트를 위해 넣어놨음.)")
-    @PostMapping("/{serviceName}/refresh")
-    public ResponseFormat<String> getRefreshToken(@PathVariable ServiceName serviceName,
-                                             @RequestParam("identity") String identity){
-        return ResponseFormat.ok(redisService.getValue(identity));
     }
 
     @ApiOperation("{USER or CORPORATE} / Redis Data 삭제")

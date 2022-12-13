@@ -178,7 +178,16 @@ public class JwtProvider {
      * 일반 회원일 시 예외 발생
      * @param userRole
      */
-    public void checkUserRole(UserRole userRole){
-        if(userRole.equals(UserRole.ROLE_USER)) throw new UserDefineException(ErrorCode.FAIL_USER_ROLE);
+    public void checkUserRole(UserRole userRole) {
+        if (userRole.equals(UserRole.ROLE_USER)) throw new UserDefineException(ErrorCode.FAIL_USER_ROLE);
     }
+
+    /**
+     * 관리자가 아닐 시 예외 발생
+     * @param userRole
+     */
+    public void checkAdminRole(UserRole userRole){
+        if(!userRole.equals(UserRole.ROLE_ADMIN)) throw new UserDefineException(ErrorCode.FAIL_USER_ROLE);
+    }
+
 }

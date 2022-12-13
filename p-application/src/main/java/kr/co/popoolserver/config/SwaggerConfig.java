@@ -1,4 +1,4 @@
-package kr.co.popoolserver.infrastructure.config;
+package kr.co.popoolserver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,5 +36,4 @@ public class SwaggerConfig {
                 .contact(new Contact("Popool", "https://github.com/HyuckjuneHong", "jjj8337721@naver.com"))
                 .build();
     }
-
 }

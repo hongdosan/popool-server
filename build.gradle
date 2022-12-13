@@ -73,6 +73,7 @@ subprojects {
 project(':p-application'){
     dependencies {
         implementation project(':p-internal')
+        implementation project(':p-domain-admin')
         implementation project(':p-domain-consumer')
         implementation project(':p-domain-jwt')
         implementation project(':p-domain-redis')
