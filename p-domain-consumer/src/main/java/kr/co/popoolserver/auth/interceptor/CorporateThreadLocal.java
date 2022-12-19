@@ -1,4 +1,4 @@
-package kr.co.popoolserver.infrastructure.interceptor;
+package kr.co.popoolserver.auth.interceptor;
 
 import kr.co.popoolserver.entity.users.CorporateEntity;
 

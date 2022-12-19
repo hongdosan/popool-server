@@ -1,6 +1,6 @@
 package kr.co.popoolserver.config;
 
-import kr.co.popoolserver.infrastructure.auth.UserDetailsServiceImpl;
+import kr.co.popoolserver.auth.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

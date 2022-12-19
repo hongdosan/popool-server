@@ -5,7 +5,7 @@ import kr.co.popoolserver.error.exception.BadRequestException;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.infrastructure.interceptor.UserThreadLocal;
+import kr.co.popoolserver.auth.interceptor.UserThreadLocal;
 import kr.co.popoolserver.provider.JwtProvider;
 import kr.co.popoolserver.service.RedisService;
 import kr.co.popoolserver.entity.users.dto.UserCommonDto;

@@ -1,7 +1,7 @@
 package kr.co.popoolserver.admin;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.domain.AdminDto;
+import kr.co.popoolserver.entitiy.dto.AdminDto;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import kr.co.popoolserver.admin.service.AdminService;
 import kr.co.popoolserver.service.RedisService;

@@ -1,6 +1,6 @@
 package kr.co.popoolserver.consumer.user.service.impl;
 
-import kr.co.popoolserver.infrastructure.interceptor.CorporateThreadLocal;
+import kr.co.popoolserver.auth.interceptor.CorporateThreadLocal;
 import kr.co.popoolserver.service.RedisService;
 import kr.co.popoolserver.entity.users.dto.CorporateDto;
 import kr.co.popoolserver.entity.users.dto.UserCommonDto;

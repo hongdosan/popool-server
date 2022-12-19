@@ -1,6 +1,6 @@
-package kr.co.popoolserver.infrastructure.auth;
+package kr.co.popoolserver.auth;
 
-import kr.co.popoolserver.domain.AdminEntity;
+import kr.co.popoolserver.entitiy.AdminEntity;
 import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.error.exception.NotFoundException;
 import kr.co.popoolserver.error.model.ErrorCode;

@@ -1,6 +1,6 @@
-package kr.co.popoolserver.domain;
+package kr.co.popoolserver.auth;
 
-import kr.co.popoolserver.domain.AdminEntity;
+import kr.co.popoolserver.entitiy.AdminEntity;
 
 public class AdminThreadLocal {
     private static final ThreadLocal<AdminEntity> adminThreadLocal;

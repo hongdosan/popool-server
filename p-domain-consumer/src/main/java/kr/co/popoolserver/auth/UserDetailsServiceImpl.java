@@ -1,4 +1,4 @@
-package kr.co.popoolserver.infrastructure.auth;
+package kr.co.popoolserver.auth;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

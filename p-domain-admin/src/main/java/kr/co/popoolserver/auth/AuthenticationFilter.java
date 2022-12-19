@@ -1,12 +1,11 @@
-package kr.co.popoolserver.infrastructure.auth;
+package kr.co.popoolserver.auth;
 
-import kr.co.popoolserver.error.exception.JwtTokenInvalidException;
 import kr.co.popoolserver.error.exception.JwtTokenExpiredException;
+import kr.co.popoolserver.error.exception.JwtTokenInvalidException;
 import kr.co.popoolserver.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -17,11 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@Component
 @RequiredArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private final AuthenticationService authenticationService;
+    private final AdminAuthService adminAuthService;
     private final JwtProvider jwtProvider;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
@@ -33,7 +31,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         final Optional<String> token = jwtProvider.resolveToken(request);
         try {
             if(token.isPresent() && jwtProvider.isUsable(token.get())){
-                Authentication authentication = authenticationService.getAuthentication(token.get());
+                Authentication authentication = adminAuthService.getAuthentication(token.get());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }catch (JwtTokenExpiredException | JwtTokenInvalidException e){
@@ -42,4 +40,5 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
 }

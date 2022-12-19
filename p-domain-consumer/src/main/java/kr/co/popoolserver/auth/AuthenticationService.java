@@ -1,4 +1,4 @@
-package kr.co.popoolserver.infrastructure.auth;
+package kr.co.popoolserver.auth;
 
 import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.error.exception.NotFoundException;

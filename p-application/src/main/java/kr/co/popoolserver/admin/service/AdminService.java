@@ -1,11 +1,11 @@
 package kr.co.popoolserver.admin.service;
 
-import kr.co.popoolserver.domain.AdminDto;
-import kr.co.popoolserver.domain.AdminEntity;
+import kr.co.popoolserver.entitiy.dto.AdminDto;
+import kr.co.popoolserver.entitiy.AdminEntity;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.domain.AdminThreadLocal;
+import kr.co.popoolserver.auth.AdminThreadLocal;
 import kr.co.popoolserver.provider.JwtProvider;
 import kr.co.popoolserver.repository.AdminRepository;
 import kr.co.popoolserver.service.RedisService;
