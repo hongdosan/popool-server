@@ -1,4 +1,4 @@
-package kr.co.popoolserver.infrastructure.handler;
+package kr.co.popoolserver.handler;
 
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.MaxUploadSizeExceededException;

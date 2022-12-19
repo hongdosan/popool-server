@@ -1,6 +1,11 @@
-package kr.co.popoolserver.infrastructure.interceptor;
+package kr.co.popoolserver.interceptor;
 
-import kr.co.popoolserver.infrastructure.jwt.JwtProvider;
+import kr.co.popoolserver.infrastructure.auth.AdminAuthService;
+import kr.co.popoolserver.infrastructure.auth.AuthenticationService;
+import kr.co.popoolserver.domain.AdminThreadLocal;
+import kr.co.popoolserver.infrastructure.shared.CorporateThreadLocal;
+import kr.co.popoolserver.infrastructure.shared.UserThreadLocal;
+import kr.co.popoolserver.provider.JwtProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +20,12 @@ import javax.validation.constraints.NotNull;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
+    private AuthenticationService authenticationService;
+    @Autowired
+    private AdminAuthService adminAuthService;
+    @Autowired
     private JwtProvider jwtProvider;
+
     Logger logger = LoggerFactory.getLogger(AuthInterceptor.class);
 
     @Override
@@ -26,11 +36,14 @@ public class AuthInterceptor implements HandlerInterceptor {
         String userRole = jwtProvider.findRoleByToken(token);
 
         if(userRole.equals("ROLE_USER")){
-            UserThreadLocal.set(jwtProvider.findUserByToken(token));
+            UserThreadLocal.set(authenticationService.findUserByToken(token));
             logger.debug("User ThreadLocal Create");
         }else if(userRole.equals("ROLE_CORPORATE")){
-            CorporateThreadLocal.set(jwtProvider.findCorporateByToken(token));
+            CorporateThreadLocal.set(authenticationService.findCorporateByToken(token));
             logger.debug("Corporate ThreadLocal Create");
+        }else if(userRole.equals("ROLE_ADMIN")){
+            AdminThreadLocal.set(adminAuthService.findAdminByToken(token));
+            logger.debug("Admin ThreadLocal Create");
         }
 
         return true;
@@ -53,7 +66,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private void threadLocalRemoveCheck(){
-        if(UserThreadLocal.get() == null && CorporateThreadLocal.get() == null) return;
+        if(UserThreadLocal.get() == null && CorporateThreadLocal.get() == null && AdminThreadLocal.get() == null) return;
         if(UserThreadLocal.get() != null){
             UserThreadLocal.remove();
             logger.debug("User ThreadLocal PostHandle Remove");
@@ -61,6 +74,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         if(CorporateThreadLocal.get() != null){
             CorporateThreadLocal.remove();
             logger.debug("Corporate ThreadLocal PostHandle Remove");
+        }
+        if(AdminThreadLocal.get() != null){
+            AdminThreadLocal.remove();
+            logger.debug("Admin ThreadLocal PostHandle Remove");
         }
     }
 }

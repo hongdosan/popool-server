@@ -2,7 +2,7 @@ package kr.co.popoolserver.consumer.users;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.error.model.ResponseFormat;
-import kr.co.popoolserver.infrastructure.jwt.JwtProvider;
+import kr.co.popoolserver.infrastructure.auth.AuthenticationService;
 import kr.co.popoolserver.user.domain.dto.UserDto;
 import kr.co.popoolserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    private final JwtProvider jwtProvider;
+    private final AuthenticationService authenticationService;
 
     @ApiOperation("일반 회원 회원가입")
     @PostMapping("/signUp")
@@ -28,7 +28,7 @@ public class UserController {
     @ApiOperation("AccessToken 재발급 / 권한 : 본인 일반")
     @PostMapping("/refresh-token")
     public ResponseFormat<String> resetRefreshToken(@RequestHeader("refreshToken") String refreshToken){
-        return ResponseFormat.ok(jwtProvider.createUserAccessToken(refreshToken));
+        return ResponseFormat.ok(authenticationService.createUserAccessToken(refreshToken));
     }
 
     @ApiOperation("회원 정보 변경 / 권한 : 본인 일반")
