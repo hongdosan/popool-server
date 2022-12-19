@@ -1,6 +1,6 @@
-package kr.co.popoolserver.consumer.user.service.provider;
+package kr.co.popoolserver.consumer.service.user.provider;
 
-import kr.co.popoolserver.consumer.user.service.UserCommonService;
+import kr.co.popoolserver.consumer.service.user.UserCommonService;
 import kr.co.popoolserver.enums.ServiceName;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;

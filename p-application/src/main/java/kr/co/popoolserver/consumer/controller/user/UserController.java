@@ -1,10 +1,10 @@
-package kr.co.popoolserver.consumer.user.controller;
+package kr.co.popoolserver.consumer.controller.user;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import kr.co.popoolserver.auth.AuthenticationService;
 import kr.co.popoolserver.entity.users.dto.UserDto;
-import kr.co.popoolserver.consumer.user.service.UserService;
+import kr.co.popoolserver.consumer.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

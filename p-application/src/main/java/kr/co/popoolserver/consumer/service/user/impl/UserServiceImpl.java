@@ -1,4 +1,4 @@
-package kr.co.popoolserver.consumer.user.service.impl;
+package kr.co.popoolserver.consumer.service.user.impl;
 
 import kr.co.popoolserver.enums.ServiceName;
 import kr.co.popoolserver.error.exception.BadRequestException;
@@ -13,7 +13,7 @@ import kr.co.popoolserver.entity.users.dto.UserDto;
 import kr.co.popoolserver.entity.users.UserEntity;
 import kr.co.popoolserver.entity.users.model.PhoneNumber;
 import kr.co.popoolserver.repository.users.UserRepository;
-import kr.co.popoolserver.consumer.user.service.UserService;
+import kr.co.popoolserver.consumer.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

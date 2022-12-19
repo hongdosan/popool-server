@@ -1,4 +1,4 @@
-package kr.co.popoolserver.consumer.user.service;
+package kr.co.popoolserver.consumer.service.user;
 
 import kr.co.popoolserver.entity.users.dto.UserDto;
 
