@@ -1,7 +1,7 @@
 package kr.co.popoolserver.consumer.service.user;
 
 import kr.co.popoolserver.entity.user.dto.UserCommonDto;
-import kr.co.popoolserver.enums.ServiceName;
+import kr.co.popoolserver.enums.UserServiceName;
 
 public interface UserCommonService {
 
@@ -30,5 +30,5 @@ public interface UserCommonService {
     void checkEncodePassword(String password, String encodePassword);
     void checkDelete(String delYN);
     void checkReCreate(String delYN);
-    Boolean canHandle(ServiceName serviceName);
+    Boolean canHandle(UserServiceName userServiceName);
 }

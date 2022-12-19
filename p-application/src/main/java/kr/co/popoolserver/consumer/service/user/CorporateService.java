@@ -5,7 +5,7 @@ import kr.co.popoolserver.entity.user.CorporateEntity;
 import kr.co.popoolserver.entity.user.dto.CorporateDto;
 import kr.co.popoolserver.entity.user.dto.UserCommonDto;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
-import kr.co.popoolserver.enums.ServiceName;
+import kr.co.popoolserver.enums.UserServiceName;
 import kr.co.popoolserver.error.exception.BadRequestException;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
@@ -300,7 +300,7 @@ public class CorporateService implements UserCommonService {
     }
 
     @Override
-    public Boolean canHandle(ServiceName serviceName) {
-        return serviceName.equals(ServiceName.CORPORATE);
+    public Boolean canHandle(UserServiceName userServiceName) {
+        return userServiceName.equals(UserServiceName.CORPORATE);
     }
 }

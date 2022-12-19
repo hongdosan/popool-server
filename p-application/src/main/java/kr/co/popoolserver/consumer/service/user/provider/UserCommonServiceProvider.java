@@ -1,7 +1,7 @@
 package kr.co.popoolserver.consumer.service.user.provider;
 
 import kr.co.popoolserver.consumer.service.user.UserCommonService;
-import kr.co.popoolserver.enums.ServiceName;
+import kr.co.popoolserver.enums.UserServiceName;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,9 @@ public class UserCommonServiceProvider {
 
     private final List<UserCommonService> userCommonServiceList;
 
-    public UserCommonService getUserService(ServiceName serviceName){
+    public UserCommonService getUserService(UserServiceName userServiceName){
         UserCommonService userCommonService = userCommonServiceList.stream()
-                .filter(service -> service.canHandle(serviceName))
+                .filter(service -> service.canHandle(userServiceName))
                 .findFirst()
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.NOT_SERVICE));
         return userCommonService;
