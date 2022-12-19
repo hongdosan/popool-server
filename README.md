@@ -47,21 +47,21 @@ Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습�
 │   └── src
 │       ├── main
 │       │   ├── java.kr.co.popoolserver
-│       │   │               ├── DomainAdminApplication.java
-│       │   │               ├── domain..
-│       │   │               ├── infrastructure..
+│       │   │               ├── auth..
+│       │   │               ├── config..
+│       │   │               ├── entity..
 │       │   │               ├── repository..
-│       │   │               └── service..
+│       │   │               └── DomainAdminApplication.java
 ├── p-domain-consumer
 │   ├── ..
 │   └── src
 │       ├── main
 │       │   ├── java.kr.co.popoolserver
-│       │   │               ├── DomainConsumerApplication.java
-│       │   │               ├── career..
-│       │   │               ├── infrastructure..
-│       │   │               ├── product..
-│       │   │               └── user..
+│       │   │               ├── auth..
+│       │   │               ├── config..
+│       │   │               ├── entity..
+│       │   │               ├── repository..
+│       │   │               └── DomainConsumerApplication.java
 │       │   └── ..
 │       └── ..
 ├── p-domain-jwt
