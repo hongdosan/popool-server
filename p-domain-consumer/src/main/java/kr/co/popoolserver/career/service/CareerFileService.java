@@ -7,7 +7,7 @@ import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.auth.interceptor.UserThreadLocal;
 import kr.co.popoolserver.service.S3Service;
-import kr.co.popoolserver.entity.users.UserEntity;
+import kr.co.popoolserver.entity.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

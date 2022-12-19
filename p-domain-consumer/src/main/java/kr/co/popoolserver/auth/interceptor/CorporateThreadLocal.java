@@ -1,6 +1,6 @@
 package kr.co.popoolserver.auth.interceptor;
 
-import kr.co.popoolserver.entity.users.CorporateEntity;
+import kr.co.popoolserver.entity.user.CorporateEntity;
 
 public class CorporateThreadLocal {
     private static final ThreadLocal<CorporateEntity> corporateThreadLocal;

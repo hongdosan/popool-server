@@ -4,7 +4,7 @@ import kr.co.popoolserver.career.domain.dto.CareerDto;
 import kr.co.popoolserver.career.domain.entity.CareerEntity;
 import kr.co.popoolserver.career.repository.CareerRepository;
 import kr.co.popoolserver.auth.interceptor.UserThreadLocal;
-import kr.co.popoolserver.entity.users.UserEntity;
+import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.provider.JwtProvider;

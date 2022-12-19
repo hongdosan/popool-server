@@ -1,6 +1,6 @@
 package kr.co.popoolserver.consumer.service.user;
 
-import kr.co.popoolserver.entity.users.dto.CorporateDto;
+import kr.co.popoolserver.entity.user.dto.CorporateDto;
 
 public interface CorporateService extends UserCommonService{
     //create

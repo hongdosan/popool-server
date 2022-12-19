@@ -1,6 +1,6 @@
 package kr.co.popoolserver.auth.interceptor;
 
-import kr.co.popoolserver.entity.users.UserEntity;
+import kr.co.popoolserver.entity.user.UserEntity;
 
 public class UserThreadLocal {
 

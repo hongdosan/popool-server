@@ -3,7 +3,7 @@ package kr.co.popoolserver.consumer.controller.user;
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.enums.ServiceName;
 import kr.co.popoolserver.error.model.ResponseFormat;
-import kr.co.popoolserver.entity.users.dto.UserCommonDto;
+import kr.co.popoolserver.entity.user.dto.UserCommonDto;
 import kr.co.popoolserver.consumer.service.user.UserCommonService;
 import kr.co.popoolserver.consumer.service.user.provider.UserCommonServiceProvider;
 import lombok.RequiredArgsConstructor;
