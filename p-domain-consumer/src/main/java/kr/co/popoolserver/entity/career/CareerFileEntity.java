@@ -1,6 +1,6 @@
-package kr.co.popoolserver.career.domain.entity;
+package kr.co.popoolserver.entity.career;
 
-import kr.co.popoolserver.career.domain.dto.CareerFileDto;
+import kr.co.popoolserver.entity.career.dto.CareerFileDto;
 import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.entity.BaseEntity;

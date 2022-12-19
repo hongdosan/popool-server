@@ -1,7 +1,7 @@
-package kr.co.popoolserver.career.service;
+package kr.co.popoolserver.consumer.service.career;
 
-import kr.co.popoolserver.career.domain.entity.CareerFileEntity;
-import kr.co.popoolserver.career.repository.CareerFileRepository;
+import kr.co.popoolserver.entity.career.CareerFileEntity;
+import kr.co.popoolserver.repository.career.CareerFileRepository;
 import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;

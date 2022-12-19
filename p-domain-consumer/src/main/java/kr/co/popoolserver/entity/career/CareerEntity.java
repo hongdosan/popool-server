@@ -1,6 +1,6 @@
-package kr.co.popoolserver.career.domain.entity;
+package kr.co.popoolserver.entity.career;
 
-import kr.co.popoolserver.career.domain.dto.CareerDto;
+import kr.co.popoolserver.entity.career.dto.CareerDto;
 import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.entity.BaseEntity;
 import lombok.AccessLevel;

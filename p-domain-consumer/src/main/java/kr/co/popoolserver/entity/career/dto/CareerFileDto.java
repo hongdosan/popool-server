@@ -1,10 +1,9 @@
-package kr.co.popoolserver.career.domain.dto;
+package kr.co.popoolserver.entity.career.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpHeaders;
 
 import java.time.LocalDateTime;
 

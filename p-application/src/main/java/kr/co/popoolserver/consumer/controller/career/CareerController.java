@@ -1,8 +1,8 @@
-package kr.co.popoolserver.consumer.careers;
+package kr.co.popoolserver.consumer.controller.career;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.career.domain.dto.CareerDto;
-import kr.co.popoolserver.career.service.CareerService;
+import kr.co.popoolserver.entity.career.dto.CareerDto;
+import kr.co.popoolserver.consumer.service.career.CareerService;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

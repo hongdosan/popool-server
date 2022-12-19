@@ -1,7 +1,7 @@
-package kr.co.popoolserver.career.domain.dto;
+package kr.co.popoolserver.entity.career.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.career.domain.entity.CareerFileEntity;
+import kr.co.popoolserver.entity.career.CareerFileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

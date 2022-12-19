@@ -1,4 +1,4 @@
-package kr.co.popoolserver.admin;
+package kr.co.popoolserver.admin.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.entitiy.dto.AdminDto;

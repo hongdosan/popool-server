@@ -1,8 +1,8 @@
-package kr.co.popoolserver.career.service;
+package kr.co.popoolserver.consumer.service.career;
 
-import kr.co.popoolserver.career.domain.dto.CareerDto;
-import kr.co.popoolserver.career.domain.entity.CareerEntity;
-import kr.co.popoolserver.career.repository.CareerRepository;
+import kr.co.popoolserver.entity.career.dto.CareerDto;
+import kr.co.popoolserver.entity.career.CareerEntity;
+import kr.co.popoolserver.repository.career.CareerRepository;
 import kr.co.popoolserver.auth.interceptor.UserThreadLocal;
 import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.error.exception.BusinessLogicException;

@@ -1,7 +1,7 @@
-package kr.co.popoolserver.consumer.careers;
+package kr.co.popoolserver.consumer.controller.career;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.career.service.CareerFileService;
+import kr.co.popoolserver.consumer.service.career.CareerFileService;
 import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
