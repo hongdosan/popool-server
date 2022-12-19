@@ -1,7 +1,7 @@
-package kr.co.popoolserver.user.dto;
+package kr.co.popoolserver.dtos.users;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.user.entity.model.PhoneNumber;
+import kr.co.popoolserver.entity.users.model.PhoneNumber;
 import kr.co.popoolserver.enums.Gender;
 import kr.co.popoolserver.enums.UserRole;
 import lombok.AllArgsConstructor;

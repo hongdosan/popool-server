@@ -1,6 +1,6 @@
 package kr.co.popoolserver.consumer.user.service;
 
-import kr.co.popoolserver.user.dto.UserDto;
+import kr.co.popoolserver.dtos.users.UserDto;
 
 public interface UserService extends UserCommonService{
 

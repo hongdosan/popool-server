@@ -1,8 +1,8 @@
-package kr.co.popoolserver.user.dto;
+package kr.co.popoolserver.dtos.users;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.user.entity.model.Address;
-import kr.co.popoolserver.user.entity.model.PhoneNumber;
+import kr.co.popoolserver.entity.users.model.Address;
+import kr.co.popoolserver.entity.users.model.PhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

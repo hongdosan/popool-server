@@ -1,6 +1,6 @@
 package kr.co.popoolserver.consumer.user.service;
 
-import kr.co.popoolserver.user.dto.UserCommonDto;
+import kr.co.popoolserver.dtos.users.UserCommonDto;
 import kr.co.popoolserver.enums.ServiceName;
 
 public interface UserCommonService {

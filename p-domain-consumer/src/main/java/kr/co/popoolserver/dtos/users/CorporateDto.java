@@ -1,4 +1,4 @@
-package kr.co.popoolserver.user.dto;
+package kr.co.popoolserver.dtos.users;
 
 import io.swagger.annotations.ApiModelProperty;
 import kr.co.popoolserver.enums.UserRole;
