@@ -50,18 +50,4 @@ public class AdminController {
         adminService.checkAdmin();
         return ResponseFormat.ok(redisService.getValue(identity));
     }
-
-    @ApiOperation("상품 등록 / 권한 : 관리자")
-    @PostMapping("/payments")
-    public ResponseFormat createProduct(){
-        ///TODO Create Products
-        return ResponseFormat.ok();
-    }
-
-    @ApiOperation("상품 수정 / 권한 : 관리자")
-    @PutMapping("/payments")
-    public ResponseFormat updateProduct(){
-        ///TODO Update Product
-        return ResponseFormat.ok();
-    }
 }
