@@ -1,4 +1,4 @@
-package kr.co.popoolserver.user.domain.entity.model;
+package kr.co.popoolserver.user.entity.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;

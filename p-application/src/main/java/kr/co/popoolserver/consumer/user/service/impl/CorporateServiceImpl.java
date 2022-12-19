@@ -1,13 +1,13 @@
-package kr.co.popoolserver.user.service.impl;
+package kr.co.popoolserver.consumer.user.service.impl;
 
 import kr.co.popoolserver.infrastructure.shared.CorporateThreadLocal;
 import kr.co.popoolserver.service.RedisService;
-import kr.co.popoolserver.user.domain.dto.CorporateDto;
-import kr.co.popoolserver.user.domain.dto.UserCommonDto;
-import kr.co.popoolserver.user.domain.entity.CorporateEntity;
+import kr.co.popoolserver.user.dto.CorporateDto;
+import kr.co.popoolserver.user.dto.UserCommonDto;
+import kr.co.popoolserver.user.entity.CorporateEntity;
 import kr.co.popoolserver.user.repository.CorporateRepository;
-import kr.co.popoolserver.user.service.CorporateService;
-import kr.co.popoolserver.user.domain.entity.model.PhoneNumber;
+import kr.co.popoolserver.consumer.user.service.CorporateService;
+import kr.co.popoolserver.user.entity.model.PhoneNumber;
 import kr.co.popoolserver.enums.ServiceName;
 import kr.co.popoolserver.error.exception.BadRequestException;
 import kr.co.popoolserver.error.exception.BusinessLogicException;

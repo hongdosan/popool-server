@@ -1,6 +1,6 @@
 package kr.co.popoolserver.infrastructure.shared;
 
-import kr.co.popoolserver.user.domain.entity.UserEntity;
+import kr.co.popoolserver.user.entity.UserEntity;
 
 public class UserThreadLocal {
 

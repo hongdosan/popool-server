@@ -1,6 +1,6 @@
 package kr.co.popoolserver.product.domain.entity;
 
-import kr.co.popoolserver.user.domain.entity.CorporateEntity;
+import kr.co.popoolserver.user.entity.CorporateEntity;
 import kr.co.popoolserver.infrastructure.shared.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;

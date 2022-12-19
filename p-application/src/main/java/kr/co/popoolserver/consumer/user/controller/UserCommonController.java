@@ -1,12 +1,11 @@
-package kr.co.popoolserver.consumer.users;
+package kr.co.popoolserver.consumer.user.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.enums.ServiceName;
 import kr.co.popoolserver.error.model.ResponseFormat;
-import kr.co.popoolserver.service.RedisService;
-import kr.co.popoolserver.user.domain.dto.UserCommonDto;
-import kr.co.popoolserver.user.service.UserCommonService;
-import kr.co.popoolserver.user.service.provider.UserCommonServiceProvider;
+import kr.co.popoolserver.user.dto.UserCommonDto;
+import kr.co.popoolserver.consumer.user.service.UserCommonService;
+import kr.co.popoolserver.consumer.user.service.provider.UserCommonServiceProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

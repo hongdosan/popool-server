@@ -1,4 +1,4 @@
-package kr.co.popoolserver.infrastructure.config;
+package kr.co.popoolserver.config;
 
 import kr.co.popoolserver.infrastructure.auth.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;

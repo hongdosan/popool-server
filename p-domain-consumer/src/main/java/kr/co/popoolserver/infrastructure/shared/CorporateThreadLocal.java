@@ -1,6 +1,6 @@
 package kr.co.popoolserver.infrastructure.shared;
 
-import kr.co.popoolserver.user.domain.entity.CorporateEntity;
+import kr.co.popoolserver.user.entity.CorporateEntity;
 
 public class CorporateThreadLocal {
     private static final ThreadLocal<CorporateEntity> corporateThreadLocal;

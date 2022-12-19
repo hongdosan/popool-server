@@ -1,4 +1,4 @@
-package kr.co.popoolserver.user.service.impl;
+package kr.co.popoolserver.consumer.user.service.impl;
 
 import kr.co.popoolserver.enums.ServiceName;
 import kr.co.popoolserver.error.exception.BadRequestException;
@@ -8,12 +8,12 @@ import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.infrastructure.shared.UserThreadLocal;
 import kr.co.popoolserver.provider.JwtProvider;
 import kr.co.popoolserver.service.RedisService;
-import kr.co.popoolserver.user.domain.dto.UserCommonDto;
-import kr.co.popoolserver.user.domain.dto.UserDto;
-import kr.co.popoolserver.user.domain.entity.UserEntity;
-import kr.co.popoolserver.user.domain.entity.model.PhoneNumber;
+import kr.co.popoolserver.user.dto.UserCommonDto;
+import kr.co.popoolserver.user.dto.UserDto;
+import kr.co.popoolserver.user.entity.UserEntity;
+import kr.co.popoolserver.user.entity.model.PhoneNumber;
 import kr.co.popoolserver.user.repository.UserRepository;
-import kr.co.popoolserver.user.service.UserService;
+import kr.co.popoolserver.consumer.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

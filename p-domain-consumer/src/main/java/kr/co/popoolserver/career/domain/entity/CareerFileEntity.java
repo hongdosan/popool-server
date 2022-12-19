@@ -2,7 +2,7 @@ package kr.co.popoolserver.career.domain.entity;
 
 import kr.co.popoolserver.career.domain.dto.CareerFileDto;
 import kr.co.popoolserver.dto.S3Dto;
-import kr.co.popoolserver.user.domain.entity.UserEntity;
+import kr.co.popoolserver.user.entity.UserEntity;
 import kr.co.popoolserver.infrastructure.shared.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;

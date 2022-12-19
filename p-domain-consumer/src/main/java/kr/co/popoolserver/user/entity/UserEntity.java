@@ -1,12 +1,12 @@
-package kr.co.popoolserver.user.domain.entity;
+package kr.co.popoolserver.user.entity;
 
-import kr.co.popoolserver.user.domain.dto.UserDto;
-import kr.co.popoolserver.user.domain.entity.model.Address;
+import kr.co.popoolserver.user.dto.UserDto;
+import kr.co.popoolserver.user.entity.model.Address;
 import kr.co.popoolserver.infrastructure.shared.BaseEntity;
-import kr.co.popoolserver.user.domain.entity.model.PhoneNumber;
+import kr.co.popoolserver.user.entity.model.PhoneNumber;
 import kr.co.popoolserver.enums.Gender;
 import kr.co.popoolserver.enums.UserRole;
-import kr.co.popoolserver.user.domain.dto.UserCommonDto;
+import kr.co.popoolserver.user.dto.UserCommonDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
