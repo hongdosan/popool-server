@@ -3,10 +3,8 @@ package kr.co.popoolserver.admin;
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.domain.AdminDto;
 import kr.co.popoolserver.error.model.ResponseFormat;
-import kr.co.popoolserver.provider.JwtProvider;
-import kr.co.popoolserver.service.AdminService;
+import kr.co.popoolserver.admin.service.AdminService;
 import kr.co.popoolserver.service.RedisService;
-import kr.co.popoolserver.user.domain.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
