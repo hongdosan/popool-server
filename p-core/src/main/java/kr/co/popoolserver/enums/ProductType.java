@@ -9,8 +9,8 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum ProductType {
 
-    PRODUCT_COUPON("이용권"),
-    PRODUCT_SUBSCRIPTION("구독권");
+    COUPON("이용권"),
+    SUBSCRIPTION("구독권");
 
     private String product;
 

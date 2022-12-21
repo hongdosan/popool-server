@@ -40,9 +40,14 @@ public enum ErrorCode {
     //s3
     FAIL_FILE_UPLOAD("파일 업로드 실패하였습니다.", 4101),
     FAIL_FILE_INVALID_NAME("잘못된 형식의 파일입니다.", 4101),
-    FAIL_FILE_CONVERT("파일 변환 실패하였습니다.", 4101);
+    FAIL_FILE_CONVERT("파일 변환 실패하였습니다.", 4101),
 
-    //TODO: payment, product, inventory, score, grade Error Enum
+    //product
+    WRONG_PRODUCT_NAME("존재하지 않는 상품입니다.", 4100),
+
+    DUPLICATED_PRODUCT_NAME("상품 이름이 중복 되었습니다.", 4101);
+
+    //TODO: payment, inventory Error Enum
 
     private String message;
     private int status;

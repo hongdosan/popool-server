@@ -1,6 +1,6 @@
 package kr.co.popoolserver.enums;
 
-public enum ServiceName {
+public enum UserServiceName {
     USER,
     CORPORATE,
     ADMIN

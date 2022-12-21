@@ -1,7 +1,7 @@
 package kr.co.popoolserver.admin.controller;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.entitiy.dto.AdminDto;
+import kr.co.popoolserver.entitiy.AdminDto;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import kr.co.popoolserver.admin.service.AdminService;
 import kr.co.popoolserver.service.RedisService;
@@ -49,19 +49,5 @@ public class AdminController {
     public ResponseFormat<String> getRefreshToken(@RequestParam("identity") String identity){
         adminService.checkAdmin();
         return ResponseFormat.ok(redisService.getValue(identity));
-    }
-
-    @ApiOperation("상품 등록 / 권한 : 관리자")
-    @PostMapping("/payments")
-    public ResponseFormat createProduct(){
-        ///TODO Create Products
-        return ResponseFormat.ok();
-    }
-
-    @ApiOperation("상품 수정 / 권한 : 관리자")
-    @PutMapping("/payments")
-    public ResponseFormat updateProduct(){
-        ///TODO Update Product
-        return ResponseFormat.ok();
     }
 }

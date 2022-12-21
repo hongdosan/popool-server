@@ -5,7 +5,7 @@ import kr.co.popoolserver.repository.career.CareerFileRepository;
 import kr.co.popoolserver.dto.S3Dto;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.auth.interceptor.UserThreadLocal;
+import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.service.S3Service;
 import kr.co.popoolserver.entity.user.UserEntity;
 import lombok.RequiredArgsConstructor;

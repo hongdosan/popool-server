@@ -1,10 +1,10 @@
 package kr.co.popoolserver.interceptor;
 
-import kr.co.popoolserver.auth.AdminAuthService;
-import kr.co.popoolserver.auth.AuthenticationService;
-import kr.co.popoolserver.auth.AdminThreadLocal;
-import kr.co.popoolserver.auth.interceptor.CorporateThreadLocal;
-import kr.co.popoolserver.auth.interceptor.UserThreadLocal;
+import kr.co.popoolserver.admin.security.AdminAuthenticationService;
+import kr.co.popoolserver.consumer.security.ConsumerAuthenticationService;
+import kr.co.popoolserver.admin.security.AdminThreadLocal;
+import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
+import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.provider.JwtProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +20,9 @@ import javax.validation.constraints.NotNull;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private ConsumerAuthenticationService consumerAuthenticationService;
     @Autowired
-    private AdminAuthService adminAuthService;
+    private AdminAuthenticationService adminAuthenticationService;
     @Autowired
     private JwtProvider jwtProvider;
 
@@ -36,13 +36,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         String userRole = jwtProvider.findRoleByToken(token);
 
         if(userRole.equals("ROLE_USER")){
-            UserThreadLocal.set(authenticationService.findUserByToken(token));
+            UserThreadLocal.set(consumerAuthenticationService.findUserByToken(token));
             logger.debug("User ThreadLocal Create");
         }else if(userRole.equals("ROLE_CORPORATE")){
-            CorporateThreadLocal.set(authenticationService.findCorporateByToken(token));
+            CorporateThreadLocal.set(consumerAuthenticationService.findCorporateByToken(token));
             logger.debug("Corporate ThreadLocal Create");
         }else if(userRole.equals("ROLE_ADMIN")){
-            AdminThreadLocal.set(adminAuthService.findAdminByToken(token));
+            AdminThreadLocal.set(adminAuthenticationService.findAdminByToken(token));
             logger.debug("Admin ThreadLocal Create");
         }
 

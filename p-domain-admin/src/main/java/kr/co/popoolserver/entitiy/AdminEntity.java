@@ -1,6 +1,5 @@
 package kr.co.popoolserver.entitiy;
 
-import kr.co.popoolserver.entitiy.dto.AdminDto;
 import kr.co.popoolserver.enums.UserRole;
 import lombok.AccessLevel;
 import lombok.Builder;

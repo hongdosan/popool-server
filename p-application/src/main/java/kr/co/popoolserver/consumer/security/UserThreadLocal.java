@@ -1,4 +1,4 @@
-package kr.co.popoolserver.auth.interceptor;
+package kr.co.popoolserver.consumer.security;
 
 import kr.co.popoolserver.entity.user.UserEntity;
 

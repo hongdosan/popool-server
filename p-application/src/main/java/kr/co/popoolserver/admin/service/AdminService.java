@@ -1,11 +1,13 @@
 package kr.co.popoolserver.admin.service;
 
-import kr.co.popoolserver.entitiy.dto.AdminDto;
+import kr.co.popoolserver.entitiy.AdminDto;
 import kr.co.popoolserver.entitiy.AdminEntity;
+import kr.co.popoolserver.enums.AdminServiceName;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
+import kr.co.popoolserver.error.exception.UserDefineException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.auth.AdminThreadLocal;
+import kr.co.popoolserver.admin.security.AdminThreadLocal;
 import kr.co.popoolserver.provider.JwtProvider;
 import kr.co.popoolserver.repository.AdminRepository;
 import kr.co.popoolserver.service.RedisService;
@@ -17,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AdminService {
+public class AdminService implements AdminCommonService{
 
     private final AdminRepository adminRepository;
     private final JwtProvider jwtProvider;
@@ -95,11 +97,16 @@ public class AdminService {
     }
 
     /**
-     * 권한 체크
+     * 관리자 권한 체크
      */
+    @Override
     public void checkAdmin(){
-        AdminEntity adminEntity = AdminThreadLocal.get();
-        jwtProvider.checkAdminRole(adminEntity.getUserRole());
+        try{
+            AdminEntity adminEntity = AdminThreadLocal.get();
+            jwtProvider.checkAdminRole(adminEntity.getUserRole());
+        }catch (Exception e){
+            throw new UserDefineException(ErrorCode.FAIL_USER_ROLE);
+        }
     }
 
     /**
@@ -115,16 +122,24 @@ public class AdminService {
      * @param password : user pw
      * @param checkPassword : check pw
      */
-    private void checkPassword(String password, String checkPassword) {
+    private void checkPassword(String password,
+                               String checkPassword) {
         if(!password.equals(checkPassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
     }
 
     /**
-     * Login PW Check
+     * Encode PW Check
      * @param password
      * @param encodePassword
      */
-    private void checkEncodePassword(String password, String encodePassword) {
+    @Override
+    public void checkEncodePassword(String password,
+                                    String encodePassword) {
         if(!passwordEncoder.matches(password, encodePassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Override
+    public Boolean canHandle(AdminServiceName adminServiceName) {
+        return adminServiceName.equals(AdminServiceName.ADMIN);
     }
 }

@@ -1,6 +1,6 @@
 package kr.co.popoolserver.config;
 
-import kr.co.popoolserver.auth.UserDetailsServiceImpl;
+import kr.co.popoolserver.consumer.security.ConsumerDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(new UserDetailsServiceImpl())
+        auth.userDetailsService(new ConsumerDetailsServiceImpl())
                 .passwordEncoder(passwordEncoder());
     }
 

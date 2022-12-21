@@ -85,6 +85,9 @@ project(':p-application'){
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+        //thymeleaf
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
         //Security
         implementation 'org.springframework.boot:spring-boot-starter-security'
         testImplementation 'org.springframework.security:spring-security-test'
@@ -106,16 +109,13 @@ project(':p-internal'){
 project(':p-domain-admin'){
     dependencies {
         implementation project(':p-core')
-        implementation project(':p-domain-jwt')
-        implementation project(':p-domain-redis')
-        implementation project(':p-domain-s3')
 
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-web'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
         //DB
-        runtimeOnly 'com.h2database:h2'
         runtimeOnly 'mysql:mysql-connector-java'
 
         //Swagger & Validation
@@ -131,21 +131,14 @@ project(':p-domain-admin'){
 project(':p-domain-consumer'){
     dependencies {
         implementation project(':p-core')
-        implementation project(':p-domain-jwt')
-        implementation project(':p-domain-redis')
         implementation project(':p-domain-s3')
 
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-web'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-        //thymeleaf
-        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
         //DB
-        runtimeOnly 'com.h2database:h2'
         runtimeOnly 'mysql:mysql-connector-java'
 
         //Swagger & Validation
