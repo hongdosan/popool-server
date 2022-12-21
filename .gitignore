@@ -26,6 +26,9 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 application-local.yml
+AdminController.java
+AdminProductController.java
+AdminS3Controller.java
 src/main/resources/application-local.yml
 
 ### NetBeans ###
