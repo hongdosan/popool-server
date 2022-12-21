@@ -122,7 +122,7 @@ Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습�
 <img width="1096" alt="image" src="https://user-images.githubusercontent.com/31675711/208947124-0a589159-9a71-40e7-8108-6376bedb3883.png">
 
 #### - 이력서 API
-<img width="616" alt="image" src="https://user-images.githubusercontent.com/31675711/206406394-7f10ea57-0a46-43dc-b6f4-8bb6f7225d6d.png">
+<img width="507" alt="image" src="https://user-images.githubusercontent.com/31675711/206406394-7f10ea57-0a46-43dc-b6f4-8bb6f7225d6d.png">
 
 #### - 상품 API
 <img width="1072" alt="image" src="https://user-images.githubusercontent.com/31675711/206407558-03a7fa06-31ae-4155-aca5-07b5957d7927.png">
