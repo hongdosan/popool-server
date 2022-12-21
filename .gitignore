@@ -17,10 +17,8 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### ADMIN ###
-AdminController.java
-AdminProductController.java
-AdminS3Controller.java
+### ADMIN Controller###
+!**/src/main/**/admin/controller/
 
 ### IntelliJ IDEA ###
 .idea
