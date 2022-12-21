@@ -18,7 +18,8 @@ bin/
 !**/src/test/**/bin/
 
 ### ADMIN Controller###
-!**/src/main/**/admin/controller/
+**/src/main/**/admin/controller/
+src/main/java/kr/co/popoolserver/admim/controller/
 
 ### IntelliJ IDEA ###
 .idea
