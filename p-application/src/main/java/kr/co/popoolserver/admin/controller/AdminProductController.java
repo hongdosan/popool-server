@@ -26,15 +26,15 @@ public class AdminProductController {
 
     @ApiOperation("상품 수정 / 권한 : 관리자")
     @PutMapping("/products")
-    public ResponseFormat updateProduct(){
-        ///TODO Update Product
+    public ResponseFormat updateProduct(@RequestBody @Valid ProductDto.UPDATE update){
+        adminProductService.updateProduct(update);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("상품 삭제 / 권한 : 관리자")
     @DeleteMapping("/products")
-    public ResponseFormat deleteProduct(){
-        ///TODO Delete Product
+    public ResponseFormat deleteProduct(@RequestBody @Valid ProductDto.DELETE delete){
+        adminProductService.deleteProduct(delete);
         return ResponseFormat.ok();
     }
 }

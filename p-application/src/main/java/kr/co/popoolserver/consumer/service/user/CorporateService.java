@@ -267,7 +267,8 @@ public class CorporateService implements UserCommonService {
      * @param checkPassword : check pw
      */
     @Override
-    public void checkPassword(String password, String checkPassword) {
+    public void checkPassword(String password,
+                              String checkPassword) {
         if(!password.equals(checkPassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
     }
 
@@ -277,7 +278,8 @@ public class CorporateService implements UserCommonService {
      * @param encodePassword
      */
     @Override
-    public void checkEncodePassword(String password, String encodePassword) {
+    public void checkEncodePassword(String password,
+                                    String encodePassword) {
         if(!passwordEncoder.matches(password, encodePassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
     }
 

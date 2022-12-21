@@ -43,9 +43,11 @@ public enum ErrorCode {
     FAIL_FILE_CONVERT("파일 변환 실패하였습니다.", 4101),
 
     //product
+    WRONG_PRODUCT_NAME("존재하지 않는 상품입니다.", 4100),
+
     DUPLICATED_PRODUCT_NAME("상품 이름이 중복 되었습니다.", 4101);
 
-    //TODO: payment, inventory, score, grade Error Enum
+    //TODO: payment, inventory Error Enum
 
     private String message;
     private int status;

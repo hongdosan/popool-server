@@ -122,16 +122,19 @@ public class AdminService implements AdminCommonService{
      * @param password : user pw
      * @param checkPassword : check pw
      */
-    private void checkPassword(String password, String checkPassword) {
+    private void checkPassword(String password,
+                               String checkPassword) {
         if(!password.equals(checkPassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
     }
 
     /**
-     * Login PW Check
+     * Encode PW Check
      * @param password
      * @param encodePassword
      */
-    private void checkEncodePassword(String password, String encodePassword) {
+    @Override
+    public void checkEncodePassword(String password,
+                                    String encodePassword) {
         if(!passwordEncoder.matches(password, encodePassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
     }
 

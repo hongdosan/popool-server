@@ -17,10 +17,10 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity extends BaseEntity {
 
-    @Column(name = "product_name")
+    @Column(name = "product_name", unique = true, nullable = false, length = 50)
     private String productName;
 
-    @Column(name = "product_price")
+    @Column(name = "product_price", nullable = false)
     private long productPrice;
 
     @Column(name = "description")
@@ -48,5 +48,11 @@ public class ProductEntity extends BaseEntity {
                 .description(create.getDescription())
                 .productType(ProductType.of(create.getProductType()))
                 .build();
+    }
+
+    public void updateProduct(ProductDto.UPDATE update){
+        this.productPrice = update.getProductPrice();
+        this.description = update.getDescription();
+        this.productType = ProductType.of(update.getProductType());
     }
 }
