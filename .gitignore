@@ -17,6 +17,11 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+### ADMIN ###
+AdminController.java
+AdminProductController.java
+AdminS3Controller.java
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -26,9 +31,6 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 application-local.yml
-AdminController.java
-AdminProductController.java
-AdminS3Controller.java
 src/main/resources/application-local.yml
 
 ### NetBeans ###
