@@ -1,10 +1,10 @@
 package kr.co.popoolserver.interceptor;
 
-import kr.co.popoolserver.infrastructure.auth.AdminAuthService;
-import kr.co.popoolserver.infrastructure.auth.AuthenticationService;
-import kr.co.popoolserver.domain.AdminThreadLocal;
-import kr.co.popoolserver.infrastructure.shared.CorporateThreadLocal;
-import kr.co.popoolserver.infrastructure.shared.UserThreadLocal;
+import kr.co.popoolserver.auth.AdminAuthService;
+import kr.co.popoolserver.auth.AuthenticationService;
+import kr.co.popoolserver.auth.AdminThreadLocal;
+import kr.co.popoolserver.auth.interceptor.CorporateThreadLocal;
+import kr.co.popoolserver.auth.interceptor.UserThreadLocal;
 import kr.co.popoolserver.provider.JwtProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
