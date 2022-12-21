@@ -1,4 +1,4 @@
-package kr.co.popoolserver.auth;
+package kr.co.popoolserver.admin.security;
 
 import kr.co.popoolserver.entitiy.AdminEntity;
 import kr.co.popoolserver.enums.UserRole;
@@ -21,7 +21,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class AdminAuthService {
+public class AdminAuthenticationService {
 
     private final RedisService redisService;
     private final JwtProvider jwtProvider;

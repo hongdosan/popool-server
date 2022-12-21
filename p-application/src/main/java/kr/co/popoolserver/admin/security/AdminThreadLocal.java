@@ -1,4 +1,4 @@
-package kr.co.popoolserver.auth;
+package kr.co.popoolserver.admin.security;
 
 import kr.co.popoolserver.entitiy.AdminEntity;
 

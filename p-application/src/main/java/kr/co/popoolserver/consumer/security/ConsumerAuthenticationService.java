@@ -1,4 +1,4 @@
-package kr.co.popoolserver.auth;
+package kr.co.popoolserver.consumer.security;
 
 import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.error.exception.NotFoundException;
@@ -23,7 +23,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class ConsumerAuthenticationService {
 
     private final RedisService redisService;
     private final UserRepository userRepository;
