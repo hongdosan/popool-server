@@ -1,9 +1,14 @@
 package kr.co.popoolserver.consumer.service.career;
 
+import kr.co.popoolserver.admin.security.AdminThreadLocal;
+import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
+import kr.co.popoolserver.entitiy.AdminEntity;
 import kr.co.popoolserver.entity.career.dto.CareerDto;
 import kr.co.popoolserver.entity.career.CareerEntity;
+import kr.co.popoolserver.entity.user.CorporateEntity;
+import kr.co.popoolserver.error.exception.UserDefineException;
 import kr.co.popoolserver.repository.career.CareerRepository;
-import kr.co.popoolserver.auth.interceptor.UserThreadLocal;
+import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
@@ -59,16 +64,14 @@ public class CareerService {
      * @return
      */
     public CareerDto.READ getOthersCareer(Long id){
-        UserEntity userEntity = UserThreadLocal.get();
-        jwtProvider.checkUserRole(userEntity.getUserRole());
-
+        checkCorporate();
         CareerEntity careerEntity = careerRepository.findById(id)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CAREER));
         return CareerEntity.of(careerEntity);
     }
 
     /**
-     * 이력서 정보 변경 서비스
+     * 본인 이력서 정보 변경 서비스
      * @param update
      */
     @Transactional
@@ -91,5 +94,17 @@ public class CareerService {
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CAREER));
 
         careerRepository.delete(careerEntity);
+    }
+
+    /**
+     * 기업 권한 체크
+     */
+    private void checkCorporate(){
+        try{
+            CorporateEntity corporateEntity = CorporateThreadLocal.get();
+            jwtProvider.checkUserRole(corporateEntity.getUserRole());
+        }catch (Exception e){
+            throw new UserDefineException(ErrorCode.FAIL_USER_ROLE);
+        }
     }
 }

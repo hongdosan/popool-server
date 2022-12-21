@@ -5,5 +5,6 @@ import kr.co.popoolserver.enums.AdminServiceName;
 public interface AdminCommonService {
 
     //common
+    void checkAdmin();
     Boolean canHandle(AdminServiceName adminServiceName);
 }

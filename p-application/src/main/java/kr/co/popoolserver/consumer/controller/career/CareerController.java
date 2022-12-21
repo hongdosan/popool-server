@@ -38,7 +38,7 @@ public class CareerController {
     @ApiOperation("다른 사람의 이력서 세부 조회 / 권한 : 기업 회원 이상")
     @GetMapping("/others")
     public ResponseFormat getOthersCareer(@RequestParam("career_id") Long careerId) {
-        return ResponseFormat.ok(careerService.getCareer(careerId));
+        return ResponseFormat.ok(careerService.getOthersCareer(careerId));
     }
 
     @ApiOperation("본인 이력서 수정 / 권한 : 일반 회원 이상 ")

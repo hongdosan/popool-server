@@ -1,4 +1,4 @@
-package kr.co.popoolserver.entitiy.dto;
+package kr.co.popoolserver.entitiy;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
