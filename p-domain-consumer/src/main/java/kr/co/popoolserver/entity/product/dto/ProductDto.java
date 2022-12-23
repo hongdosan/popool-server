@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class ProductDto {
 
@@ -19,7 +20,7 @@ public class ProductDto {
         private String productName;
 
         @ApiModelProperty(example = "1000")
-        @NotBlank(message = "상품 가격을 입력하세요.")
+        @NotNull(message = "상품 가격을 입력하세요.")
         private long productPrice;
 
         @ApiModelProperty(example = "구독권입니다.")
@@ -44,7 +45,7 @@ public class ProductDto {
         private String originalProductName;
 
         @ApiModelProperty(example = "1000")
-        @NotBlank(message = "상품 가격을 입력하세요.")
+        @NotNull(message = "상품 가격을 입력하세요.")
         private long productPrice;
 
         @ApiModelProperty(example = "구독권입니다.")
@@ -74,11 +75,9 @@ public class ProductDto {
     @AllArgsConstructor
     public static class READ{
         @ApiModelProperty(example = "구독권")
-        @NotBlank(message = "상품 이름")
         private String productName;
 
         @ApiModelProperty(example = "SUBSCRIPTION")
-        @NotBlank(message = "상품 종류를 입력해주세요.(COUPON, SUBSCRIPTION")
         private ProductType productType;
     }
 
@@ -87,19 +86,15 @@ public class ProductDto {
     @AllArgsConstructor
     public static class READ_DETAIL{
         @ApiModelProperty(example = "구독권")
-        @NotBlank(message = "상품 이름")
         private String productName;
 
         @ApiModelProperty(example = "1000")
-        @NotBlank(message = "상품 가격을 입력하세요.")
         private long productPrice;
 
         @ApiModelProperty(example = "구독권입니다.")
-        @NotBlank(message = "상품 설명을 입력하세요.")
         private String description;
 
         @ApiModelProperty(example = "SUBSCRIPTION")
-        @NotBlank(message = "상품 종류를 입력해주세요.(COUPON, SUBSCRIPTION")
         private ProductType productType;
     }
 }

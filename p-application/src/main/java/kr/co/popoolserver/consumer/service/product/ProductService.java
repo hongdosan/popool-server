@@ -23,7 +23,8 @@ public class ProductService {
      * @return List<Product.READ>
      */
     public List<ProductDto.READ> getProducts(){
-        return ProductEntity.of(productRepository.findAll());
+        List<ProductDto.READ> reads = ProductEntity.of(productRepository.findAll());
+        return reads;
     }
 
     public ProductDto.READ_DETAIL getProduct(String productName){

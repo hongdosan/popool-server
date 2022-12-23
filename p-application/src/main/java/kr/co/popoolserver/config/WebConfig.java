@@ -37,12 +37,18 @@ public class WebConfig implements WebMvcConfigurer {
             "/corporates/refresh-token"
     };
 
+    private static final String[] PRODUCT_AUTH_ARR = {
+            "/products",
+            "/products/detail"
+    };
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(ADMIN_AUTH_ARR)
                 .excludePathPatterns(USER_AUTH_ARR)
+                .excludePathPatterns(PRODUCT_AUTH_ARR)
                 .excludePathPatterns(AUTH_ARR);
     }
 
