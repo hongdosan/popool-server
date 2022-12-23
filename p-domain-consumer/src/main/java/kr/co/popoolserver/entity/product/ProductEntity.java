@@ -64,6 +64,15 @@ public class ProductEntity extends BaseEntity {
         return reads;
     }
 
+    public static ProductDto.READ_DETAIL of(ProductEntity productEntity){
+        return ProductDto.READ_DETAIL.builder()
+                .productName(productEntity.productName)
+                .productPrice(productEntity.productPrice)
+                .productType(productEntity.productType)
+                .description(productEntity.description)
+                .build();
+    }
+
     public void updateProduct(ProductDto.UPDATE update){
         this.productPrice = update.getProductPrice();
         this.description = update.getDescription();
