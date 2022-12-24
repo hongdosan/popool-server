@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_product")
@@ -47,6 +49,27 @@ public class ProductEntity extends BaseEntity {
                 .productPrice(create.getProductPrice())
                 .description(create.getDescription())
                 .productType(ProductType.of(create.getProductType()))
+                .build();
+    }
+
+    public static List<ProductDto.READ> of(List<ProductEntity> productEntities){
+        List<ProductDto.READ> reads = new ArrayList<>();
+        for(ProductEntity productEntity : productEntities){
+            ProductDto.READ read = ProductDto.READ.builder()
+                    .productName(productEntity.productName)
+                    .productType(productEntity.productType)
+                    .build();
+            reads.add(read);
+        }
+        return reads;
+    }
+
+    public static ProductDto.READ_DETAIL of(ProductEntity productEntity){
+        return ProductDto.READ_DETAIL.builder()
+                .productName(productEntity.productName)
+                .productPrice(productEntity.productPrice)
+                .productType(productEntity.productType)
+                .description(productEntity.description)
                 .build();
     }
 
