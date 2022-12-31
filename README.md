@@ -133,4 +133,5 @@ Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습�
 <img width="999" alt="image" src="https://user-images.githubusercontent.com/31675711/208947281-3b310382-7617-44e9-b567-decd619fc834.png">
 
 #### - Continue...
+현재 nginx 공부 중에 있어, 잠시 프로젝트를 중단했습니다. 빠른 시일내로 nginx 공부 후 적용하러 돌아오겠습니다.
 
