@@ -1,59 +1,40 @@
-#Repository의 Actions 탭에 나타낼 Workflow 이름 (필수 X)
 name: Java CI with Gradle
 
-#Event Trigger : Workflow 를 실행하기 위한 Event 목록
 on:
-  #main branch 에 push event 발생 시 workflow 실행
   push:
-    branches: [ "main" ]
-
-  #main branch 에 pull-request event 발생 시 workflow 실행
-  pull_request:
-    branches: [ "main" ]
-
-  #해당 옵션을 통해 사용자가 직접 workflow 실행 가능
+    branches:
+      - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-
-#해당 workflow 의 Job List
 jobs:
-  #Job의 이름 (즉, "build" 란 이름으로 표시)
   build-application:
-    #Runner가 실행되는 OS 환경 정의
     runs-on: ubuntu-latest
-
-    #해당 Job의 이름 (Actions 탭에서 확인 가능)
-    name: Deploying
-
-    #build Job 내의 Step List
-    #uses : 해당 키워드로 Actions 를 불러온다.
-    #name : 명시될 이름
     steps:
-      #해당 저장소로 Check-Out 하는 Action 불러옴
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      #빌드 시, 컴파일 진행에 필요한 Java 환경 설정.
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
 
-      #Gradle 빌드 시, 권한 부여
-      - name: Grant Execute Permission for gradlew
-        run : chmod +x gradlew
-
       - name: Grant execute permission for gradlew
-        run: chmod +x ./p-appication/gradlew #setting
+        run: chmod +x ./p-appication/gradlew
         shell: bash
 
       - name: Build P-Application with Gradle
-        run: ./p-application/gradlew clean :p-application:build --exclude-task test --warning-mode all #setting
+        run: ./p-application/gradlew clean :p-application:build --exclude-task test --warning-mode all
         shell: bash
 
-      - name: Generate bbl-member package
+      - name: Get current time
+        uses: 1466587594/get-current-time@v3
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Generate p-application package
         run: |
           mkdir -p p-application
           cp p-application/build/libs/*.jar p-application/application.jar
