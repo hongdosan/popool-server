@@ -135,4 +135,5 @@ Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습�
 #### - Continue...
 현재 nginx 공부 중에 있습니다.
 빠른 시일 내로 nginx 공부 후 프로젝트에 적용하러 돌아오겠습니다.
+nginx를 공부하니, CI/CD도 다시 공부해보고 싶어, Github Actions를 공부하고 돌아오겠습니다!
 
