@@ -42,9 +42,20 @@ jobs:
           cp -r .ebextensions p-application/.ebextensions
           cd p-application && zip -r p-application.zip .
 
-      #Gradle 를 사용해 프로젝트 빌드 수행
-      - name: Build with Gradle P-Appication
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        run: ./gradlew build -x test  #Test 는 Skip
+#      #Gradle 를 사용해 프로젝트 빌드 수행
+#      - name: Build with Gradle P-Appication
+#        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+#        run: ./gradlew build -x test  #Test 는 Skip
+#        with:
+#          arguments: build
+
+      #적용 했을 때 빌드 시간이 20~30% 가량 향상 (필수 X)
+      - name: Gradle Caching
+        uses: actions/cache@v3
         with:
-          arguments: build
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
