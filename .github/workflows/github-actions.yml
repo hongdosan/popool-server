@@ -22,7 +22,7 @@ jobs:
   #Job의 이름 (즉, "build" 란 이름으로 표시)
   build:
     #Runner가 실행되는 OS 환경 정의
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu:20.04
 
     #해당 Job의 이름 (Actions 탭에서 확인 가능)
     name: Deploying
@@ -31,7 +31,8 @@ jobs:
     #uses : 해당 키워드로 Actions 를 불러온다.
     #name : 명시될 이름
     steps:
-      - uses: actions/checkout@v3     #해당 저장소로 Check-Out 하는 Action 불러옴
+      #해당 저장소로 Check-Out 하는 Action 불러옴
+      - uses: actions/checkout@v3
 
       #해당 작업에서 실행되는 커맨드에 대한 설명 (workflow 에 표시)
       - name: Run Script
