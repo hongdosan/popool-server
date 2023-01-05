@@ -48,14 +48,3 @@ jobs:
         run: ./gradlew build -x test  #Test 는 Skip
         with:
           arguments: build
-
-      #적용 했을 때 빌드 시간이 20~30% 가량 향상 (필수 X)
-      - name: Gradle Caching
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
