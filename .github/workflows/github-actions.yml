@@ -37,7 +37,7 @@ jobs:
       - name: Generate p-application package
         run: |
           mkdir -p p-application
-          cp p-application/build/libs/*.jar p-application/application.jar
+          cp p-application/build/libs/*.jar
           cp Procfile p-application/Procfile
           cp -r .ebextensions p-application/.ebextensions
           cd p-application && zip -r p-application.zip .
