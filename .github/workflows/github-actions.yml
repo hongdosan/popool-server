@@ -34,10 +34,6 @@ jobs:
       #해당 저장소로 Check-Out 하는 Action 불러옴
       - uses: actions/checkout@v3
 
-      #해당 작업에서 실행되는 커맨드에 대한 설명 (workflow 에 표시)
-      - name: Run Script
-        run : Hello World!!!
-
       #빌드 시, 컴파일 진행에 필요한 Java 환경 설정.
       - name: Set up JDK 11
         uses: actions/setup-java@v3
