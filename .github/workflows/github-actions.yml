@@ -22,7 +22,7 @@ jobs:
   #Job의 이름 (즉, "build" 란 이름으로 표시)
   build-application:
     #Runner가 실행되는 OS 환경 정의
-    runs-on: ubuntu:20.04
+    runs-on: ubuntu-latest
 
     #해당 Job의 이름 (Actions 탭에서 확인 가능)
     name: Deploying
