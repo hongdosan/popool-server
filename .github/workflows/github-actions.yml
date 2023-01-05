@@ -20,7 +20,7 @@ permissions:
 #해당 workflow 의 Job List
 jobs:
   #Job의 이름 (즉, "build" 란 이름으로 표시)
-  build:
+  build-application:
     #Runner가 실행되는 OS 환경 정의
     runs-on: ubuntu:20.04
 
@@ -49,8 +49,24 @@ jobs:
       - name: Grant Execute Permission for gradlew
         run : chmod +x gradlew
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./p-appication/gradlew #setting
+        shell: bash
+
+      - name: Build P-Application with Gradle
+        run: ./p-application/gradlew clean :p-application:build --exclude-task test --warning-mode all #setting
+        shell: bash
+
+      - name: Generate bbl-member package
+        run: |
+          mkdir -p p-application
+          cp p-application/build/libs/*.jar p-application/application.jar
+          cp Procfile p-application/Procfile
+          cp -r .ebextensions p-application/.ebextensions
+          cd p-application && zip -r p-application.zip .
+
       #Gradle 를 사용해 프로젝트 빌드 수행
-      - name: Build with Gradle
+      - name: Build with Gradle P-Appication
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         run: ./gradlew build -x test  #Test 는 Skip
         with:
