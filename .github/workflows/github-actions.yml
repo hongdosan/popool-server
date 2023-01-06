@@ -71,7 +71,6 @@ jobs:
           script: |
             sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
-            docker-compose up -d
             docker image prune -f
 
   #Time
