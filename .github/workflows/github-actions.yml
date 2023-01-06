@@ -43,7 +43,7 @@ jobs:
         run: |
           cd ./p-application/src/main/resources
           touch ./application.yml
-          echo "${{ secrets.YAML_DEV }}" > ./application-local.yml
+          echo "${{ secrets.YAML_LOCAL }}" > ./application-local.yml
         shell: bash
 
       #Gradle Build
@@ -54,9 +54,9 @@ jobs:
       - name: Docker build & push to local
         if: contains(github.ref, 'main')
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }} .
-          docker push ${{ secrets.DOCKER_REPO }}
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_ID_REPOSITORY }} .
+          docker push ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
 
       #Deploy to local
       - name: Deploy to local
@@ -64,13 +64,13 @@ jobs:
         id: deploy-local
         if: contains(github.ref, 'main')
         with:
-          host: ${{ secrets.HOST_LOCAL }}
-          username: ec2-user
-          key: ${{ secrets.PRIVATE_KEY }}
-          envs: GITHUB_SHA
+          host: ${{ secrets.EC2_HOST_DNS }}
+          username: ${{ secrets.EC2_ID }}
+          password: ${{ secrets.EC2_PASSWORD }}
+          port: ${{ secrets.EC2_PORT }}
           script: |
             sudo docker rm -f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_REPO }}
+            sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
             docker-compose up -d
             docker image prune -f
 
