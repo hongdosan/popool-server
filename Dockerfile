@@ -2,7 +2,7 @@
 FROM adoptopenjdk/openjdk11
 
 #build가 되는 시점에 JAR_FILE 이라는 변수명에 아래 표현식을 선언
-ARG JAR_FILE=./p-application/build/libs/*.jar
+ARG JAR_FILE=./p-application/build/libs/p-application-1.0SNAPSHOT.jar
 
 #위에 선언한 JAR_FILE 을 p-application.jar 로 복사.
 COPY ${JAR_FILE} p-application.jar
