@@ -76,7 +76,7 @@ jobs:
 
   #Time
   current-time:
-    needs: Java CI with Gradle
+    needs: build-application
     runs-on: ubuntu-latest
     steps:
       - name: Get Current Time
