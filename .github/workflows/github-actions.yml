@@ -70,8 +70,9 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
           script: |
             sudo docker rm -f $(docker ps -qa)
+            docker image prune -a -f
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
-            docker image prune -f
+            sudo docker run ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
 
   #Time
   current-time:
