@@ -1,5 +1,5 @@
 #open jdk java11 버전의 환경 구성
-FROM openjdk:11-jdk
+FROM adoptopenjdk/openjdk11
 
 #build가 되는 시점에 JAR_FILE 이라는 변수명에 아래 표현식을 선언
 ARG JAR_FILE=./p-application/build/libs/*.jar
