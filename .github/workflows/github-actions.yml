@@ -72,7 +72,6 @@ jobs:
             sudo docker rm -f $(docker ps -qa)
             docker image prune -a -f
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
-            sudo docker run ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
 
   #Time
   current-time:
