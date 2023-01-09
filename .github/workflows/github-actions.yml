@@ -44,6 +44,9 @@ jobs:
           cd ./p-application/src/main/resources
           touch ./application.yml
           echo "${{ secrets.YAML_LOCAL }}" > ./application.yml
+          cd ./p-application/src/main/resources
+          touch ./application.yml
+          echo "${{ secrets.YAML_LOCAL }}" > ./application.yml
         shell: bash
 
       #Gradle Build
@@ -88,11 +91,9 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
 #          key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            whoami
-            sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
             docker-compose up -d
-            docker image prune -a -f
+            docker image prune -f
 
 #      - name: Remove Github Actions IP From Security Group
 #        run: |
