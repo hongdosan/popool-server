@@ -66,14 +66,14 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST_DNS }}
           username: ${{ secrets.EC2_ID }}
-#          password: ${{ secrets.EC2_PASSWORD }}
+          password: ${{ secrets.EC2_PASSWORD }}
           port: ${{ secrets.EC2_PORT }}
-          key: ${{ secrets.PRIVATE_KEY }}
+#          key: ${{ secrets.PRIVATE_KEY }}
           script: |
             sudo docker rm -f $(docker ps -qa)
             docker image prune -a -f
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
-            sudo docker run ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
+            sudo docker run ${{ secrets.DOCKERHUB_ID_REPOSITORY }} -d
 
   #Time
   current-time:
