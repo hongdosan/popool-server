@@ -68,6 +68,7 @@ jobs:
           username: ${{ secrets.EC2_ID }}
           password: ${{ secrets.EC2_PASSWORD }}
           port: ${{ secrets.EC2_PORT }}
+          key: ${{ secrets.PRIVATE_KEY }}
           script: |
             sudo docker rm -f $(docker ps -qa)
             docker image prune -a -f
