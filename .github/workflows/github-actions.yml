@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build-application:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -25,6 +25,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       #Gradle Caching
       - name: Gradle Caching
@@ -84,12 +87,12 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST_DNS }}
           username: ${{ secrets.EC2_ID }}
-          password: ${{ secrets.EC2_PASSWORD }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          #          password: ${{ secrets.EC2_PASSWORD }}
           port: ${{ secrets.EC2_PORT }}
-#          key: ${{ secrets.PRIVATE_KEY }}
           script: |
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
-            sudo docker run ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
+            sudo docker run -d --rm --name server -p 80:8080 ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
             docker image prune -f
 
 #      - name: Remove Github Actions IP From Security Group
@@ -99,7 +102,7 @@ jobs:
   #Time
   current-time:
     needs: build-application
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Get Current Time
         uses: 1466587594/get-current-time@v2
