@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build-application:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -77,7 +77,7 @@ jobs:
   #Time
   current-time:
     needs: build-application
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Get Current Time
         uses: 1466587594/get-current-time@v2
