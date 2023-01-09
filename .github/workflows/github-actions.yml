@@ -94,9 +94,9 @@ jobs:
             docker-compose up -d
             docker image prune -a -f
 
-      - name: Remove Github Actions IP From Security Group
-        run: |
-          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port ${{ secrets.EC2_PORT }} --cidr ${{ steps.ip.outputs.ipv4 }}/32
+#      - name: Remove Github Actions IP From Security Group
+#        run: |
+#          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port ${{ secrets.EC2_PORT }} --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
   #Time
   current-time:
