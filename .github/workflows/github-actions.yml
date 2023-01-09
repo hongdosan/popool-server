@@ -66,7 +66,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST_DNS }}
           username: ${{ secrets.EC2_ID }}
-          password: ${{ secrets.EC2_PASSWORD }}
+#          password: ${{ secrets.EC2_PASSWORD }}
           port: ${{ secrets.EC2_PORT }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
