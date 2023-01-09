@@ -66,7 +66,7 @@ jobs:
       #AWS CLI로 EC2의 보안 그룹에 현재 Github Actions의 IP를 등록
       - name: Add Github Actions IP to Security group
         run: |
-          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port ${{ secrets.EC2_PORT }} --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
       #Docker Build & Push to local
       - name: Docker build & push to local
@@ -92,6 +92,10 @@ jobs:
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
             sudo docker run ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
             docker image prune -a -f
+
+      - name: Remove Github Actions IP From Security Group
+        run: |
+          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port ${{ secrets.EC2_PORT }} --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
   #Time
   current-time:
