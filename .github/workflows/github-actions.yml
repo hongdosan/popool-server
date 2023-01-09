@@ -44,9 +44,6 @@ jobs:
           cd ./p-application/src/main/resources
           touch ./application.yml
           echo "${{ secrets.YAML_LOCAL }}" > ./application.yml
-          cd ./p-application/src/main/resources
-          touch ./application.yml
-          echo "${{ secrets.YAML_LOCAL }}" > ./application.yml
         shell: bash
 
       #Gradle Build
