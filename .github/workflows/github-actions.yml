@@ -16,7 +16,7 @@ jobs:
   build-application:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       #JDK Setting
@@ -50,23 +50,23 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build -x test
 
-      #Github Actions의 IP를 EC2의 보안 그룹에 인바운드 규칙 추가
-      - name: Get Github Actions IP
-        id: ip
-        uses: haythem/public-ip@v1.2
-
-      #AWS 관련 설정값 등록
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ap-northeast-2
-
-      #AWS CLI로 EC2의 보안 그룹에 현재 Github Actions의 IP를 등록
-      - name: Add Github Actions IP to Security group
-        run: |
-          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port ${{ secrets.EC2_PORT }} --cidr ${{ steps.ip.outputs.ipv4 }}/32
+#      #Github Actions의 IP를 EC2의 보안 그룹에 인바운드 규칙 추가
+#      - name: Get Github Actions IP
+#        id: ip
+#        uses: haythem/public-ip@v1.2
+#
+#      #AWS 관련 설정값 등록
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+#          aws-region: ap-northeast-2
+#
+#      #AWS CLI로 EC2의 보안 그룹에 현재 Github Actions의 IP를 등록
+#      - name: Add Github Actions IP to Security group
+#        run: |
+#          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port ${{ secrets.EC2_PORT }} --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
       #Docker Build & Push to local
       - name: Docker build & push to local
@@ -90,7 +90,7 @@ jobs:
           script: |
             sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
-            sudo docker run ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
+            docker-compose up -d
             docker image prune -a -f
 
       - name: Remove Github Actions IP From Security Group
