@@ -42,7 +42,7 @@ jobs:
 
       #Create application-local.yml
       - name: Make application-local.yml
-        if: contains(github.ref, 'main')
+#        if: contains(github.ref, 'main')
         run: |
           cd ./p-application/src/main/resources
           touch ./application.yml
@@ -73,7 +73,7 @@ jobs:
 
       #Docker Build & Push to local
       - name: Docker build & push to local
-        if: contains(github.ref, 'main')
+#        if: contains(github.ref, 'main')
         run: |
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
           docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_ID_REPOSITORY }} .
@@ -83,7 +83,7 @@ jobs:
       - name: Deploy to local
         uses: appleboy/ssh-action@master
         id: deploy-local
-        if: contains(github.ref, 'main')
+#        if: contains(github.ref, 'main')
         with:
           host: ${{ secrets.EC2_HOST_DNS }}
           username: ${{ secrets.EC2_ID }}
@@ -93,8 +93,7 @@ jobs:
           script: |
             sudo usermod -a -G docker $USER
             sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
-            sudo docker stop
-            sudo docker run -d --rm ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
+            docker-compose up -d
             docker image prune -f
 
 #      - name: Remove Github Actions IP From Security Group
