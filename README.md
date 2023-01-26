@@ -104,7 +104,7 @@ Monolithic Architecture한 멀티 모듈로 리팩토링을 진행하며 학습�
 - [x] Sping Data JPA
 - [x] Redis
 - [ ] Querydsl
-- [ ] Spring Batch, RabbitMQ, Kafka
+- [ ] RabbitMQ, Kafka
 - [ ] AWS EC2, RDS
 - [ ] Docker, Github Actions, nginx
 
