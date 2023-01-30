@@ -78,7 +78,7 @@ jobs:
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 #          docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_ID_REPOSITORY }} .
           docker build -t ${{ secrets.DOCKERHUB_ID_REPOSITORY }} .
-          docker tag ${{ secrets.DOCKERHUB_ID_REPOSITORY }} ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
+#          docker tag ${{ secrets.DOCKERHUB_ID_REPOSITORY }} ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
           docker push ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
 
       #배포 시 version_label에 현재 시간을 표기하기 위해 넣어준 코드
