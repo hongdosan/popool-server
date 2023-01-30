@@ -16,12 +16,12 @@ jobs:
   build-application:
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout Latest Repository
+        uses: actions/checkout@master
 
       #JDK Setting
       - name: Set up JDK 11
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'temurin'
@@ -76,42 +76,67 @@ jobs:
 #        if: contains(github.ref, 'main')
         run: |
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_ID_REPOSITORY }} .
+#          docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_ID_REPOSITORY }} .
+          docker build -t ${{ secrets.DOCKERHUB_ID_REPOSITORY }} .
+          docker tag ${{ secrets.DOCKERHUB_ID_REPOSITORY }} ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
           docker push ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
 
-      #Deploy to local
-      - name: Deploy to local
-        uses: appleboy/ssh-action@master
-        id: deploy-local
+      #배포 시 version_label에 현재 시간을 표기하기 위해 넣어준 코드
+      - name: Get timestamp
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - name: Run string replace
+        uses: frabert/replace-string-action@master
+        id: format-time
+        with:
+          pattern: '[:\.]+'
+          string: "${{ steps.current-time.outputs.time }}"
+          replace-with: '-'
+          flags: 'g'
+
+      #Deploy to local (Beanstalk 플러그인 사용, IAM 인증키 사용)
+      - name: Beanstalk Deploy to local
+#        uses: appleboy/ssh-action@master
+        uses: einaregilsson/beanstalk-deploy@v20
+#        id: deploy-local
 #        if: contains(github.ref, 'main')
         with:
-          host: ${{ secrets.EC2_HOST_DNS }}
-          username: ${{ secrets.EC2_ID }}
-          password: ${{ secrets.EC2_PASSWORD }}
-          port: ${{ secrets.EC2_PORT }}
-          #          key: ${{ secrets.PRIVATE_KEY }}
-          script: |
-            sudo usermod -a -G docker $USER
-            sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
-            docker-compose up -d
-            docker image prune -f
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: Popool-SpringBoot-WebServiceEnvironmentTier
+          environment_name: Popool-WebServiceEnvironmentTier
+          version_label: "github-action--${{ steps.format-time.outputs.replaced}}"
+          region: ap-northeast-2
+          #beanstalk에 배포할 파일 혹은 폴더
+          deployment_package: Dockerrun.aws.json
+  #          host: ${{ secrets.EC2_HOST_DNS }}
+#          username: ${{ secrets.EC2_ID }}
+#          password: ${{ secrets.EC2_PASSWORD }}
+#          port: ${{ secrets.EC2_PORT }}
+#          #          key: ${{ secrets.PRIVATE_KEY }}
+#          script: |
+#            sudo usermod -a -G docker $USER
+#            sudo docker pull ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
+#            docker-compose up -d
+#            docker image prune -f
 
 #      - name: Remove Github Actions IP From Security Group
 #        run: |
 #          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port ${{ secrets.EC2_PORT }} --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
-  #Time
-  current-time:
-    needs: build-application
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Get Current Time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYY-MM-DDTHH:mm:ss
-          utcOffset: "+09:00" # 기준이 UTC이기 때문에 한국시간인 KST를 맞추기 위해 +9시간 추가
-
-      - name: Print Current Time
-        run: echo "Current Time=${{steps.current-time.outputs.formattedTime}}" # current-time 에서 지정한 포맷대로 현재 시간 출력
-        shell: bash
+#  #Time
+#  current-time:
+#    needs: build-application
+#    runs-on: ubuntu-20.04
+#    steps:
+#      - name: Get Current Time
+#        uses: 1466587594/get-current-time@v2
+#        id: current-time
+#        with:
+#          format: YYYY-MM-DDTHH:mm:ss
+#          utcOffset: "+09:00" # 기준이 UTC이기 때문에 한국시간인 KST를 맞추기 위해 +9시간 추가
+#
+#      - name: Print Current Time
+#        run: echo "Current Time=${{steps.current-time.outputs.formattedTime}}" # current-time 에서 지정한 포맷대로 현재 시간 출력
+#        shell: bash
