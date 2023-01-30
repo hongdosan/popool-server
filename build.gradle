@@ -14,12 +14,6 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath "io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}"
     }
-
-//    configurations {
-//        compileOnly {
-//            extendsFrom annotationProcessor
-//        }
-//    }
 }
 
 allprojects {
@@ -84,6 +78,9 @@ project(':p-application'){
         implementation 'org.springframework.boot:spring-boot-starter-web'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+        //config
+        implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-config'
 
         //thymeleaf
         implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
