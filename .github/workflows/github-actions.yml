@@ -59,20 +59,6 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_ID_REPOSITORY }} .
           docker push ${{ secrets.DOCKERHUB_ID_REPOSITORY }}
 
-      #배포 시 version_label에 현재 시간을 표기하기 위해 넣어준 코드
-      - name: Get timestamp
-        uses: gerred/actions/current-time@master
-        id: current-time
-
-      - name: Run string replace
-        uses: frabert/replace-string-action@master
-        id: format-time
-        with:
-          pattern: '[:\.]+'
-          string: "${{ steps.current-time.outputs.time }}"
-          replace-with: '-'
-          flags: 'g'
-
       #Deploy to local (Beanstalk 플러그인 사용, IAM 인증키 사용)
       - name: Beanstalk Deploy to local
         uses: einaregilsson/beanstalk-deploy@v20
@@ -81,7 +67,5 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           application_name: Popool-SpringBoot-WebServiceEnvironmentTier
           environment_name: Popool-WebServiceEnvironmentTier
-          version_label: "github-action--${{ steps.format-time.outputs.replaced}}"
-          region: ap-northeast-2
-          #beanstalk에 배포할 파일 혹은 폴더
+          region: ${{ secrets.AWS_REGION }}
           deployment_package: Dockerrun.aws.json
