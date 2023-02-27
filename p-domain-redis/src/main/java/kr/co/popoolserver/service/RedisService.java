@@ -21,7 +21,9 @@ public class RedisService {
         return valueOperations.get(key);
     }
 
-    public void createData(String key, String value, long expired) {
+    public void createData(String key,
+                           String value,
+                           long expired) {
         redisTemplate.opsForValue().set(key, value, expired, TimeUnit.MILLISECONDS);
     }
 
@@ -29,7 +31,10 @@ public class RedisService {
         redisTemplate.delete(key);
     }
 
-    public void checkValue(String refreshToken, String redisToken) {
-        if(!redisToken.equals(redisToken)) throw new JwtTokenExpiredException(ErrorCode.FAIL_EXPIRE);
+    public void checkValue(String refreshToken,
+                           String redisToken) {
+        if(!refreshToken.equals(redisToken)) {
+            throw new JwtTokenExpiredException(ErrorCode.FAIL_EXPIRE);
+        }
     }
 }

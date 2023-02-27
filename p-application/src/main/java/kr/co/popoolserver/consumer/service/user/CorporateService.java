@@ -1,13 +1,12 @@
 package kr.co.popoolserver.consumer.service.user;
 
-import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.CorporateEntity;
 import kr.co.popoolserver.dtos.CorporateDto;
 import kr.co.popoolserver.dtos.UserCommonDto;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
-import kr.co.popoolserver.enums.UserName;
-import kr.co.popoolserver.error.exception.BadRequestException;
+import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
 import kr.co.popoolserver.error.model.ErrorCode;
@@ -25,8 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CorporateService implements UserCommonService {
 
     private final CorporateRepository corporateRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final JwtProvider jwtProvider;
+
     private final RedisService redisService;
 
     private final long REFRESH_EXPIRE = 1000*60*60*24*7;
@@ -49,37 +51,40 @@ public class CorporateService implements UserCommonService {
         corporateRepository.save(corporateEntity);
     }
 
-//    /**
-//     * login service
-//     * @param login : ID, PW
-//     * @return AccessToken, RefreshToken
-//     */
-//    @Override
-//    public UserCommonDto.TOKEN login(UserCommonDto.LOGIN login) {
-//        CorporateEntity corporateEntity = corporateRepository.findByIdentity(login.getIdentity())
-//                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
-//        checkEncodePassword(login.getPassword(), corporateEntity.getPassword());
-//        checkDelete(corporateEntity.getDeyYN());
-//
-//        String[] tokens = generateToken(corporateEntity);
-//        redisService.createData(corporateEntity.getIdentity(), tokens[1], REFRESH_EXPIRE);
-//
-//        return UserCommonDto.TOKEN.builder()
-//                .accessToken(tokens[0])
-//                .refreshToken(tokens[1])
-//                .build();
-//    }
-//
-//    /**
-//     * Token Create
-//     * @param corporateEntity
-//     * @return
-//     */
-//    private String[] generateToken(CorporateEntity corporateEntity){
-//        String accessToken = jwtProvider.createAccessToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
-//        String refreshToken = jwtProvider.createRefreshToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
-//        return new String[]{accessToken, refreshToken};
-//    }
+    /**
+     * login
+     * @param login : ID, PW
+     * @return AccessToken, RefreshToken
+     * @exception BusinessLogicException
+     */
+    @Override
+    public ResponseUsers.TOKEN login(CreateUsers.LOGIN login) {
+        final CorporateEntity corporateEntity = corporateRepository.findByIdentity(login.getIdentity())
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
+
+        checkEncodePassword(login.getPassword(), corporateEntity.getPassword(), passwordEncoder);
+        checkDelete(corporateEntity.getDeyYN());
+
+        String[] tokens = generateToken(corporateEntity);
+        redisService.createData(corporateEntity.getIdentity(), tokens[1], REFRESH_EXPIRE);
+
+        return ResponseUsers.TOKEN.builder()
+                .accessToken(tokens[0])
+                .refreshToken(tokens[1])
+                .build();
+    }
+
+    /**
+     * Token Create
+     * @param corporateEntity : login corporate
+     * @return : accessToken, refreshToken
+     */
+    private String[] generateToken(CorporateEntity corporateEntity){
+        String accessToken = jwtProvider.createAccessToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
+        String refreshToken = jwtProvider.createRefreshToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
+
+        return new String[]{accessToken, refreshToken};
+    }
 //
 //
 //
@@ -239,25 +244,7 @@ public class CorporateService implements UserCommonService {
 //        redisService.deleteData(identity);
 //    }
 //
-//    /**
-//     * Login PW Check
-//     * @param password
-//     * @param encodePassword
-//     */
-//    @Override
-//    public void checkEncodePassword(String password,
-//                                    String encodePassword) {
-//        if(!passwordEncoder.matches(password, encodePassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
-//    }
-//
-//    /**
-//     * delete Check
-//     * @param delYN
-//     */
-//    @Override
-//    public void checkDelete(String delYN) {
-//        if(delYN.equals("Y")) throw new BusinessLogicException(ErrorCode.DELETED_USER);
-//    }
+
 //
 //    /**
 //     * reCreate Check Service
@@ -301,21 +288,8 @@ public class CorporateService implements UserCommonService {
         }
     }
 
-    /**
-     * PW check
-     * @param password : user pw
-     * @param checkPassword : check pw
-     */
     @Override
-    public void checkPassword(String password,
-                              String checkPassword) {
-        if(!password.equals(checkPassword)) {
-            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
-        }
-    }
-
-    @Override
-    public Boolean canHandle(UserName userName) {
-        return userName.equals(UserName.CORPORATE);
+    public Boolean canHandle(UserType userType) {
+        return userType.equals(UserType.CORPORATE);
     }
 }

@@ -1,7 +1,7 @@
 package kr.co.popoolserver.consumer.controller;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.consumer.service.user.provider.UserServiceProvider;
+import kr.co.popoolserver.consumer.service.user.provider.UserTypeProvider;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
@@ -9,7 +9,7 @@ import kr.co.popoolserver.consumer.security.ConsumerAuthenticationService;
 import kr.co.popoolserver.consumer.service.user.CorporateService;
 import kr.co.popoolserver.consumer.service.user.UserCommonService;
 import kr.co.popoolserver.consumer.service.user.UserService;
-import kr.co.popoolserver.enums.UserName;
+import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class UsersController {
 
     private final ConsumerAuthenticationService consumerAuthenticationService;
 
-    private final UserServiceProvider userServiceProvider;
+    private final UserTypeProvider userTypeProvider;
 
     private UserCommonService userCommonService;
 
@@ -42,15 +42,15 @@ public class UsersController {
     @PostMapping("/CORPORATE")
     public ResponseFormat<String> createCorporate(@RequestBody @Valid CreateUsers.CREATE_CORPORATE createCorporate){
         corporateService.createCorporate(createCorporate);
-        return ResponseFormat.ok(createCorporate.getIdentity() + "님 회원가입 완료");
+        return ResponseFormat.ok(createCorporate.getIdentity() + "님 회원가입 완");
     }
 
     @ApiOperation("로그인 API")
-    @PostMapping("/{userName}/login")
-    public ResponseFormat<ResponseUsers.TOKEN> login(@PathVariable(name = "userName") UserName userName,
+    @PostMapping("/{userType}/login")
+    public ResponseFormat<ResponseUsers.TOKEN> login(@PathVariable(name = "userType") UserType userType,
                                                      @RequestBody @Valid CreateUsers.LOGIN login){
-        //TODO login Service
-        return null;
+        userCommonService = userTypeProvider.getUserType(userType);
+        return ResponseFormat.ok(userCommonService.login(login));
     }
 
     @ApiOperation("AccessToken 재발급 API")
@@ -76,7 +76,7 @@ public class UsersController {
 
     @ApiOperation("세부 정보 조회 API : 주소, 전화번호, 이메일")
     @GetMapping("/{userName}/detail")
-    public ResponseFormat<ResponseUsers.READ_DETAIL> getUsersDetail(@PathVariable(name = "userName") UserName userName){
+    public ResponseFormat<ResponseUsers.READ_DETAIL> getUsersDetail(@PathVariable(name = "userName") UserType userType){
 //        userCommonService = userCommonServiceProvider.getUserService(userName);
 //        return ResponseFormat.ok(userCommonService.getAddress());
         //TODO get detail
@@ -99,7 +99,7 @@ public class UsersController {
 
     @ApiOperation("비밀번호 변경 API")
     @PutMapping("/{userName}/password")
-    public ResponseFormat<String> updatePassword(@PathVariable(name = "userName") UserName userName,
+    public ResponseFormat<String> updatePassword(@PathVariable(name = "userName") UserType userType,
                                              @RequestBody @Valid UpdateUsers.UPDATE_PASSWORD updatePassword){
 //        userCommonService = userCommonServiceProvider.getUserService(userName);
 //        userCommonService.updatePassword(password);
@@ -110,7 +110,7 @@ public class UsersController {
 
     @ApiOperation("메일 변경 API")
     @PutMapping("/{userName}/email")
-    public ResponseFormat<String> updateEmail(@PathVariable(name = "userName") UserName userName,
+    public ResponseFormat<String> updateEmail(@PathVariable(name = "userName") UserType userType,
                                       @RequestBody @Valid UpdateUsers.UPDATE_EMAIL updateEmail){
 //        userCommonService = userCommonServiceProvider.getUserService(userName);
 //        userCommonService.updateEmail(email);
@@ -120,7 +120,7 @@ public class UsersController {
 
     @ApiOperation("전화번호 변경 API")
     @PutMapping("/{userName}/phoneNumber")
-    public ResponseFormat<String> updatePhoneNumber(@PathVariable(name = "userName") UserName userName,
+    public ResponseFormat<String> updatePhoneNumber(@PathVariable(name = "userName") UserType userType,
                                                     @RequestBody @Valid UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber{
 //        userCommonService = userCommonServiceProvider.getUserService(userName);
 //        userCommonService.updateEmail(email);
@@ -130,7 +130,7 @@ public class UsersController {
 
     @ApiOperation("주소 변경 API")
     @PutMapping("/{userName}/address")
-    public ResponseFormat<String> updateAddress(@PathVariable(name = "userName") UserName userName,
+    public ResponseFormat<String> updateAddress(@PathVariable(name = "userName") UserType userType,
                                                 @RequestBody @Valid UpdateUsers.UPDATE_ADDRESS updateAddress){
 //        userCommonService = userCommonServiceProvider.getUserService(userName);
 //        userCommonService.updateEmail(email);
@@ -140,7 +140,7 @@ public class UsersController {
 
     @ApiOperation("회원 탈퇴 복구 API")
     @PutMapping("/{userName}/restore")
-    public ResponseFormat<String> restore(@PathVariable(name = "userName") UserName userName,
+    public ResponseFormat<String> restore(@PathVariable(name = "userName") UserType userType,
                                           @RequestBody @Valid UpdateUsers.RESTORE reCreate){
         //restore
         return null;
@@ -148,7 +148,7 @@ public class UsersController {
 
     @ApiOperation("회원 탈퇴 API")
     @DeleteMapping
-    public ResponseFormat<String> deleteUser(@PathVariable(name = "userName") UserName userName,
+    public ResponseFormat<String> deleteUser(@PathVariable(name = "userName") UserType userType,
                                              @RequestBody UpdateUsers.DELETE delete){
         //delete
         return null;

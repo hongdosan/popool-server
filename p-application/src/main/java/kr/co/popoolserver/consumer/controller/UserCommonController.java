@@ -2,8 +2,8 @@ package kr.co.popoolserver.consumer.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.consumer.service.user.UserCommonService;
-import kr.co.popoolserver.consumer.service.user.provider.UserServiceProvider;
-import kr.co.popoolserver.enums.UserName;
+import kr.co.popoolserver.consumer.service.user.provider.UserTypeProvider;
+import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserCommonController {
 
-    private final UserServiceProvider userServiceProvider;
+    private final UserTypeProvider userTypeProvider;
     private UserCommonService userCommonService;
 
     @ApiOperation("{USER or CORPORATE} / Redis Data 삭제")
-    @DeleteMapping("/{userName}/refresh")
-    public ResponseFormat deleteRefreshToken(@PathVariable UserName userName,
+    @DeleteMapping("/{userType}/refresh")
+    public ResponseFormat deleteRefreshToken(@PathVariable UserType userType,
                                              @RequestParam("identity") String identity){
-        userCommonService = userServiceProvider.getUserService(userName);
+        userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.deleteRefreshToken(identity);
         return ResponseFormat.ok();
     }
