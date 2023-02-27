@@ -11,6 +11,7 @@ import kr.co.popoolserver.consumer.service.user.UserCommonService;
 import kr.co.popoolserver.consumer.service.user.UserService;
 import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.model.ResponseFormat;
+import kr.co.popoolserver.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,8 @@ public class UsersController {
     private final UserService userService;
 
     private final CorporateService corporateService;
+
+    private final RedisService redisService;
 
     private final ConsumerAuthenticationService consumerAuthenticationService;
 
@@ -114,7 +117,7 @@ public class UsersController {
     @ApiOperation("전화번호 변경 API")
     @PutMapping("/{userName}/phoneNumber")
     public ResponseFormat<String> updatePhoneNumber(@PathVariable(name = "userName") UserType userType,
-                                                    @RequestBody @Valid UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber{
+                                                    @RequestBody @Valid UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.updatePhoneNumber(updatePhoneNumber);
         return ResponseFormat.ok("전화번호 변경 완료");
@@ -129,19 +132,30 @@ public class UsersController {
         return ResponseFormat.ok("주소 변경 완료");
     }
 
+    @ApiOperation("회원 탈퇴 API")
+    @DeleteMapping("/{userName}")
+    public ResponseFormat<String> deleteUser(@PathVariable(name = "userName") UserType userType,
+                                             @RequestBody UpdateUsers.DELETE delete){
+        userCommonService = userTypeProvider.getUserType(userType);
+        userCommonService.deleteUser(delete);
+        return ResponseFormat.ok("탈퇴 완료");
+    }
+
     @ApiOperation("회원 탈퇴 복구 API")
     @PutMapping("/{userName}/restore")
     public ResponseFormat<String> restore(@PathVariable(name = "userName") UserType userType,
-                                          @RequestBody @Valid UpdateUsers.RESTORE reCreate){
-        //restore
-        return null;
+                                          @RequestBody @Valid UpdateUsers.RESTORE restore){
+        userCommonService = userTypeProvider.getUserType(userType);
+        userCommonService.restoreUser(restore);
+        return ResponseFormat.ok(restore.getIdentity() + "님 회원 정보가 복구되었습니다.");
     }
 
-    @ApiOperation("회원 탈퇴 API")
-    @DeleteMapping
-    public ResponseFormat<String> deleteUser(@PathVariable(name = "userName") UserType userType,
-                                             @RequestBody UpdateUsers.DELETE delete){
-        //delete
-        return null;
+    @ApiOperation("RefreshToken 삭제 API")
+    @DeleteMapping("/{userType}/refresh-token")
+    public ResponseFormat deleteRefreshToken(@PathVariable UserType userType,
+                                             @RequestParam("identity") String identity){
+        userCommonService = userTypeProvider.getUserType(userType);
+        userCommonService.deleteRefreshToken(identity, redisService);
+        return ResponseFormat.ok(identity + "님의 refresh-token 삭제 완료.");
     }
 }

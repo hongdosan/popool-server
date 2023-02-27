@@ -16,12 +16,5 @@ public class UserCommonController {
     private final UserTypeProvider userTypeProvider;
     private UserCommonService userCommonService;
 
-    @ApiOperation("{USER or CORPORATE} / Redis Data 삭제")
-    @DeleteMapping("/{userType}/refresh")
-    public ResponseFormat deleteRefreshToken(@PathVariable UserType userType,
-                                             @RequestParam("identity") String identity){
-        userCommonService = userTypeProvider.getUserType(userType);
-        userCommonService.deleteRefreshToken(identity);
-        return ResponseFormat.ok();
-    }
+
 }

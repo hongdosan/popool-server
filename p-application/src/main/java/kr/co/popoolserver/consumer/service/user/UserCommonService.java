@@ -4,8 +4,10 @@ import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.enums.UserType;
+import kr.co.popoolserver.error.exception.BadRequestException;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
+import kr.co.popoolserver.service.RedisService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public interface UserCommonService {
@@ -23,14 +25,13 @@ public interface UserCommonService {
     ResponseUsers.READ_DETAIL getUserDetail();
 
     //delete
-    void deleteRefreshToken(String identity);
+    void deleteUser(UpdateUsers.DELETE delete);
+    void restoreUser(UpdateUsers.RESTORE restore);
 
     //common
     void isIdentity(String identity);
     void isPhoneNumber(String phoneNumber);
     void isEmail(String email);
-
-    void checkReCreate(String delYN);
 
     Boolean canHandle(UserType userType);
 
@@ -43,7 +44,7 @@ public interface UserCommonService {
         if(!password.equals(checkPassword)){
             throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
         }
-    };
+    }
 
     /**
      * Login Encode PW Check
@@ -56,7 +57,7 @@ public interface UserCommonService {
         if(!passwordEncoder.matches(password, encodePassword)) {
             throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
         }
-    };
+    }
 
     /**
      * delete check
@@ -66,5 +67,20 @@ public interface UserCommonService {
         if(delYN.equals("Y")) {
             throw new BusinessLogicException(ErrorCode.DELETED_USER);
         }
-    };
+    }
+
+    /**
+     * delete check
+     * @param delYN
+     */
+    default void checkRestore(String delYN){
+        if(delYN.equals("N")) {
+            throw new BadRequestException("해당 회원은 탈퇴되어있지 않습니다.");
+        }
+    }
+
+    default void deleteRefreshToken(String identity,
+                                    RedisService redisService){
+        redisService.deleteData(identity);
+    }
 }

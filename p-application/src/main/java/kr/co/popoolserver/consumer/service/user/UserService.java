@@ -1,5 +1,6 @@
 package kr.co.popoolserver.consumer.service.user;
 
+import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
@@ -10,6 +11,7 @@ import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
 import kr.co.popoolserver.error.model.ErrorCode;
+import kr.co.popoolserver.error.model.ResponseFormat;
 import kr.co.popoolserver.provider.JwtProvider;
 import kr.co.popoolserver.repository.user.UserRepository;
 import kr.co.popoolserver.service.RedisService;
@@ -17,6 +19,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @RequiredArgsConstructor
@@ -199,52 +204,38 @@ public class UserService implements UserCommonService {
         userRepository.save(userEntity);
     }
 
-//    /**
-//     * 회원 탈퇴
-//     * @param delete
-//     */
-//    @Transactional
-//    public void deleteUser(UserDto.DELETE delete) {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        checkEncodePassword(delete.getOriginalPassword(), userEntity.getPassword());
-//        userEntity.deleted();
-//        userRepository.save(userEntity);
-//    }
-//
-//    /**
-//     * 탈퇴 회원 복구
-//     * @param reCreate
-//     */
-//    @Transactional
-//    public void reCreateUser(UserDto.RE_CREATE reCreate) {
-//        UserEntity userEntity = userRepository.findByIdentity(reCreate.getIdentity())
-//                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
-//        checkReCreate(userEntity.getDeyYN());
-//        checkEncodePassword(reCreate.getOriginalPassword(), userEntity.getPassword());
-//        userEntity.reCreated();
-//        userRepository.save(userEntity);
-//    }
-//
-//    /**
-//     * Redis에 저장된 RefreshToken 삭제
-//     * @param identity
-//     */
-//    @Override
-//    public void deleteRefreshToken(String identity){
-//        redisService.deleteData(identity);
-//    }
+    /**
+     * 회원 탈퇴
+     * @param delete : delete user info
+     */
+    @Override
+    @Transactional
+    public void deleteUser(UpdateUsers.DELETE delete) {
+        UserEntity userEntity = UserThreadLocal.get();
 
+        checkDelete(userEntity.getDeyYN());
+        checkEncodePassword(delete.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
 
-//
-//    /**
-//     * reCreate Check Service
-//     * @param delYN
-//     */
-//    @Override
-//    public void checkReCreate(String delYN) {
-//        if(delYN.equals("N")) throw new BadRequestException("탈퇴되지 않은 회원입니다.");
-//    }
+        userEntity.deleted();
+        userRepository.save(userEntity);
+    }
+
+    /**
+     * 탈퇴 회원 복구
+     * @param restore : restore info
+     */
+    @Override
+    @Transactional
+    public void restoreUser(UpdateUsers.RESTORE restore) {
+        UserEntity userEntity = userRepository.findByIdentity(restore.getIdentity())
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
+
+        checkRestore(userEntity.getDeyYN());
+        checkEncodePassword(restore.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
+
+        userEntity.restored();
+        userRepository.save(userEntity);
+    }
 
     /**
      * ID duplicated check

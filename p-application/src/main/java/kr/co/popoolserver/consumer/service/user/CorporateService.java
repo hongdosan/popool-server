@@ -5,8 +5,6 @@ import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.CorporateEntity;
-import kr.co.popoolserver.dtos.CorporateDto;
-import kr.co.popoolserver.dtos.UserCommonDto;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
 import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
@@ -193,53 +191,38 @@ public class CorporateService implements UserCommonService {
         corporateRepository.save(corporateEntity);
     }
 
-//
-//    /**
-//     * 회원 탈퇴
-//     * @param delete
-//     */
-//    @Transactional
-//    public void deleteCorporate(CorporateDto.DELETE delete) {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        checkEncodePassword(delete.getOriginalPassword(), corporateEntity.getPassword());
-//        corporateEntity.deleted();
-//        corporateRepository.save(corporateEntity);
-//    }
-//
-//    /**
-//     * 탈퇴 회원 복구
-//     * @param reCreate
-//     */
-//    @Transactional
-//    public void reCreateCorporate(CorporateDto.RE_CREATE reCreate) {
-//        CorporateEntity corporateEntity = corporateRepository.findByIdentity(reCreate.getIdentity())
-//                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
-//        checkReCreate(corporateEntity.getDeyYN());
-//        checkEncodePassword(reCreate.getOriginalPassword(), corporateEntity.getPassword());
-//        corporateEntity.reCreated();
-//        corporateRepository.save(corporateEntity);
-//    }
-//
-//    /**
-//     * Redis에 저장된 RefreshToken 삭제
-//     * @param identity
-//     */
-//    @Override
-//    public void deleteRefreshToken(String identity){
-//        redisService.deleteData(identity);
-//    }
-//
+    /**
+     * 회원 탈퇴
+     * @param delete : delete info
+     */
+    @Override
+    @Transactional
+    public void deleteUser(UpdateUsers.DELETE delete) {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
 
-//
-//    /**
-//     * reCreate Check Service
-//     * @param delYN
-//     */
-//    @Override
-//    public void checkReCreate(String delYN) {
-//        if(delYN.equals("N")) throw new BadRequestException("탈퇴되지 않은 기업 회원 입니다.");
-//    }
+        checkDelete(corporateEntity.getDeyYN());
+        checkEncodePassword(delete.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
+
+        corporateEntity.deleted();
+        corporateRepository.save(corporateEntity);
+    }
+
+    /**
+     * 탈퇴 회원 복구
+     * @param restore : restore info
+     */
+    @Override
+    @Transactional
+    public void restoreUser(UpdateUsers.RESTORE restore) {
+        CorporateEntity corporateEntity = corporateRepository.findByIdentity(restore.getIdentity())
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
+
+        checkRestore(corporateEntity.getDeyYN());
+        checkEncodePassword(restore.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
+
+        corporateEntity.restored();
+        corporateRepository.save(corporateEntity);
+    }
 
     /**
      * ID duplicated check

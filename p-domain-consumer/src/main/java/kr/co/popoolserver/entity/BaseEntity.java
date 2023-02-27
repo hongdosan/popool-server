@@ -34,7 +34,7 @@ public class BaseEntity {
         this.deyYN = "Y";
     }
 
-    public void reCreated(){
+    public void restored(){
         this.deyYN = "N";
     }
 }
