@@ -1,7 +1,7 @@
-package kr.co.popoolserver.consumer.service.product;
+package kr.co.popoolserver.consumer.service;
 
+import kr.co.popoolserver.dtos.response.ResponseProduct;
 import kr.co.popoolserver.entity.product.ProductEntity;
-import kr.co.popoolserver.entity.product.dto.ProductDto;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.repository.product.ProductRepository;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +23,13 @@ public class ProductService {
      * Product All Get Service
      * @return List<Product.READ>
      */
-    public List<ProductDto.READ> getProducts(){
-        List<ProductDto.READ> reads = ProductEntity.of(productRepository.findAll());
-        return reads;
+    public List<ResponseProduct.READ_PRODUCT> getProducts(){
+        return productRepository.findAll().stream()
+                .map(ProductEntity::toDto).collect(Collectors.toList());
     }
 
-    public ProductDto.READ_DETAIL getProduct(String productName){
-        ProductEntity productEntity = productRepository.findByProductName(productName)
-                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_PRODUCT_NAME));
-        return ProductEntity.of(productEntity);
+    public ResponseProduct.READ_PRODUCT_DETAIL getProduct(String productName){
+        return ProductEntity.toDetailDto(productRepository.findByProductName(productName)
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_PRODUCT_NAME)));
     }
 }

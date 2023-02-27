@@ -21,8 +21,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
     private ConsumerAuthenticationService consumerAuthenticationService;
+
     @Autowired
     private AdminAuthenticationService adminAuthenticationService;
+
     @Autowired
     private JwtProvider jwtProvider;
 
@@ -66,15 +68,19 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private void threadLocalRemoveCheck(){
-        if(UserThreadLocal.get() == null && CorporateThreadLocal.get() == null && AdminThreadLocal.get() == null) return;
+        if(UserThreadLocal.get() == null && CorporateThreadLocal.get() == null && AdminThreadLocal.get() == null)
+            return;
+
         if(UserThreadLocal.get() != null){
             UserThreadLocal.remove();
             logger.debug("User ThreadLocal PostHandle Remove");
         }
+
         if(CorporateThreadLocal.get() != null){
             CorporateThreadLocal.remove();
             logger.debug("Corporate ThreadLocal PostHandle Remove");
         }
+
         if(AdminThreadLocal.get() != null){
             AdminThreadLocal.remove();
             logger.debug("Admin ThreadLocal PostHandle Remove");

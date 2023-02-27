@@ -1,7 +1,9 @@
 package kr.co.popoolserver.entity.product;
 
+import kr.co.popoolserver.dtos.request.CreateProduct;
+import kr.co.popoolserver.dtos.request.UpdateProduct;
+import kr.co.popoolserver.dtos.response.ResponseProduct;
 import kr.co.popoolserver.entity.BaseEntity;
-import kr.co.popoolserver.entity.product.dto.ProductDto;
 import kr.co.popoolserver.enums.ProductType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,8 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_product")
@@ -19,10 +21,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity extends BaseEntity {
 
-    @Column(name = "product_name", unique = true, nullable = false, length = 50)
+    @Column(name = "product_name", unique = true, nullable = false)
+    @NotBlank(message = "상품 이름은 필수 입력 값입니다.")
     private String productName;
 
     @Column(name = "product_price", nullable = false)
+    @NotNull(message = "상품 가격은 필수 입력 값입니다.")
     private long productPrice;
 
     @Column(name = "description")
@@ -43,29 +47,17 @@ public class ProductEntity extends BaseEntity {
         this.productType = productType;
     }
 
-    public static ProductEntity of(ProductDto.CREATE create){
+    public static ProductEntity of(CreateProduct.CREATE_PRODUCT createProduct){
         return ProductEntity.builder()
-                .productName(create.getProductName())
-                .productPrice(create.getProductPrice())
-                .description(create.getDescription())
-                .productType(ProductType.of(create.getProductType()))
+                .productName(createProduct.getProductName())
+                .productPrice(createProduct.getProductPrice())
+                .description(createProduct.getDescription())
+                .productType(ProductType.of(createProduct.getProductType()))
                 .build();
     }
 
-    public static List<ProductDto.READ> of(List<ProductEntity> productEntities){
-        List<ProductDto.READ> reads = new ArrayList<>();
-        for(ProductEntity productEntity : productEntities){
-            ProductDto.READ read = ProductDto.READ.builder()
-                    .productName(productEntity.productName)
-                    .productType(productEntity.productType)
-                    .build();
-            reads.add(read);
-        }
-        return reads;
-    }
-
-    public static ProductDto.READ_DETAIL of(ProductEntity productEntity){
-        return ProductDto.READ_DETAIL.builder()
+    public static ResponseProduct.READ_PRODUCT_DETAIL toDetailDto(ProductEntity productEntity){
+        return ResponseProduct.READ_PRODUCT_DETAIL.builder()
                 .productName(productEntity.productName)
                 .productPrice(productEntity.productPrice)
                 .productType(productEntity.productType)
@@ -73,9 +65,16 @@ public class ProductEntity extends BaseEntity {
                 .build();
     }
 
-    public void updateProduct(ProductDto.UPDATE update){
-        this.productPrice = update.getProductPrice();
-        this.description = update.getDescription();
-        this.productType = ProductType.of(update.getProductType());
+    public static ResponseProduct.READ_PRODUCT toDto(ProductEntity productEntity){
+        return ResponseProduct.READ_PRODUCT.builder()
+                .productName(productEntity.productName)
+                .productType(productEntity.productType)
+                .build();
+    }
+
+    public void updateProduct(UpdateProduct.UPDATE_PRODUCT updateProduct){
+        this.productPrice = updateProduct.getProductPrice();
+        this.description = updateProduct.getDescription();
+        this.productType = ProductType.of(updateProduct.getProductType());
     }
 }
