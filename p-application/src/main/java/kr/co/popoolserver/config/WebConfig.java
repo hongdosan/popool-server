@@ -1,6 +1,6 @@
 package kr.co.popoolserver.config;
 
-import kr.co.popoolserver.interceptor.AuthInterceptor;
+import kr.co.popoolserver.infra.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

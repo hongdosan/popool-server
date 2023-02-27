@@ -73,7 +73,7 @@ public class ResponseUsers {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class READ_DETAIL{
+    public static class READ_USER_DETAIL{
         private PhoneNumber phoneNumber;
 
         private Address address;

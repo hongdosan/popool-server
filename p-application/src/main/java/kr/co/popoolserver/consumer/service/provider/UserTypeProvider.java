@@ -1,6 +1,6 @@
-package kr.co.popoolserver.consumer.service.user.provider;
+package kr.co.popoolserver.consumer.service.provider;
 
-import kr.co.popoolserver.consumer.service.user.UserCommonService;
+import kr.co.popoolserver.consumer.service.UserCommonService;
 import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package kr.co.popoolserver.consumer.service.user;
+package kr.co.popoolserver.consumer.service;
 
 import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
@@ -102,11 +102,11 @@ public class CorporateService implements UserCommonService {
      * @return ResposneUsers.READ_DETAIL : address, email, phoneNumber
      */
     @Override
-    public ResponseUsers.READ_DETAIL getUserDetail() {
+    public ResponseUsers.READ_USER_DETAIL getUserDetail() {
         final CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
 
-        return ResponseUsers.READ_DETAIL.builder()
+        return ResponseUsers.READ_USER_DETAIL.builder()
                 .address(corporateEntity.getBusinessAddress())
                 .email(corporateEntity.getBusinessEmail())
                 .phoneNumber(corporateEntity.getBusinessPhoneNumber())

@@ -1,6 +1,5 @@
-package kr.co.popoolserver.consumer.service.user;
+package kr.co.popoolserver.consumer.service;
 
-import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
@@ -11,7 +10,6 @@ import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.error.model.ResponseFormat;
 import kr.co.popoolserver.provider.JwtProvider;
 import kr.co.popoolserver.repository.user.UserRepository;
 import kr.co.popoolserver.service.RedisService;
@@ -19,9 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @RequiredArgsConstructor
@@ -107,11 +102,11 @@ public class UserService implements UserCommonService {
      * @return ResponseUsers.READ_DETAIL : address, phoneNumber, email
      */
     @Override
-    public ResponseUsers.READ_DETAIL getUserDetail() {
+    public ResponseUsers.READ_USER_DETAIL getUserDetail() {
         final UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
 
-        return ResponseUsers.READ_DETAIL.builder()
+        return ResponseUsers.READ_USER_DETAIL.builder()
                 .address(userEntity.getAddress())
                 .phoneNumber(userEntity.getPhoneNumber())
                 .email(userEntity.getEmail())

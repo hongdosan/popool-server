@@ -1,4 +1,4 @@
-package kr.co.popoolserver.consumer.service.career;
+package kr.co.popoolserver.consumer.service;
 
 import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
 import kr.co.popoolserver.dtos.S3Dto;

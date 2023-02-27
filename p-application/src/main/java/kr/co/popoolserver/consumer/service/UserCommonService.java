@@ -1,4 +1,4 @@
-package kr.co.popoolserver.consumer.service.user;
+package kr.co.popoolserver.consumer.service;
 
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
@@ -22,7 +22,7 @@ public interface UserCommonService {
     void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress);
 
     //get
-    ResponseUsers.READ_DETAIL getUserDetail();
+    ResponseUsers.READ_USER_DETAIL getUserDetail();
 
     //delete
     void deleteUser(UpdateUsers.DELETE delete);

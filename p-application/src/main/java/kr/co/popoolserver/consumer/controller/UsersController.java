@@ -1,10 +1,10 @@
 package kr.co.popoolserver.consumer.controller;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.consumer.service.user.CorporateService;
-import kr.co.popoolserver.consumer.service.user.UserCommonService;
-import kr.co.popoolserver.consumer.service.user.UserService;
-import kr.co.popoolserver.consumer.service.user.provider.UserTypeProvider;
+import kr.co.popoolserver.consumer.service.CorporateService;
+import kr.co.popoolserver.consumer.service.UserCommonService;
+import kr.co.popoolserver.consumer.service.UserService;
+import kr.co.popoolserver.consumer.service.provider.UserTypeProvider;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
@@ -74,7 +74,7 @@ public class UsersController {
 
     @ApiOperation("세부 정보 조회 API : 주소, 전화번호, 이메일")
     @GetMapping("/{userType}/detail")
-    public ResponseFormat<ResponseUsers.READ_DETAIL> getUsersDetail(@PathVariable(name = "userType") UserType userType){
+    public ResponseFormat<ResponseUsers.READ_USER_DETAIL> getUsersDetail(@PathVariable(name = "userType") UserType userType){
         userCommonService = userTypeProvider.getUserType(userType);
         return ResponseFormat.ok(userCommonService.getUserDetail());
     }

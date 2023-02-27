@@ -1,7 +1,7 @@
 package kr.co.popoolserver.consumer.controller;
 
 import io.swagger.annotations.ApiOperation;
-import kr.co.popoolserver.consumer.service.career.CareerService;
+import kr.co.popoolserver.consumer.service.CareerService;
 import kr.co.popoolserver.dtos.S3Dto;
 import kr.co.popoolserver.dtos.request.CreateCareers;
 import kr.co.popoolserver.dtos.request.UpdateCareers;
