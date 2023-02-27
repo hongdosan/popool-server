@@ -1,14 +1,13 @@
 package kr.co.popoolserver.consumer.controller;
 
 import io.swagger.annotations.ApiOperation;
+import kr.co.popoolserver.consumer.service.user.CorporateService;
+import kr.co.popoolserver.consumer.service.user.UserCommonService;
+import kr.co.popoolserver.consumer.service.user.UserService;
 import kr.co.popoolserver.consumer.service.user.provider.UserTypeProvider;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
-import kr.co.popoolserver.consumer.security.ConsumerAuthenticationService;
-import kr.co.popoolserver.consumer.service.user.CorporateService;
-import kr.co.popoolserver.consumer.service.user.UserCommonService;
-import kr.co.popoolserver.consumer.service.user.UserService;
 import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import kr.co.popoolserver.service.RedisService;
@@ -27,8 +26,6 @@ public class UsersController {
     private final CorporateService corporateService;
 
     private final RedisService redisService;
-
-    private final ConsumerAuthenticationService consumerAuthenticationService;
 
     private final UserTypeProvider userTypeProvider;
 
@@ -76,8 +73,8 @@ public class UsersController {
     }
 
     @ApiOperation("세부 정보 조회 API : 주소, 전화번호, 이메일")
-    @GetMapping("/{userName}/detail")
-    public ResponseFormat<ResponseUsers.READ_DETAIL> getUsersDetail(@PathVariable(name = "userName") UserType userType){
+    @GetMapping("/{userType}/detail")
+    public ResponseFormat<ResponseUsers.READ_DETAIL> getUsersDetail(@PathVariable(name = "userType") UserType userType){
         userCommonService = userTypeProvider.getUserType(userType);
         return ResponseFormat.ok(userCommonService.getUserDetail());
     }
@@ -97,8 +94,8 @@ public class UsersController {
     }
 
     @ApiOperation("비밀번호 변경 API")
-    @PutMapping("/{userName}/password")
-    public ResponseFormat<String> updatePassword(@PathVariable(name = "userName") UserType userType,
+    @PutMapping("/{userType}/password")
+    public ResponseFormat<String> updatePassword(@PathVariable(name = "userType") UserType userType,
                                                  @RequestBody @Valid UpdateUsers.UPDATE_PASSWORD updatePassword){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.updatePassword(updatePassword);
@@ -106,8 +103,8 @@ public class UsersController {
     }
 
     @ApiOperation("메일 변경 API")
-    @PutMapping("/{userName}/email")
-    public ResponseFormat<String> updateEmail(@PathVariable(name = "userName") UserType userType,
+    @PutMapping("/{userType}/email")
+    public ResponseFormat<String> updateEmail(@PathVariable(name = "userType") UserType userType,
                                               @RequestBody @Valid UpdateUsers.UPDATE_EMAIL updateEmail){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.updateEmail(updateEmail);
@@ -115,8 +112,8 @@ public class UsersController {
     }
 
     @ApiOperation("전화번호 변경 API")
-    @PutMapping("/{userName}/phoneNumber")
-    public ResponseFormat<String> updatePhoneNumber(@PathVariable(name = "userName") UserType userType,
+    @PutMapping("/{userType}/phoneNumber")
+    public ResponseFormat<String> updatePhoneNumber(@PathVariable(name = "userType") UserType userType,
                                                     @RequestBody @Valid UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.updatePhoneNumber(updatePhoneNumber);
@@ -124,8 +121,8 @@ public class UsersController {
     }
 
     @ApiOperation("주소 변경 API")
-    @PutMapping("/{userName}/address")
-    public ResponseFormat<String> updateAddress(@PathVariable(name = "userName") UserType userType,
+    @PutMapping("/{userType}/address")
+    public ResponseFormat<String> updateAddress(@PathVariable(name = "userType") UserType userType,
                                                 @RequestBody @Valid UpdateUsers.UPDATE_ADDRESS updateAddress){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.updateAddress(updateAddress);
@@ -133,8 +130,8 @@ public class UsersController {
     }
 
     @ApiOperation("회원 탈퇴 API")
-    @DeleteMapping("/{userName}")
-    public ResponseFormat<String> deleteUser(@PathVariable(name = "userName") UserType userType,
+    @DeleteMapping("/{userType}")
+    public ResponseFormat<String> deleteUser(@PathVariable(name = "userType") UserType userType,
                                              @RequestBody UpdateUsers.DELETE delete){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.deleteUser(delete);
@@ -142,8 +139,8 @@ public class UsersController {
     }
 
     @ApiOperation("회원 탈퇴 복구 API")
-    @PutMapping("/{userName}/restore")
-    public ResponseFormat<String> restore(@PathVariable(name = "userName") UserType userType,
+    @PutMapping("/{userType}/restore")
+    public ResponseFormat<String> restore(@PathVariable(name = "userType") UserType userType,
                                           @RequestBody @Valid UpdateUsers.RESTORE restore){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.restoreUser(restore);
@@ -152,7 +149,7 @@ public class UsersController {
 
     @ApiOperation("RefreshToken 삭제 API")
     @DeleteMapping("/{userType}/refresh-token")
-    public ResponseFormat deleteRefreshToken(@PathVariable UserType userType,
+    public ResponseFormat deleteRefreshToken(@PathVariable(name = "userType") UserType userType,
                                              @RequestParam("identity") String identity){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.deleteRefreshToken(identity, redisService);

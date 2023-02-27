@@ -3,7 +3,7 @@ package kr.co.popoolserver.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import kr.co.popoolserver.dto.S3Dto;
+import kr.co.popoolserver.dtos.S3Dto;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.error.exception.EmptyFileException;
@@ -46,15 +46,13 @@ public class S3Service {
         this.fileDir = System.getProperty("user.dir") + this.rootDir;
     }
 
-    /**
-     * File Upload Service
-     * @param multipartFile
-     * @return
-     */
-    public S3Dto.CONVERT uploadS3(MultipartFile multipartFile, String dirName){
+    public S3Dto.CONVERT uploadS3(MultipartFile multipartFile,
+                                  String dirName){
         File uploadFile = validateFileExists(multipartFile)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_CONVERT));
+
         String fileName = dirName + "/" + createFileName(multipartFile.getOriginalFilename()) + uploadFile.getName();
+
         String uploadImageUrl = putS3(uploadFile, fileName);
 
         S3Dto.CONVERT convert = S3Dto.CONVERT.builder()
@@ -63,21 +61,18 @@ public class S3Service {
                 .fileSize(uploadFile.length())
                 .fileExtension(contentType(fileName).toString())
                 .build();
-
         removeNewFile(uploadFile);
 
         return convert;
     }
 
-    /**
-     * S3 Upload Service
-     * @param uploadFile
-     * @param fileName
-     * @return
-     */
-    private String putS3(File uploadFile, String fileName){
-        amazonS3Client.putObject(new PutObjectRequest(BUCKET_NAME, fileName, uploadFile)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+    private String putS3(File uploadFile,
+                         String fileName){
+        amazonS3Client.putObject(
+                new PutObjectRequest(BUCKET_NAME, fileName, uploadFile)
+                .withCannedAcl(CannedAccessControlList.PublicRead)
+        );
+
         return amazonS3Client.getUrl(BUCKET_NAME, fileName).toString();
     }
 
@@ -86,8 +81,8 @@ public class S3Service {
      * @param targetFile
      */
     private void removeNewFile(File targetFile){
-        if(targetFile.delete()) return;
-        log.info("File Delete Fail");
+        if(targetFile.delete())
+            return;
     }
 
     /**
@@ -157,8 +152,7 @@ public class S3Service {
         String type = fileArr[fileArr.length-1];
 
         try {
-            return URLEncoder.encode(type, "UTF-8")
-                    .replaceAll("\\+", "%20");
+            return URLEncoder.encode(type, "UTF-8").replaceAll("\\+", "%20");
         }catch (IOException e){
             throw new EmptyFileException(ErrorCode.FAIL_FILE_EMPTY);
         }
@@ -172,10 +166,15 @@ public class S3Service {
     private MediaType contentType(String keyName){
         String[] keyNameArr = keyName.split("\\.");
         String type = keyNameArr[keyNameArr.length-1];
-        if(type.equals("txt")) return MediaType.TEXT_PLAIN;
-        else if(type.equals("png")) return MediaType.IMAGE_PNG;
-        else if(type.equals("jpg")) return MediaType.IMAGE_JPEG;
-        else return MediaType.APPLICATION_OCTET_STREAM;
+
+        if(type.equals("txt"))
+            return MediaType.TEXT_PLAIN;
+        else if(type.equals("png"))
+            return MediaType.IMAGE_PNG;
+        else if(type.equals("jpg"))
+            return MediaType.IMAGE_JPEG;
+        else
+            return MediaType.APPLICATION_OCTET_STREAM;
     }
 
     /**
@@ -183,8 +182,14 @@ public class S3Service {
      * @param multipartFile
      */
     private Optional<File> validateFileExists(MultipartFile multipartFile){
-        if(multipartFile.isEmpty()) throw new EmptyFileException(ErrorCode.FAIL_FILE_EMPTY);
-        if(ObjectUtils.isEmpty(multipartFile.getContentType())) throw new EmptyFileException(ErrorCode.FAIL_FILE_INVALID_CONTENT_TYPE);
+        if(multipartFile.isEmpty()) {
+            throw new EmptyFileException(ErrorCode.FAIL_FILE_EMPTY);
+        }
+
+        if(ObjectUtils.isEmpty(multipartFile.getContentType())) {
+            throw new EmptyFileException(ErrorCode.FAIL_FILE_INVALID_CONTENT_TYPE);
+        }
+
         return convert(multipartFile);
     }
 
@@ -198,6 +203,7 @@ public class S3Service {
             String storeFileName = createFileName(multipartFile.getOriginalFilename());
             File file = new File(fileDir + storeFileName);
             multipartFile.transferTo(file);
+
             return Optional.ofNullable(file);
         }catch (IOException e){
             throw new EmptyFileException(ErrorCode.FAIL_FILE_EMPTY);

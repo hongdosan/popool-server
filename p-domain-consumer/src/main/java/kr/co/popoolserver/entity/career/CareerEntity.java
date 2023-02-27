@@ -1,6 +1,8 @@
 package kr.co.popoolserver.entity.career;
 
-import kr.co.popoolserver.entity.career.dto.CareerDto;
+import kr.co.popoolserver.dtos.request.CreateCareers;
+import kr.co.popoolserver.dtos.request.UpdateCareers;
+import kr.co.popoolserver.dtos.response.ResponseCareers;
 import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -9,8 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "tbl_career")
@@ -31,10 +31,10 @@ public class CareerEntity extends BaseEntity {
     @Column(name = "office_skill")
     private String officeSkill;
 
-    @Column(name = "popool_url")
-    private String popolUrl;
+    @Column(name = "portfolio_url")
+    private String portfolioUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
@@ -43,53 +43,45 @@ public class CareerEntity extends BaseEntity {
                         String officeContext,
                         String officeName,
                         String officeSkill,
-                        String popolUrl,
+                        String portfolioUrl,
                         UserEntity userEntity) {
         this.officePeriod = officePeriod;
         this.officeContext = officeContext;
         this.officeName = officeName;
         this.officeSkill = officeSkill;
-        this.popolUrl = popolUrl;
+        this.portfolioUrl = portfolioUrl;
         this.userEntity = userEntity;
     }
 
-    public static CareerEntity of(CareerDto.CREATE create, UserEntity userEntity){
+    public static CareerEntity of(CreateCareers.CREATE_CAREER createCareer,
+                                  UserEntity userEntity){
         return CareerEntity.builder()
-                .officePeriod(create.getOfficePeriod())
-                .officeContext(create.getOfficeContext())
-                .officeName(create.getOfficeName())
-                .officeSkill(create.getOfficeSkill())
-                .popolUrl(create.getPopolUrl())
+                .officePeriod(createCareer.getOfficePeriod())
+                .officeContext(createCareer.getOfficeContext())
+                .officeName(createCareer.getOfficeName())
+                .officeSkill(createCareer.getOfficeSkill())
+                .portfolioUrl(createCareer.getPortfolioUrl())
                 .userEntity(userEntity)
                 .build();
     }
 
-    public static CareerDto.READ of(CareerEntity careerEntity){
-        return CareerDto.READ.builder()
+    public static ResponseCareers.READ_CAREER toDto(CareerEntity careerEntity){
+        return ResponseCareers.READ_CAREER.builder()
                 .officePeriod(careerEntity.getOfficePeriod())
                 .officeContext(careerEntity.getOfficeContext())
                 .officeName(careerEntity.getOfficeName())
                 .officeSkill(careerEntity.getOfficeSkill())
-                .popolUrl(careerEntity.getPopolUrl())
+                .portfolioUrl(careerEntity.getPortfolioUrl())
                 .createAt(careerEntity.createdAt)
                 .name(careerEntity.userEntity.getName())
                 .build();
     }
 
-    public static List<CareerDto.READ> of(List<CareerEntity> careerEntities){
-        List<CareerDto.READ> reads = new ArrayList<>();
-        for(CareerEntity careerEntity : careerEntities){
-            CareerDto.READ read = of(careerEntity);
-            reads.add(read);
-        }
-        return reads;
-    }
-
-    public void updateCareer(CareerDto.UPDATE update){
-        this.officePeriod = update.getOfficePeriod();
-        this.officeContext = update.getOfficeContext();
-        this.officeName = update.getOfficeName();
-        this.officeSkill = update.getOfficeSkill();
-        this.popolUrl = update.getPopolUrl();
+    public void updateCareer(UpdateCareers.UPDATE_CAREER updateCareer){
+        this.officePeriod = updateCareer.getOfficePeriod();
+        this.officeContext = updateCareer.getOfficeContext();
+        this.officeName = updateCareer.getOfficeName();
+        this.officeSkill = updateCareer.getOfficeSkill();
+        this.portfolioUrl = updateCareer.getPortfolioUrl();
     }
 }

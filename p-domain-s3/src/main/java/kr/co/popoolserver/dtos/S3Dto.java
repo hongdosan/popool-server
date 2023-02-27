@@ -1,4 +1,4 @@
-package kr.co.popoolserver.dto;
+package kr.co.popoolserver.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

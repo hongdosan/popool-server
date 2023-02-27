@@ -1,7 +1,6 @@
 package kr.co.popoolserver.entity.career;
 
-import kr.co.popoolserver.dto.S3Dto;
-import kr.co.popoolserver.entity.career.dto.CareerFileDto;
+import kr.co.popoolserver.dtos.S3Dto;
 import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -30,7 +29,7 @@ public class CareerFileEntity extends BaseEntity {
     @Column(name = "file_extension")
     private String fileExtension;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
@@ -58,14 +57,13 @@ public class CareerFileEntity extends BaseEntity {
                 .build();
     }
 
-    public static CareerFileDto.READ_INFO of(CareerFileEntity careerFileEntity) {
-        return CareerFileDto.READ_INFO.builder()
-                .fileName(careerFileEntity.getFileName())
-                .fileSize(careerFileEntity.getFileSize())
-                .fileExtension(careerFileEntity.getFileExtension())
-                .identity(careerFileEntity.getUserEntity().getIdentity())
-                .createAt(careerFileEntity.createdAt)
-                .build();
-    }
-
+//    public static CareerFileDto.READ_INFO of(CareerFileEntity careerFileEntity) {
+//        return CareerFileDto.READ_INFO.builder()
+//                .fileName(careerFileEntity.getFileName())
+//                .fileSize(careerFileEntity.getFileSize())
+//                .fileExtension(careerFileEntity.getFileExtension())
+//                .identity(careerFileEntity.getUserEntity().getIdentity())
+//                .createAt(careerFileEntity.createdAt)
+//                .build();
+//    }
 }
