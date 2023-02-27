@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AdminCommonServiceProvider {
+public class AdminTypeProvider {
 
     private final List<AdminCommonService> adminCommonServiceList;
 

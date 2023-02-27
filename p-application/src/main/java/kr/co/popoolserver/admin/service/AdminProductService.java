@@ -1,9 +1,10 @@
 package kr.co.popoolserver.admin.service;
 
 import kr.co.popoolserver.admin.security.AdminThreadLocal;
+import kr.co.popoolserver.dtos.request.CreateProduct;
+import kr.co.popoolserver.dtos.request.UpdateProduct;
 import kr.co.popoolserver.entitiy.AdminEntity;
 import kr.co.popoolserver.entity.product.ProductEntity;
-import kr.co.popoolserver.entity.product.dto.ProductDto;
 import kr.co.popoolserver.enums.AdminServiceName;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
@@ -22,40 +23,42 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminProductService implements AdminCommonService{
 
     private final ProductRepository productRepository;
+
     private final JwtProvider jwtProvider;
+
     private final PasswordEncoder passwordEncoder;
 
     /**
      * Create Product Service
-     * @param create : product info
+     * @param createProduct : product info
      * @exception DuplicatedException : PRODUCT NAME CHECK
      * @exception UserDefineException : ADMIN ROLE CHECK
      */
     @Transactional
-    public void createProduct(ProductDto.CREATE create){
+    public void createProduct(CreateProduct.CREATE_PRODUCT createProduct){
         checkAdmin();
-        checkProductName(create.getProductName());
+        checkProductName(createProduct.getProductName());
 
-        final ProductEntity productEntity = ProductEntity.of(create);
+        final ProductEntity productEntity = ProductEntity.of(createProduct);
         productRepository.save(productEntity);
     }
 
     /**
      * Update Product Info Service
-     * @param update product info
+     * @param updateProduct product info
      * @exception UserDefineException : ADMIN ROLE CHECK
      * @exception BusinessLogicException : PW CHECK
      * @exception BusinessLogicException : Product Name Check
      */
     @Transactional
-    public void updateProduct(ProductDto.UPDATE update){
+    public void updateProduct(UpdateProduct.UPDATE_PRODUCT updateProduct){
         checkAdmin();
         AdminEntity adminEntity = AdminThreadLocal.get();
-        checkEncodePassword(update.getOriginalPassword(), adminEntity.getPassword());
+        checkEncodePassword(updateProduct.getOriginalPassword(), adminEntity.getPassword());
 
-        ProductEntity productEntity = productRepository.findByProductName(update.getOriginalProductName())
+        ProductEntity productEntity = productRepository.findByProductName(updateProduct.getOriginalProductName())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_PRODUCT_NAME));
-        productEntity.updateProduct(update);
+        productEntity.updateProduct(updateProduct);
         productRepository.save(productEntity);
     }
 
@@ -67,27 +70,22 @@ public class AdminProductService implements AdminCommonService{
      * @exception BusinessLogicException : Product Name Check
      */
     @Transactional
-    public void deleteProduct(ProductDto.DELETE delete){
+    public void deleteProduct(UpdateProduct.DELETE_PRODUCT deleteProduct){
         checkAdmin();
         AdminEntity adminEntity = AdminThreadLocal.get();
-        checkEncodePassword(delete.getOriginalPassword(), adminEntity.getPassword());
+        checkEncodePassword(deleteProduct.getOriginalPassword(), adminEntity.getPassword());
 
-        ProductEntity productEntity = productRepository.findByProductName(delete.getProductName())
+        ProductEntity productEntity = productRepository.findByProductName(deleteProduct.getProductName())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_PRODUCT_NAME));
         productRepository.delete(productEntity);
     }
 
-    /**
-     * Product Name Duplicated Check
-     * @param productName
-     */
     private void checkProductName(String productName){
-        if(productRepository.existsByProductName(productName)) throw new DuplicatedException(ErrorCode.DUPLICATED_PRODUCT_NAME);
+        if(productRepository.existsByProductName(productName)){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_PRODUCT_NAME);
+        }
     }
 
-    /**
-     * 관리자 권한 체크
-     */
     @Override
     public void checkAdmin() {
         try {
@@ -98,15 +96,12 @@ public class AdminProductService implements AdminCommonService{
         }
     }
 
-    /**
-     * Encode PW Check
-     * @param password
-     * @param encodePassword
-     */
     @Override
     public void checkEncodePassword(String password,
                                     String encodePassword) {
-        if(!passwordEncoder.matches(password, encodePassword)) throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+        if(!passwordEncoder.matches(password, encodePassword)) {
+            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+        }
     }
 
     @Override
