@@ -16,7 +16,7 @@ public interface UserCommonService {
     //update
     void updatePassword(UpdateUsers.UPDATE_PASSWORD updatePassword);
     void updateEmail(UpdateUsers.UPDATE_EMAIL updateEmail);
-    void updatePhone(UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber);
+    void updatePhoneNumber(UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber);
     void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress);
 
     //get

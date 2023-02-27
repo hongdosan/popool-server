@@ -1,6 +1,7 @@
 package kr.co.popoolserver.entity.user;
 
 import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.model.Address;
 import kr.co.popoolserver.entity.BaseEntity;
@@ -46,7 +47,7 @@ public class CorporateEntity extends BaseEntity {
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     private String password;
 
-    @Column(name = "name", nullable = false, length = 25)
+    @Column(name = "name", nullable = false)
     @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String name;
 
@@ -58,7 +59,7 @@ public class CorporateEntity extends BaseEntity {
     @NotBlank(message = "회사 전화번호는 필수 입력 값입니다.")
     @AttributeOverride(
             name = "phoneNumber",
-            column = @Column(name = "business_phone_number", unique = true)
+            column = @Column(name = "business_phone_number")
     )
     private PhoneNumber businessPhoneNumber;
 
@@ -125,31 +126,31 @@ public class CorporateEntity extends BaseEntity {
                 .createAt(corporateEntity.createdAt)
                 .build();
     }
-//
-//    public void updateInfo(CorporateDto.UPDATE update){
-//        this.name = update.getName();
-//        this.businessNumber = update.getBusinessNumber();
-//        this.businessName = update.getBusinessName();
-//        this.businessCeoName = update.getBusinessCeoName();
-//    }
-//
-//    public void updatePassword(String password){
-//        this.password = password;
-//    }
-//
-//    public void updateEmail(String email){
-//        this.businessEmail = email;
-//    }
-//
-//    public void updatePhone(PhoneNumber phoneNumber){
-//        this.businessPhoneNumber = phoneNumber;
-//    }
-//
-//    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address){
-//        this.businessAddress = Address.builder()
-//                .zipcode(address.getZipCode())
-//                .address1(address.getAddr1())
-//                .address2(address.getAddr2())
-//                .build();
-//    }
+
+    public void updateInfo(UpdateUsers.UPDATE_CORPORATE updateCorporate){
+        this.name = updateCorporate.getName();
+        this.businessNumber = updateCorporate.getBusinessNumber();
+        this.businessName = updateCorporate.getBusinessName();
+        this.businessCeoName = updateCorporate.getBusinessCeoName();
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
+
+    public void updateEmail(String email){
+        this.businessEmail = email;
+    }
+
+    public void updatePhone(PhoneNumber phoneNumber){
+        this.businessPhoneNumber = phoneNumber;
+    }
+
+    public void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress){
+        this.businessAddress = Address.builder()
+                .zipcode(updateAddress.getZipCode())
+                .address1(updateAddress.getAddr1())
+                .address2(updateAddress.getAddr2())
+                .build();
+    }
 }

@@ -2,6 +2,7 @@ package kr.co.popoolserver.consumer.service.user;
 
 import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.CorporateEntity;
 import kr.co.popoolserver.dtos.CorporateDto;
@@ -66,7 +67,7 @@ public class CorporateService implements UserCommonService {
         checkEncodePassword(login.getPassword(), corporateEntity.getPassword(), passwordEncoder);
         checkDelete(corporateEntity.getDeyYN());
 
-        String[] tokens = generateToken(corporateEntity);
+        final String[] tokens = generateToken(corporateEntity);
         redisService.createData(corporateEntity.getIdentity(), tokens[1], REFRESH_EXPIRE);
 
         return ResponseUsers.TOKEN.builder()
@@ -81,8 +82,8 @@ public class CorporateService implements UserCommonService {
      * @return : accessToken, refreshToken
      */
     private String[] generateToken(CorporateEntity corporateEntity){
-        String accessToken = jwtProvider.createAccessToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
-        String refreshToken = jwtProvider.createRefreshToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
+        final String accessToken = jwtProvider.createAccessToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
+        final String refreshToken = jwtProvider.createRefreshToken(corporateEntity.getIdentity(), corporateEntity.getUserRole(), corporateEntity.getName());
 
         return new String[]{accessToken, refreshToken};
     }
@@ -92,7 +93,7 @@ public class CorporateService implements UserCommonService {
      * @return Responseusers.READ_CORPORATE : corporate info
      */
     public ResponseUsers.READ_CORPORATE getCorporate() {
-        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        final CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
 
         return CorporateEntity.of(corporateEntity);
@@ -104,7 +105,7 @@ public class CorporateService implements UserCommonService {
      */
     @Override
     public ResponseUsers.READ_DETAIL getUserDetail() {
-        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        final CorporateEntity corporateEntity = CorporateThreadLocal.get();
         checkDelete(corporateEntity.getDeyYN());
 
         return ResponseUsers.READ_DETAIL.builder()
@@ -114,77 +115,83 @@ public class CorporateService implements UserCommonService {
                 .build();
     }
 
-//    /**
-//     * 회사 기본 정보 수정 (이름, 사업자 번호, 사업자 명, 대표 명)
-//     * @param update
-//     */
-//    @Transactional
-//    public void updateCorporate(CorporateDto.UPDATE update) {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        corporateEntity.updateInfo(update);
-//        corporateRepository.save(corporateEntity);
-//    }
-//
-//    /**
-//     * 본인 비밀번호 수정
-//     * @param password
-//     */
-//    @Override
-//    @Transactional
-//    public void updatePassword(UserCommonDto.UPDATE_PASSWORD password) {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        checkEncodePassword(password.getOriginalPassword(), corporateEntity.getPassword());
-//        checkPassword(password.getNewPassword(), password.getNewCheckPassword());
-//        corporateEntity.updatePassword(passwordEncoder.encode(password.getNewPassword()));
-//        corporateRepository.save(corporateEntity);
-//    }
-//
-//    /**
-//     * Email update service
-//     * @param email
-//     */
-//    @Override
-//    @Transactional
-//    public void updateEmail(UserCommonDto.UPDATE_EMAIL email) {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        checkEncodePassword(email.getOriginalPassword(), corporateEntity.getPassword());
-//        checkEmail(email.getEmail());
-//        corporateEntity.updateEmail(email.getEmail());
-//        corporateRepository.save(corporateEntity);
-//    }
-//
-//    /**
-//     * Phone update service
-//     * @param phone
-//     */
-//    @Override
-//    @Transactional
-//    public void updatePhone(UserCommonDto.UPDATE_PHONE phone) {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        checkEncodePassword(phone.getOriginalPassword(), corporateEntity.getPassword());
-//        checkPhoneNumber(phone.getNewPhoneNumber());
-//        corporateEntity.updatePhone(new PhoneNumber(phone.getNewPhoneNumber()));
-//        corporateRepository.save(corporateEntity);
-//    }
-//
-//    /**
-//     * Address update service
-//     * @param address
-//     */
-//    @Override
-//    @Transactional
-//    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address) {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        checkEncodePassword(address.getOriginalPassword(), corporateEntity.getPassword());
-//        corporateEntity.updateAddress(address);
-//        corporateRepository.save(corporateEntity);
-//    }
-//
+    /**
+     * 회사 기본 정보 수정
+     * @param updateCorporate : update info
+     */
+    @Transactional
+    public void updateCorporate(UpdateUsers.UPDATE_CORPORATE updateCorporate) {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        checkDelete(corporateEntity.getDeyYN());
+        corporateEntity.updateInfo(updateCorporate);
+
+        corporateRepository.save(corporateEntity);
+    }
+
+    /**
+     * 본인 비밀번호 수정
+     * @param updatePassword : update pw info
+     */
+    @Override
+    @Transactional
+    public void updatePassword(UpdateUsers.UPDATE_PASSWORD updatePassword) {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+
+        checkDelete(corporateEntity.getDeyYN());
+        checkEncodePassword(updatePassword.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
+        checkPassword(updatePassword.getNewPassword(), updatePassword.getNewCheckPassword());
+
+        corporateEntity.updatePassword(passwordEncoder.encode(updatePassword.getNewPassword()));
+        corporateRepository.save(corporateEntity);
+    }
+
+    /**
+     * Email update service
+     * @param updateEmail : update email info
+     */
+    @Override
+    @Transactional
+    public void updateEmail(UpdateUsers.UPDATE_EMAIL updateEmail) {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+
+        checkDelete(corporateEntity.getDeyYN());
+        checkEncodePassword(updateEmail.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
+
+        corporateEntity.updateEmail(updateEmail.getEmail());
+        corporateRepository.save(corporateEntity);
+    }
+
+    /**
+     * Phone update service
+     * @param updatePhoneNumber : update phone number info
+     */
+    @Override
+    @Transactional
+    public void updatePhoneNumber(UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber) {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+
+        checkDelete(corporateEntity.getDeyYN());
+        checkEncodePassword(updatePhoneNumber.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
+
+        corporateEntity.updatePhone(new PhoneNumber(updatePhoneNumber.getNewPhoneNumber()));
+        corporateRepository.save(corporateEntity);
+    }
+
+    /**
+     * Address update service
+     * @param updateAddress : update address info
+     */
+    @Override
+    @Transactional
+    public void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress) {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+
+        checkDelete(corporateEntity.getDeyYN());
+        checkEncodePassword(updateAddress.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
+
+        corporateEntity.updateAddress(updateAddress);
+        corporateRepository.save(corporateEntity);
+    }
 
 //
 //    /**

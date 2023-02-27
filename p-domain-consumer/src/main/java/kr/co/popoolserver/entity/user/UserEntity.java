@@ -115,11 +115,11 @@ public class UserEntity extends BaseEntity {
                 .build();
     }
 
-//    public void updateInfo(UserDto.UPDATE update){
-//        this.name = update.getName();
-//        this.birth = update.getBirth();
-//        this.gender = Gender.of(update.getGender());
-//    }
+    public void updateInfo(UpdateUsers.UPDATE_USER updateUser){
+        this.name = updateUser.getName();
+        this.birth = updateUser.getBirth();
+        this.gender = Gender.of(updateUser.getGender());
+    }
 
     public void updatePassword(String password){
         this.password = password;

@@ -2,6 +2,7 @@ package kr.co.popoolserver.consumer.service.user;
 
 import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
@@ -64,7 +65,7 @@ public class UserService implements UserCommonService {
         checkEncodePassword(login.getPassword(), userEntity.getPassword(), passwordEncoder);
         checkDelete(userEntity.getDeyYN());
 
-        String[] tokens = generateToken(userEntity);
+        final String[] tokens = generateToken(userEntity);
         redisService.createData(userEntity.getIdentity(), tokens[1], REFRESH_EXPIRE);
 
         return ResponseUsers.TOKEN.builder()
@@ -79,8 +80,8 @@ public class UserService implements UserCommonService {
      * @return : accessToken, refreshToken
      */
     private String[] generateToken(UserEntity userEntity){
-        String accessToken = jwtProvider.createAccessToken(userEntity.getIdentity(), userEntity.getUserRole(), userEntity.getName());
-        String refreshToken = jwtProvider.createRefreshToken(userEntity.getIdentity(), userEntity.getUserRole(), userEntity.getName());
+        final String accessToken = jwtProvider.createAccessToken(userEntity.getIdentity(), userEntity.getUserRole(), userEntity.getName());
+        final String refreshToken = jwtProvider.createRefreshToken(userEntity.getIdentity(), userEntity.getUserRole(), userEntity.getName());
 
         return new String[]{accessToken, refreshToken};
     }
@@ -102,7 +103,7 @@ public class UserService implements UserCommonService {
      */
     @Override
     public ResponseUsers.READ_DETAIL getUserDetail() {
-        UserEntity userEntity = UserThreadLocal.get();
+        final UserEntity userEntity = UserThreadLocal.get();
         checkDelete(userEntity.getDeyYN());
 
         return ResponseUsers.READ_DETAIL.builder()
@@ -111,78 +112,92 @@ public class UserService implements UserCommonService {
                 .email(userEntity.getEmail())
                 .build();
     }
-//
-//    /**
-//     * 본인 기본 정보 수정 (이름, 성별, 생년월일)
-//     * @param update
-//     */
-//    @Transactional
-//    public void updateUser(UserDto.UPDATE update) {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        userEntity.updateInfo(update);
-//        userRepository.save(userEntity);
-//    }
-//
-//    /**
-//     * 본인 비밀번호 수정
-//     * @param password
-//     */
-//    @Override
-//    @Transactional
-//    public void updatePassword(UserCommonDto.UPDATE_PASSWORD password) {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        checkEncodePassword(password.getOriginalPassword(), userEntity.getPassword());
-//        checkPassword(password.getNewPassword(), password.getNewCheckPassword());
-//        userEntity.updatePassword(passwordEncoder.encode(password.getNewPassword()));
-//        userRepository.save(userEntity);
-//    }
-//ㅇ
-//    /**
-//     * Email update service
-//     * @param email
-//     */
-//    @Override
-//    @Transactional
-//    public void updateEmail(UserCommonDto.UPDATE_EMAIL email) {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        checkEncodePassword(email.getOriginalPassword(), userEntity.getPassword());
-//        checkEmail(email.getEmail());
-//        userEntity.updateEmail(email.getEmail());
-//        userRepository.save(userEntity);
-//    }
-//
-//    /**
-//     * Phone update service
-//     * @param phone
-//     */
-//    @Override
-//    @Transactional
-//    public void updatePhone(UserCommonDto.UPDATE_PHONE phone) {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        checkEncodePassword(phone.getOriginalPassword(), userEntity.getPassword());
-//        checkPhoneNumber(phone.getNewPhoneNumber());
-//        userEntity.updatePhone(new PhoneNumber(phone.getNewPhoneNumber()));
-//        userRepository.save(userEntity);
-//    }
-//
-//    /**
-//     * Address update service
-//     * @param address
-//     */
-//    @Override
-//    @Transactional
-//    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address) {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        checkEncodePassword(address.getOriginalPassword(), userEntity.getPassword());
-//        userEntity.updateAddress(address);
-//        userRepository.save(userEntity);
-//    }
-//
+
+    /**
+     * 본인 기본 정보 수정
+     * @param updateUser : update info
+     */
+    @Transactional
+    public void updateUser(UpdateUsers.UPDATE_USER updateUser) {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
+        userEntity.updateInfo(updateUser);
+
+        userRepository.save(userEntity);
+    }
+
+    /**
+     * 본인 비밀번호 수정
+     * @param updatePassword : update pw info
+     */
+    @Override
+    @Transactional
+    public void updatePassword(UpdateUsers.UPDATE_PASSWORD updatePassword) {
+        UserEntity userEntity = UserThreadLocal.get();
+
+        checkDelete(userEntity.getDeyYN());
+        checkEncodePassword(updatePassword.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
+        checkPassword(updatePassword.getNewPassword(), updatePassword.getNewCheckPassword());
+
+        userEntity.updatePassword(passwordEncoder.encode(updatePassword.getNewPassword()));
+        userRepository.save(userEntity);
+    }
+
+    /**
+     * Email update service
+     * @param updateEmail : update email info
+     */
+    @Override
+    @Transactional
+    public void updateEmail(UpdateUsers.UPDATE_EMAIL updateEmail) {
+        UserEntity userEntity = UserThreadLocal.get();
+
+        checkDelete(userEntity.getDeyYN());
+        checkEncodePassword(updateEmail.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
+
+        if(!userEntity.getEmail().equals(updateEmail.getEmail())){
+            isEmail(updateEmail.getEmail());
+            userEntity.updateEmail(updateEmail.getEmail());
+
+            userRepository.save(userEntity);
+        }
+    }
+
+    /**
+     * Phone update service
+     * @param updatePhoneNumber : update phone number info
+     */
+    @Override
+    @Transactional
+    public void updatePhoneNumber(UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber) {
+        UserEntity userEntity = UserThreadLocal.get();
+
+        checkDelete(userEntity.getDeyYN());
+        checkEncodePassword(updatePhoneNumber.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
+
+        if(!userEntity.getPhoneNumber().equals(updatePhoneNumber.getNewPhoneNumber())){
+            isPhoneNumber(updatePhoneNumber.getNewPhoneNumber());
+            userEntity.updatePhone(new PhoneNumber(updatePhoneNumber.getNewPhoneNumber()));
+
+            userRepository.save(userEntity);
+        }
+    }
+
+    /**
+     * Address update service
+     * @param updateAddress : update address info
+     */
+    @Override
+    @Transactional
+    public void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress) {
+        UserEntity userEntity = UserThreadLocal.get();
+
+        checkDelete(userEntity.getDeyYN());
+        checkEncodePassword(updateAddress.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
+
+        userEntity.updateAddress(updateAddress);
+        userRepository.save(userEntity);
+    }
 
 //    /**
 //     * 회원 탈퇴
