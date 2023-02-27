@@ -66,7 +66,6 @@ subprojects {
 
 project(':p-application'){
     dependencies {
-        implementation project(':p-internal')
         implementation project(':p-domain-admin')
         implementation project(':p-domain-consumer')
         implementation project(':p-domain-jwt')
@@ -85,21 +84,13 @@ project(':p-application'){
         //thymeleaf
         implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-        //Security
-        implementation 'org.springframework.boot:spring-boot-starter-security'
-        testImplementation 'org.springframework.security:spring-security-test'
-
         //Swagger & Validation
         implementation 'io.springfox:springfox-boot-starter:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
-    }
-}
 
-project(':p-internal'){
-    dependencies {
-        implementation project(':p-core')
-
-        implementation 'org.springframework.boot:spring-boot-starter-web'
+        //Security
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        testImplementation 'org.springframework.security:spring-security-test'
     }
 }
 
@@ -135,12 +126,12 @@ project(':p-domain-consumer'){
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-        //DB
-        runtimeOnly 'mysql:mysql-connector-java'
-
         //Swagger & Validation
         implementation 'io.springfox:springfox-boot-starter:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        //DB
+        runtimeOnly 'mysql:mysql-connector-java'
 
         //Security
         implementation 'org.springframework.boot:spring-boot-starter-security'

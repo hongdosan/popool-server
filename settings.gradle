@@ -1,6 +1,5 @@
 rootProject.name = 'popool-server'
 include 'p-application'
-include 'p-internal'
 include 'p-domain-admin'
 include 'p-domain-consumer'
 include 'p-domain-jwt'

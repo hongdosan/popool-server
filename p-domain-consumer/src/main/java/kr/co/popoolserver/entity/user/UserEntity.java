@@ -1,12 +1,12 @@
 package kr.co.popoolserver.entity.user;
 
-import kr.co.popoolserver.entity.user.dto.UserDto;
+import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.entity.user.model.Address;
 import kr.co.popoolserver.entity.BaseEntity;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
 import kr.co.popoolserver.enums.Gender;
 import kr.co.popoolserver.enums.UserRole;
-import kr.co.popoolserver.entity.user.dto.UserCommonDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_user")
@@ -22,19 +25,25 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends BaseEntity {
 
-    @Column(name = "identity", unique = true, nullable = false, length = 25)
+    @Column(name = "identity", unique = true, nullable = false)
+    @NotBlank
     private String identity;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", nullable = false)
+    @NotBlank
     private String password;
 
-    @Column(name = "email", unique = true, length = 50)
+    @Column(name = "email", nullable = false, unique = true)
+    @NotBlank
+    @Email
     private String email;
 
-    @Column(name = "name", nullable = false, length = 25)
+    @Column(name = "name", nullable = false)
+    @NotBlank
     private String name;
 
-    @Column(name = "birth", nullable = false, length = 8)
+    @Column(name = "birth", nullable = false)
+    @NotBlank
     private String birth;
 
     @Column(name = "gender")
@@ -46,7 +55,11 @@ public class UserEntity extends BaseEntity {
     private UserRole userRole;
 
     @Embedded
-    @AttributeOverride(name = "phoneNumber", column = @Column(name = "phone_number", unique = true))
+    @NotNull
+    @AttributeOverride(
+            name = "phoneNumber",
+            column = @Column(name = "phone_number", unique = true, nullable = false)
+    )
     private PhoneNumber phoneNumber;
 
     @Embedded
@@ -63,45 +76,46 @@ public class UserEntity extends BaseEntity {
                       String name,
                       String birth,
                       Gender gender,
-                      PhoneNumber phoneNumber,
-                      UserRole userRole) {
+                      String email,
+                      PhoneNumber phoneNumber) {
         this.identity = identity;
         this.password = password;
         this.name = name;
         this.birth = birth;
         this.gender = gender;
+        this.email = email;
         this.phoneNumber = phoneNumber;
-        this.userRole = userRole;
+        this.userRole = UserRole.ROLE_USER;
     }
 
-    public static UserEntity of(UserDto.CREATE create, PasswordEncoder passwordEncoder){
+    public static UserEntity of(CreateUsers.CREATE_USER createUser,
+                                PasswordEncoder passwordEncoder){
         return UserEntity.builder()
-                .identity(create.getIdentity())
-                .password(passwordEncoder.encode(create.getPassword()))
-                .name(create.getName())
-                .phoneNumber(new PhoneNumber(create.getPhone()))
-                .birth(create.getBirth())
-                .gender(Gender.of(create.getGender()))
-                .userRole(UserRole.ROLE_USER)
+                .identity(createUser.getIdentity())
+                .password(passwordEncoder.encode(createUser.getPassword()))
+                .name(createUser.getName())
+                .phoneNumber(new PhoneNumber(createUser.getPhoneNumber()))
+                .birth(createUser.getBirth())
+                .gender(Gender.of(createUser.getGender()))
                 .build();
     }
 
-    public static UserDto.READ of(UserEntity userEntity){
-        return UserDto.READ.builder()
-                .name(userEntity.getName())
-                .birth(userEntity.getBirth())
-                .phoneNumber(userEntity.getPhoneNumber())
-                .gender(userEntity.getGender())
-                .userRole(userEntity.getUserRole())
-                .createAt(userEntity.getCreatedAt())
-                .build();
-    }
+//    public static UserDto.READ of(UserEntity userEntity){
+//        return UserDto.READ.builder()
+//                .name(userEntity.getName())
+//                .birth(userEntity.getBirth())
+//                .phoneNumber(userEntity.getPhoneNumber())
+//                .gender(userEntity.getGender())
+//                .userRole(userEntity.getUserRole())
+//                .createAt(userEntity.getCreatedAt())
+//                .build();
+//    }
 
-    public void updateInfo(UserDto.UPDATE update){
-        this.name = update.getName();
-        this.birth = update.getBirth();
-        this.gender = Gender.of(update.getGender());
-    }
+//    public void updateInfo(UserDto.UPDATE update){
+//        this.name = update.getName();
+//        this.birth = update.getBirth();
+//        this.gender = Gender.of(update.getGender());
+//    }
 
     public void updatePassword(String password){
         this.password = password;
@@ -115,11 +129,11 @@ public class UserEntity extends BaseEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address){
+    public void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress){
         this.address = Address.builder()
-                .zipcode(address.getZipCode())
-                .address1(address.getAddr1())
-                .address2(address.getAddr2())
+                .zipcode(updateAddress.getZipCode())
+                .address1(updateAddress.getAddr1())
+                .address2(updateAddress.getAddr2())
                 .build();
     }
 }

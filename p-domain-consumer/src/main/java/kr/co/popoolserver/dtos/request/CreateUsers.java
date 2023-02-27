@@ -1,20 +1,62 @@
-package kr.co.popoolserver.entity.user.dto;
+package kr.co.popoolserver.dtos.request;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
-public class CorporateDto {
+public class CreateUsers {
+
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class CREATE{
+    public static class CREATE_USER{
+        @ApiModelProperty(example = "id1234")
+        @NotBlank(message = "아이디를 입력하세요.")
+        @Size(min = 5, max = 17, message = "아이디는 5~17자를 입력하세요.")
+        private String identity;
+
+        @ApiModelProperty(example = "pw1234")
+        @NotBlank(message = "비밀번호를 입력하세요.")
+        @Size(min = 5, max = 17, message = "비밀번호는 5~17자를 입력하세요.")
+        private String password;
+
+        @ApiModelProperty(example = "pw1234")
+        @NotBlank(message = "확인 비밀번호를 입력하세요.")
+        @Size(min = 5, max = 17, message = "확인 비밀번호는 5~17자를 입력하세요.")
+        private String checkPassword;
+
+        @ApiModelProperty(example = "HongDosan")
+        @NotBlank(message = "이름을 입력해주세요.")
+        private String name;
+
+        @ApiModelProperty(example = "19980101")
+        @NotBlank(message = "생년월일을 입력해주세요.")
+        @Size(min = 8, max = 8, message = "생년월일은 8자리로 입력해주세요.")
+        private String birth;
+
+        @ApiModelProperty(example = "010-1111-1111")
+        @NotBlank(message = "휴대폰 번호를 입력해주세요.")
+        private String phoneNumber;
+
+        @ApiModelProperty(example = "example@naver.com")
+        @NotBlank(message = "이메일을 입력해주세요.")
+        @Email
+        private String email;
+
+        @ApiModelProperty(example = "MALE")
+        @NotBlank(message = "성별을 입력해주세요.(MALE or FEMALE)")
+        private String gender;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class CREATE_CORPORATE{
         @ApiModelProperty(example = "id1234")
         @NotBlank(message = "아이디를 입력하세요.")
         @Size(min = 5, max = 17, message = "아이디는 5~17자를 입력하세요.")
@@ -70,67 +112,13 @@ public class CorporateDto {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class UPDATE{
-        @ApiModelProperty(example = "HongDosan")
-        @NotBlank(message = "이름을 입력해주세요.")
-        private String name;
-
-        @ApiModelProperty(example = "000-00-00000")
-        @NotBlank(message = "사업자 번호를 입력해주세요.")
-        private String businessNumber;
-
-        @ApiModelProperty(example = "사업자명")
-        @NotBlank(message = "사업자명을 입력해주세요.")
-        private String businessName;
-
-        @ApiModelProperty(example = "대표 이름")
-        @NotBlank(message = "대표 이름 입력해주세요.")
-        private String businessCeoName;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    @Builder
-    public static class READ{
-        @ApiModelProperty(example = "홍길동")
-        private String name;
-
-        @ApiModelProperty(example = "000-00-00000")
-        private String businessNumber;
-
-        @ApiModelProperty(example = "사업자명")
-        private String businessName;
-
-        @ApiModelProperty(example = "대표 이름")
-        private String businessCeoName;
-
-        @ApiModelProperty(example = "ROLE_CORPORATE")
-        private UserRole userRole;
-
-        @ApiModelProperty(example = "2022-01-01")
-        private LocalDateTime createAt;
-    }
-
-
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    public static class DELETE {
-        @ApiModelProperty(example = "현재 비밀번호")
-        @NotBlank(message = "현재 비밀번호를 입력해주세요")
-        private String originalPassword;
-    }
-
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    public static class RE_CREATE {
-        @ApiModelProperty(example = "복구할 아이디")
-        @NotBlank(message = "복구할 아이디를 입력하세요.")
+    public static class LOGIN{
+        @ApiModelProperty(example = "User ID")
+        @NotBlank(message = "ID")
         private String identity;
 
-        @ApiModelProperty(example = "복구 할 비밀번호")
-        @NotBlank(message = "복구 할 비밀번호를 입력해주세요")
-        private String originalPassword;
+        @ApiModelProperty(example = "User PW")
+        @NotBlank(message = "PW")
+        private String password;
     }
 }
