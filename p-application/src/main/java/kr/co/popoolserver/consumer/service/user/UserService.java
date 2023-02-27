@@ -95,6 +95,22 @@ public class UserService implements UserCommonService {
 
         return UserEntity.of(userEntity);
     }
+
+    /**
+     * 본인 세부정보 조회
+     * @return ResponseUsers.READ_DETAIL : address, phoneNumber, email
+     */
+    @Override
+    public ResponseUsers.READ_DETAIL getUserDetail() {
+        UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
+
+        return ResponseUsers.READ_DETAIL.builder()
+                .address(userEntity.getAddress())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .email(userEntity.getEmail())
+                .build();
+    }
 //
 //    /**
 //     * 본인 기본 정보 수정 (이름, 성별, 생년월일)
@@ -168,46 +184,6 @@ public class UserService implements UserCommonService {
 //    }
 //
 
-//
-//    /**
-//     * 본인 주소 조회
-//     * @return READ_ADDRESS
-//     */
-//    @Override
-//    public UserCommonDto.READ_ADDRESS getAddress() {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        return UserCommonDto.READ_ADDRESS.builder()
-//                .address(userEntity.getAddress())
-//                .build();
-//    }
-//
-//    /**
-//     * 본인 메일 조회
-//     * @return READ_EMAIL
-//     */
-//    @Override
-//    public UserCommonDto.READ_EMAIL getEmail() {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        return UserCommonDto.READ_EMAIL.builder()
-//                .email(userEntity.getEmail())
-//                .build();
-//    }
-//
-//    /**
-//     * 본인 번호 조회
-//     * @return READ_PHONE
-//     */
-//    @Override
-//    public UserCommonDto.READ_PHONE getPhone() {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        return UserCommonDto.READ_PHONE.builder()
-//                .phoneNumber(userEntity.getPhoneNumber())
-//                .build();
-//    }
-//
 //    /**
 //     * 회원 탈퇴
 //     * @param delete

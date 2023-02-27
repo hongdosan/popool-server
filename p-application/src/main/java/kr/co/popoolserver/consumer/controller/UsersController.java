@@ -75,10 +75,8 @@ public class UsersController {
     @ApiOperation("세부 정보 조회 API : 주소, 전화번호, 이메일")
     @GetMapping("/{userName}/detail")
     public ResponseFormat<ResponseUsers.READ_DETAIL> getUsersDetail(@PathVariable(name = "userName") UserType userType){
-//        userCommonService = userCommonServiceProvider.getUserService(userName);
-//        return ResponseFormat.ok(userCommonService.getAddress());
-        //TODO get detail
-        return null;
+        userCommonService = userTypeProvider.getUserType(userType);
+        return ResponseFormat.ok(userCommonService.getUserDetail());
     }
 
     @ApiOperation("일반 회원 정보 변경 API")

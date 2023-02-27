@@ -97,9 +97,23 @@ public class CorporateService implements UserCommonService {
 
         return CorporateEntity.of(corporateEntity);
     }
-//
-//
-//
+
+    /**
+     * 본인 기업 정보 세부 조회
+     * @return ResposneUsers.READ_DETAIL : address, email, phoneNumber
+     */
+    @Override
+    public ResponseUsers.READ_DETAIL getUserDetail() {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        checkDelete(corporateEntity.getDeyYN());
+
+        return ResponseUsers.READ_DETAIL.builder()
+                .address(corporateEntity.getBusinessAddress())
+                .email(corporateEntity.getBusinessEmail())
+                .phoneNumber(corporateEntity.getBusinessPhoneNumber())
+                .build();
+    }
+
 //    /**
 //     * 회사 기본 정보 수정 (이름, 사업자 번호, 사업자 명, 대표 명)
 //     * @param update
@@ -172,45 +186,6 @@ public class CorporateService implements UserCommonService {
 //    }
 //
 
-//
-//    /**
-//     * 본인 주소 조회
-//     * @return READ_ADDRESS
-//     */
-//    @Override
-//    public UserCommonDto.READ_ADDRESS getAddress() {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        return UserCommonDto.READ_ADDRESS.builder()
-//                .address(corporateEntity.getBusinessAddress())
-//                .build();
-//    }
-//
-//    /**
-//     * 본인 메일 조회
-//     * @return READ_EMAIL
-//     */
-//    @Override
-//    public UserCommonDto.READ_EMAIL getEmail() {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        return UserCommonDto.READ_EMAIL.builder()
-//                .email(corporateEntity.getBusinessEmail())
-//                .build();
-//    }
-//
-//    /**
-//     * 본인 번호 조회
-//     * @return READ_PHONE
-//     */
-//    @Override
-//    public UserCommonDto.READ_PHONE getPhone() {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        return UserCommonDto.READ_PHONE.builder()
-//                .phoneNumber(corporateEntity.getBusinessPhoneNumber())
-//                .build();
-//    }
 //
 //    /**
 //     * 회원 탈퇴
