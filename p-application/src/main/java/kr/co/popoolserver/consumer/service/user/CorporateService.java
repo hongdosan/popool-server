@@ -1,5 +1,6 @@
 package kr.co.popoolserver.consumer.service.user;
 
+import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.CorporateEntity;
@@ -85,6 +86,17 @@ public class CorporateService implements UserCommonService {
 
         return new String[]{accessToken, refreshToken};
     }
+
+    /**
+     * 기업 회원 정보 조회
+     * @return Responseusers.READ_CORPORATE : corporate info
+     */
+    public ResponseUsers.READ_CORPORATE getCorporate() {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        checkDelete(corporateEntity.getDeyYN());
+
+        return CorporateEntity.of(corporateEntity);
+    }
 //
 //
 //
@@ -159,15 +171,7 @@ public class CorporateService implements UserCommonService {
 //        corporateRepository.save(corporateEntity);
 //    }
 //
-//    /**
-//     * 기업 회원 정보 조회
-//     * @return : UserGetDto.READ
-//     */
-//    public CorporateDto.READ getCorporate() {
-//        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-//        checkDelete(corporateEntity.getDeyYN());
-//        return CorporateEntity.of(corporateEntity);
-//    }
+
 //
 //    /**
 //     * 본인 주소 조회

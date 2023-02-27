@@ -1,5 +1,6 @@
 package kr.co.popoolserver.consumer.service.user;
 
+import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.UserEntity;
@@ -83,6 +84,17 @@ public class UserService implements UserCommonService {
 
         return new String[]{accessToken, refreshToken};
     }
+
+    /**
+     * 본인 회원 정보 조회
+     * @return ResponseUsers.READ_USER :  user info
+     */
+    public ResponseUsers.READ_USER getUser() {
+        final UserEntity userEntity = UserThreadLocal.get();
+        checkDelete(userEntity.getDeyYN());
+
+        return UserEntity.of(userEntity);
+    }
 //
 //    /**
 //     * 본인 기본 정보 수정 (이름, 성별, 생년월일)
@@ -155,15 +167,7 @@ public class UserService implements UserCommonService {
 //        userRepository.save(userEntity);
 //    }
 //
-//    /**
-//     * 본인 회원 정보 조회
-//     * @return : UserGetDto.READ
-//     */
-//    public UserDto.READ getUser() {
-//        UserEntity userEntity = UserThreadLocal.get();
-//        checkDelete(userEntity.getDeyYN());
-//        return UserEntity.of(userEntity);
-//    }
+
 //
 //    /**
 //     * 본인 주소 조회

@@ -2,6 +2,7 @@ package kr.co.popoolserver.entity.user;
 
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
+import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.model.Address;
 import kr.co.popoolserver.entity.BaseEntity;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
@@ -103,16 +104,16 @@ public class UserEntity extends BaseEntity {
                 .build();
     }
 
-//    public static UserDto.READ of(UserEntity userEntity){
-//        return UserDto.READ.builder()
-//                .name(userEntity.getName())
-//                .birth(userEntity.getBirth())
-//                .phoneNumber(userEntity.getPhoneNumber())
-//                .gender(userEntity.getGender())
-//                .userRole(userEntity.getUserRole())
-//                .createAt(userEntity.getCreatedAt())
-//                .build();
-//    }
+    public static ResponseUsers.READ_USER of(UserEntity userEntity){
+        return ResponseUsers.READ_USER.builder()
+                .name(userEntity.getName())
+                .birth(userEntity.getBirth())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .gender(userEntity.getGender())
+                .userRole(userEntity.getUserRole())
+                .createAt(userEntity.getCreatedAt())
+                .build();
+    }
 
 //    public void updateInfo(UserDto.UPDATE update){
 //        this.name = update.getName();

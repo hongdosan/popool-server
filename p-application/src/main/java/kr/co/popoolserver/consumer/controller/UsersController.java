@@ -42,7 +42,7 @@ public class UsersController {
     @PostMapping("/CORPORATE")
     public ResponseFormat<String> createCorporate(@RequestBody @Valid CreateUsers.CREATE_CORPORATE createCorporate){
         corporateService.createCorporate(createCorporate);
-        return ResponseFormat.ok(createCorporate.getIdentity() + "님 회원가입 완");
+        return ResponseFormat.ok(createCorporate.getIdentity() + "님 회원가입 완료");
     }
 
     @ApiOperation("로그인 API")
@@ -63,15 +63,13 @@ public class UsersController {
     @ApiOperation("본인 일반 정보 조회 API")
     @GetMapping("/USER")
     public ResponseFormat<ResponseUsers.READ_USER> getUser(){
-        //TODO get User
-        return null;
+        return ResponseFormat.ok(userService.getUser());
     }
 
     @ApiOperation("본인 기업 정보 조회 API")
     @GetMapping("/CORPORATE")
     public ResponseFormat<ResponseUsers.READ_CORPORATE> getCorporate(){
-        //TODO get Corporate
-        return null;
+        return ResponseFormat.ok(corporateService.getCorporate());
     }
 
     @ApiOperation("세부 정보 조회 API : 주소, 전화번호, 이메일")

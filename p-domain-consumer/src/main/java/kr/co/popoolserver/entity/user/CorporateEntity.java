@@ -1,6 +1,7 @@
 package kr.co.popoolserver.entity.user;
 
 import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.model.Address;
 import kr.co.popoolserver.entity.BaseEntity;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
@@ -113,17 +114,17 @@ public class CorporateEntity extends BaseEntity {
                         .build())
                 .build();
     }
-//
-//    public static CorporateDto.READ of(CorporateEntity corporateEntity){
-//        return CorporateDto.READ.builder()
-//                .name(corporateEntity.name)
-//                .businessName(corporateEntity.businessName)
-//                .businessCeoName(corporateEntity.getBusinessCeoName())
-//                .businessNumber(corporateEntity.getBusinessNumber())
-//                .userRole(corporateEntity.userRole)
-//                .createAt(corporateEntity.createdAt)
-//                .build();
-//    }
+
+    public static ResponseUsers.READ_CORPORATE of(CorporateEntity corporateEntity){
+        return ResponseUsers.READ_CORPORATE.builder()
+                .name(corporateEntity.name)
+                .businessName(corporateEntity.businessName)
+                .businessCeoName(corporateEntity.getBusinessCeoName())
+                .businessNumber(corporateEntity.getBusinessNumber())
+                .userRole(corporateEntity.userRole)
+                .createAt(corporateEntity.createdAt)
+                .build();
+    }
 //
 //    public void updateInfo(CorporateDto.UPDATE update){
 //        this.name = update.getName();

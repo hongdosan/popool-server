@@ -1,4 +1,4 @@
-package kr.co.popoolserver.interceptor;
+package kr.co.popoolserver.infra.interceptor;
 
 import kr.co.popoolserver.admin.security.AdminAuthenticationService;
 import kr.co.popoolserver.consumer.security.ConsumerAuthenticationService;

@@ -35,7 +35,7 @@ public class ResponseUsers {
         private String birth;
 
         @ApiModelProperty(example = "010-xxxx-xxxx")
-        private String phoneNumber;
+        private PhoneNumber phoneNumber;
 
         @ApiModelProperty(example = "MALE or FEMALE")
         private Gender gender;
