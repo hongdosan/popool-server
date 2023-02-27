@@ -1,34 +1,37 @@
 package kr.co.popoolserver.consumer.service.user;
 
-import kr.co.popoolserver.entity.user.dto.UserCommonDto;
-import kr.co.popoolserver.enums.UserServiceName;
+import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.request.UpdateUsers;
+import kr.co.popoolserver.dtos.response.ResponseUsers;
+import kr.co.popoolserver.dtos.UserCommonDto;
+import kr.co.popoolserver.enums.UserName;
 
 public interface UserCommonService {
 
     //login
-    UserCommonDto.TOKEN login(UserCommonDto.LOGIN login);
+    ResponseUsers.TOKEN login(CreateUsers.LOGIN login);
 
     //update
-    void updatePassword(UserCommonDto.UPDATE_PASSWORD password);
-    void updateEmail(UserCommonDto.UPDATE_EMAIL email);
-    void updatePhone(UserCommonDto.UPDATE_PHONE phone);
-    void updateAddress(UserCommonDto.UPDATE_ADDRESS address);
+    void updatePassword(UpdateUsers.UPDATE_PASSWORD updatePassword);
+    void updateEmail(UpdateUsers.UPDATE_EMAIL updateEmail);
+    void updatePhone(UpdateUsers.UPDATE_PHONE updatePhone);
+    void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress);
 
     //get
-    UserCommonDto.READ_ADDRESS getAddress();
-    UserCommonDto.READ_EMAIL getEmail();
-    UserCommonDto.READ_PHONE getPhone();
+    ResponseUsers.READ_DETAIL getUserDetail();
 
     //delete
     void deleteRefreshToken(String identity);
 
     //common
-    void checkIdentity(String identity);
-    void checkPhoneNumber(String phoneNumber);
-    void checkEmail(String email);
+    void isIdentity(String identity);
+    void isPhoneNumber(String phoneNumber);
+    void isEmail(String email);
+
     void checkPassword(String password, String checkPassword);
     void checkEncodePassword(String password, String encodePassword);
     void checkDelete(String delYN);
     void checkReCreate(String delYN);
-    Boolean canHandle(UserServiceName userServiceName);
+
+    Boolean canHandle(UserName userName);
 }

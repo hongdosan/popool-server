@@ -1,11 +1,10 @@
 package kr.co.popoolserver.entity.user;
 
+import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.entity.user.model.Address;
 import kr.co.popoolserver.entity.BaseEntity;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
 import kr.co.popoolserver.enums.UserRole;
-import kr.co.popoolserver.entity.user.dto.CorporateDto;
-import kr.co.popoolserver.entity.user.dto.UserCommonDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tbl_corporate")
@@ -21,25 +21,32 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CorporateEntity extends BaseEntity {
 
-    @Column(name = "business_number", nullable = false, length = 100)
+    @Column(name = "business_number", nullable = false)
+    @NotBlank(message = "사업자 번호는 필수 입력 값입니다.")
     private String businessNumber;
 
-    @Column(name = "business_name", nullable = false, length = 100)
+    @Column(name = "business_name", nullable = false)
+    @NotBlank(message = "사업자명은 필수 입력 값입니다.")
     private String businessName;
 
-    @Column(name = "business_ceo_name", nullable = false, length = 100)
+    @Column(name = "business_ceo_name", nullable = false)
+    @NotBlank(message = "대표명은 필수 입력 값입니다.")
     private String businessCeoName;
 
-    @Column(name = "business_email", nullable = false, length = 100)
+    @Column(name = "business_email", nullable = false)
+    @NotBlank(message = "회사 메일은 필수 입력 값입니다.")
     private String businessEmail;
 
-    @Column(name = "identity", unique = true, nullable = false, length = 25)
+    @Column(name = "identity", unique = true, nullable = false)
+    @NotBlank(message = "아이디는 필수 입력 값입니다.")
     private String identity;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     private String password;
 
     @Column(name = "name", nullable = false, length = 25)
+    @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String name;
 
     @Column(name = "user_role")
@@ -47,7 +54,11 @@ public class CorporateEntity extends BaseEntity {
     private UserRole userRole;
 
     @Embedded
-    @AttributeOverride(name = "phoneNumber", column = @Column(name = "business_phone_number", unique = true))
+    @NotBlank(message = "회사 전화번호는 필수 입력 값입니다.")
+    @AttributeOverride(
+            name = "phoneNumber",
+            column = @Column(name = "business_phone_number", unique = true)
+    )
     private PhoneNumber businessPhoneNumber;
 
     @Embedded
@@ -81,57 +92,63 @@ public class CorporateEntity extends BaseEntity {
         this.userRole = userRole;
     }
 
-    public static CorporateEntity of(CorporateDto.CREATE create,
+    public static CorporateEntity of(CreateUsers.CREATE_CORPORATE createCorporate,
                                      PasswordEncoder passwordEncoder){
         return CorporateEntity.builder()
-                .identity(create.getIdentity())
-                .password(passwordEncoder.encode(create.getPassword()))
-                .businessName(create.getBusinessName())
-                .businessNumber(create.getBusinessNumber())
-                .businessCeoName(create.getBusinessCeoName())
-                .businessEmail(create.getBusinessEmail())
-                .businessPhoneNumber(new PhoneNumber(create.getBusinessPhoneNumber()))
-                .businessAddress(new Address(create.getZipCode(), create.getAddr1(), create.getAddr2()))
-                .name(create.getName())
+                .identity(createCorporate.getIdentity())
+                .password(passwordEncoder.encode(createCorporate.getPassword()))
+                .businessName(createCorporate.getBusinessName())
+                .businessNumber(createCorporate.getBusinessNumber())
+                .businessCeoName(createCorporate.getBusinessCeoName())
+                .businessEmail(createCorporate.getBusinessEmail())
+                .name(createCorporate.getName())
                 .userRole(UserRole.ROLE_CORPORATE)
+                .businessPhoneNumber(PhoneNumber.builder()
+                        .phoneNumber(createCorporate.getBusinessPhoneNumber())
+                        .build())
+                .businessAddress(Address.builder()
+                        .zipcode(createCorporate.getZipCode())
+                        .address1(createCorporate.getAddr1())
+                        .address2(createCorporate.getAddr2())
+                        .build())
                 .build();
     }
-
-    public static CorporateDto.READ of(CorporateEntity corporateEntity){
-        return CorporateDto.READ.builder()
-                .name(corporateEntity.name)
-                .businessName(corporateEntity.businessName)
-                .businessCeoName(corporateEntity.getBusinessCeoName())
-                .businessNumber(corporateEntity.getBusinessNumber())
-                .userRole(corporateEntity.userRole)
-                .createAt(corporateEntity.createdAt)
-                .build();
-    }
-
-    public void updateInfo(CorporateDto.UPDATE update){
-        this.name = update.getName();
-        this.businessNumber = update.getBusinessNumber();
-        this.businessName = update.getBusinessName();
-        this.businessCeoName = update.getBusinessCeoName();
-    }
-
-    public void updatePassword(String password){
-        this.password = password;
-    }
-
-    public void updateEmail(String email){
-        this.businessEmail = email;
-    }
-
-    public void updatePhone(PhoneNumber phoneNumber){
-        this.businessPhoneNumber = phoneNumber;
-    }
-
-    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address){
-        this.businessAddress = Address.builder()
-                .zipcode(address.getZipCode())
-                .address1(address.getAddr1())
-                .address2(address.getAddr2())
-                .build();
-    }
+//
+//    public static CorporateDto.READ of(CorporateEntity corporateEntity){
+//        return CorporateDto.READ.builder()
+//                .name(corporateEntity.name)
+//                .businessName(corporateEntity.businessName)
+//                .businessCeoName(corporateEntity.getBusinessCeoName())
+//                .businessNumber(corporateEntity.getBusinessNumber())
+//                .userRole(corporateEntity.userRole)
+//                .createAt(corporateEntity.createdAt)
+//                .build();
+//    }
+//
+//    public void updateInfo(CorporateDto.UPDATE update){
+//        this.name = update.getName();
+//        this.businessNumber = update.getBusinessNumber();
+//        this.businessName = update.getBusinessName();
+//        this.businessCeoName = update.getBusinessCeoName();
+//    }
+//
+//    public void updatePassword(String password){
+//        this.password = password;
+//    }
+//
+//    public void updateEmail(String email){
+//        this.businessEmail = email;
+//    }
+//
+//    public void updatePhone(PhoneNumber phoneNumber){
+//        this.businessPhoneNumber = phoneNumber;
+//    }
+//
+//    public void updateAddress(UserCommonDto.UPDATE_ADDRESS address){
+//        this.businessAddress = Address.builder()
+//                .zipcode(address.getZipCode())
+//                .address1(address.getAddr1())
+//                .address2(address.getAddr2())
+//                .build();
+//    }
 }

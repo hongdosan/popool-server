@@ -26,24 +26,24 @@ import javax.validation.constraints.NotNull;
 public class UserEntity extends BaseEntity {
 
     @Column(name = "identity", unique = true, nullable = false)
-    @NotBlank
+    @NotBlank(message = "아이디는 필수 입력 값입니다.")
     private String identity;
 
     @Column(name = "password", nullable = false)
-    @NotBlank
+    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     private String password;
 
     @Column(name = "email", nullable = false, unique = true)
-    @NotBlank
+    @NotBlank(message = "이메일은 필수 입력 값입니다.")
     @Email
     private String email;
 
     @Column(name = "name", nullable = false)
-    @NotBlank
+    @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String name;
 
     @Column(name = "birth", nullable = false)
-    @NotBlank
+    @NotBlank(message = "생년월일 필수 입력 값입니다.")
     private String birth;
 
     @Column(name = "gender")
@@ -55,7 +55,7 @@ public class UserEntity extends BaseEntity {
     private UserRole userRole;
 
     @Embedded
-    @NotNull
+    @NotNull(message = "전화번호는 필수 입력 값입니다.")
     @AttributeOverride(
             name = "phoneNumber",
             column = @Column(name = "phone_number", unique = true, nullable = false)
@@ -77,7 +77,8 @@ public class UserEntity extends BaseEntity {
                       String birth,
                       Gender gender,
                       String email,
-                      PhoneNumber phoneNumber) {
+                      PhoneNumber phoneNumber,
+                      UserRole userRole) {
         this.identity = identity;
         this.password = password;
         this.name = name;
@@ -85,7 +86,7 @@ public class UserEntity extends BaseEntity {
         this.gender = gender;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.userRole = UserRole.ROLE_USER;
+        this.userRole = userRole;
     }
 
     public static UserEntity of(CreateUsers.CREATE_USER createUser,
@@ -95,8 +96,10 @@ public class UserEntity extends BaseEntity {
                 .password(passwordEncoder.encode(createUser.getPassword()))
                 .name(createUser.getName())
                 .phoneNumber(new PhoneNumber(createUser.getPhoneNumber()))
+                .email(createUser.getEmail())
                 .birth(createUser.getBirth())
                 .gender(Gender.of(createUser.getGender()))
+                .userRole(UserRole.ROLE_USER)
                 .build();
     }
 

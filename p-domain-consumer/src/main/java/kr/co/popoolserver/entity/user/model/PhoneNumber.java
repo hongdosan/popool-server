@@ -1,10 +1,7 @@
 package kr.co.popoolserver.entity.user.model;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 
@@ -20,6 +17,7 @@ public class PhoneNumber {
     @ApiModelProperty(example = "010-XXXX-XXXX")
     private String phoneNumber;
 
+    @Builder
     public PhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
