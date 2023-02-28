@@ -25,20 +25,16 @@ public class WebConfig implements WebMvcConfigurer {
     };
 
     private static final String[] ADMIN_AUTH_ARR = {
-            "/admin/signUp",
+            "/admin/create",
             "/admin/login",
             "/admin/refresh-token"
     };
 
     private static final String[] USER_AUTH_ARR = {
-            "/users/**/signUp",
+            "/users/**/create",
             "/users/**/login",
-            "/users/reCreate",
-            "/users/refresh-token",
-            "/corporates/**/signUp",
-            "/corporates/**/login",
-            "/corporates/reCreate",
-            "/corporates/refresh-token"
+            "/users/restore",
+            "/users/refresh-token"
     };
 
     private static final String[] PRODUCT_AUTH_ARR = {

@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_corporate")
@@ -56,7 +57,7 @@ public class CorporateEntity extends BaseEntity {
     private UserRole userRole;
 
     @Embedded
-    @NotBlank(message = "회사 전화번호는 필수 입력 값입니다.")
+    @NotNull(message = "회사 전화번호는 필수 입력 값입니다.")
     @AttributeOverride(
             name = "phoneNumber",
             column = @Column(name = "business_phone_number")

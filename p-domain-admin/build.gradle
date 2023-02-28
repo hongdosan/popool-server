@@ -1,19 +1,20 @@
-plugins {
-    id 'java'
-}
-
-group 'kr.co'
-version '0.0.1-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
+bootJar.enabled = false
+jar.enabled = true
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-}
+    implementation project(':p-core')
 
-test {
-    useJUnitPlatform()
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    //DB
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    //Swagger & Validation
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    //Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
 }

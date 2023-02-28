@@ -1,18 +1,9 @@
-plugins {
-    id 'java'
-}
-
-group 'kr.co.popoolserver'
-
-repositories {
-    mavenCentral()
-}
+bootJar.enabled = false
+jar.enabled = true
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-}
+    implementation project(':p-core')
 
-test {
-    useJUnitPlatform()
+    //JWT
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }

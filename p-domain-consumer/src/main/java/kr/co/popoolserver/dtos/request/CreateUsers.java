@@ -17,17 +17,14 @@ public class CreateUsers {
     public static class CREATE_USER{
         @ApiModelProperty(example = "id1234")
         @NotBlank(message = "아이디를 입력하세요.")
-        @Size(min = 5, max = 17, message = "아이디는 5~17자를 입력하세요.")
         private String identity;
 
         @ApiModelProperty(example = "pw1234")
         @NotBlank(message = "비밀번호를 입력하세요.")
-        @Size(min = 5, max = 17, message = "비밀번호는 5~17자를 입력하세요.")
         private String password;
 
         @ApiModelProperty(example = "pw1234")
         @NotBlank(message = "확인 비밀번호를 입력하세요.")
-        @Size(min = 5, max = 17, message = "확인 비밀번호는 5~17자를 입력하세요.")
         private String checkPassword;
 
         @ApiModelProperty(example = "HongDosan")
@@ -36,7 +33,6 @@ public class CreateUsers {
 
         @ApiModelProperty(example = "19980101")
         @NotBlank(message = "생년월일을 입력해주세요.")
-        @Size(min = 8, max = 8, message = "생년월일은 8자리로 입력해주세요.")
         private String birth;
 
         @ApiModelProperty(example = "010-1111-1111")
@@ -59,17 +55,14 @@ public class CreateUsers {
     public static class CREATE_CORPORATE{
         @ApiModelProperty(example = "id1234")
         @NotBlank(message = "아이디를 입력하세요.")
-        @Size(min = 5, max = 17, message = "아이디는 5~17자를 입력하세요.")
         private String identity;
 
         @ApiModelProperty(example = "pw1234")
         @NotBlank(message = "비밀번호를 입력하세요.")
-        @Size(min = 5, max = 17, message = "비밀번호는 5~17자를 입력하세요.")
         private String password;
 
         @ApiModelProperty(example = "pw1234")
         @NotBlank(message = "확인 비밀번호를 입력하세요.")
-        @Size(min = 5, max = 17, message = "확인 비밀번호는 5~17자를 입력하세요.")
         private String checkPassword;
 
         @ApiModelProperty(example = "010-0000-0000")

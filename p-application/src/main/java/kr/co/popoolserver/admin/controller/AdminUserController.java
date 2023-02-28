@@ -30,7 +30,7 @@ public class AdminUserController {
     }
 
     @ApiOperation("관리자 등록 API")
-    @PostMapping
+    @PostMapping("/create")
     public ResponseFormat<String> createAdmin(@RequestBody @Valid RequestAdmin.CREATE_ADMIN createAdmin){
         adminUserService.createAdmin(createAdmin);
         return ResponseFormat.ok(createAdmin.getName() + " 관리자 등록 완료");

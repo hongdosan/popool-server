@@ -1,4 +1,4 @@
-package kr.co.popoolserver.infra.config;
+package kr.co.popoolserver.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

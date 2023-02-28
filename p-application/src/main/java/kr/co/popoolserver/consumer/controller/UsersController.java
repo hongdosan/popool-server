@@ -32,14 +32,14 @@ public class UsersController {
     private UserCommonService userCommonService;
 
     @ApiOperation("일반 회원 등록 API")
-    @PostMapping("/USER")
+    @PostMapping("/USER/create")
     public ResponseFormat<String> createUser(@RequestBody @Valid CreateUsers.CREATE_USER createUser){
         userService.createUser(createUser);
         return ResponseFormat.ok(createUser.getIdentity() + "님 회원가입 완료");
     }
 
     @ApiOperation("기업 회원 등록 API")
-    @PostMapping("/CORPORATE")
+    @PostMapping("/CORPORATE/create")
     public ResponseFormat<String> createCorporate(@RequestBody @Valid CreateUsers.CREATE_CORPORATE createCorporate){
         corporateService.createCorporate(createCorporate);
         return ResponseFormat.ok(createCorporate.getIdentity() + "님 회원가입 완료");
