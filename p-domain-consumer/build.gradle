@@ -5,8 +5,8 @@ dependencies {
     implementation project(':p-core')
     implementation project(':p-domain-s3')
 
+    //jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     //Swagger & Validation
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
