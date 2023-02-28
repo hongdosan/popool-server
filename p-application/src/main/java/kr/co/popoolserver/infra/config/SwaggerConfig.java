@@ -1,4 +1,4 @@
-package kr.co.popoolserver.config;
+package kr.co.popoolserver.infra.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

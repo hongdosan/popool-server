@@ -1,4 +1,4 @@
-package kr.co.popoolserver.config;
+package kr.co.popoolserver.infra.config;
 
 import kr.co.popoolserver.infra.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;

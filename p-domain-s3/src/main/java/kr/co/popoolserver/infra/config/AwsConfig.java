@@ -1,4 +1,4 @@
-package kr.co.popoolserver.config;
+package kr.co.popoolserver.infra.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
