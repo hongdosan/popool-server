@@ -26,8 +26,11 @@ import java.util.Set;
 public class ConsumerAuthenticationService {
 
     private final RedisService redisService;
+
     private final UserRepository userRepository;
+
     private final CorporateRepository corporateRepository;
+
     private final JwtProvider jwtProvider;
 
     /**

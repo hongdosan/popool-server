@@ -173,13 +173,4 @@ public class JwtProvider {
                 .getBody()
                 .get(USER_ROLE);
     }
-
-    /**
-     * 관리자가 아닐 시 예외 발생
-     * @param userRole
-     */
-    public void checkAdminRole(UserRole userRole){
-        if(!userRole.equals(UserRole.ROLE_ADMIN)) throw new UserDefineException(ErrorCode.FAIL_USER_ROLE);
-    }
-
 }

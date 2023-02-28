@@ -34,8 +34,8 @@ public class S3Service {
     private String BUCKET_NAME;
     final String FILE_EXTENSION_SEPARATOR = ".";
 
-    @Value("${spring.file-dir}") //file 저장 경로
-    private String rootDir;
+//    @Value("${spring.file-dir}") //file 저장 경로
+//    private String rootDir;
     private String fileDir;
 
     /**
@@ -43,7 +43,7 @@ public class S3Service {
      */
     @PostConstruct
     private void init(){
-        this.fileDir = System.getProperty("user.dir") + this.rootDir;
+        this.fileDir = System.getProperty("user.dir");
     }
 
     public S3Dto.CONVERT uploadS3(MultipartFile multipartFile,

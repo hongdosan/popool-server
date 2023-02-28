@@ -1,5 +1,7 @@
 package kr.co.popoolserver.entitiy;
 
+import kr.co.popoolserver.dtos.RequestAdmin;
+import kr.co.popoolserver.dtos.ResponseAdmin;
 import kr.co.popoolserver.enums.UserRole;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,13 +28,16 @@ public class AdminEntity {
     @Column(name = "admin_id")
     private Long id;
 
-    @Column(name = "identity", unique = true, nullable = false, length = 25)
+    @Column(name = "identity", unique = true, nullable = false)
+    @NotBlank(message = "아이디는 필수 입력값입니다.")
     private String identity;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "비밀번호는 필수 입력값입니다.")
     private String password;
 
-    @Column(name = "name", nullable = false, length = 25)
+    @Column(name = "name", nullable = false)
+    @NotBlank(message = "이름은 필수 입력값입니다.")
     private String name;
 
     @Column(name = "user_role")
@@ -41,10 +47,6 @@ public class AdminEntity {
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updateAt;
 
     @Builder
     public AdminEntity(String identity,
@@ -57,17 +59,18 @@ public class AdminEntity {
         this.userRole = userRole;
     }
 
-    public static AdminEntity of(AdminDto.CREATE create, PasswordEncoder passwordEncoder){
+    public static AdminEntity of(RequestAdmin.CREATE_ADMIN createAdmin,
+                                 PasswordEncoder passwordEncoder){
         return AdminEntity.builder()
-                .identity(create.getIdentity())
-                .password(passwordEncoder.encode(create.getPassword()))
-                .name(create.getName())
+                .identity(createAdmin.getIdentity())
+                .password(passwordEncoder.encode(createAdmin.getPassword()))
+                .name(createAdmin.getName())
                 .userRole(UserRole.ROLE_ADMIN)
                 .build();
     }
 
-    public static AdminDto.READ of(AdminEntity adminEntity){
-        return AdminDto.READ.builder()
+    public static ResponseAdmin.READ_ADMIN toDto(AdminEntity adminEntity){
+        return ResponseAdmin.READ_ADMIN.builder()
                 .name(adminEntity.name)
                 .build();
     }

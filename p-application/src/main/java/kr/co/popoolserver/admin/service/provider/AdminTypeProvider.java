@@ -1,7 +1,7 @@
 package kr.co.popoolserver.admin.service.provider;
 
 import kr.co.popoolserver.admin.service.AdminCommonService;
-import kr.co.popoolserver.enums.AdminServiceName;
+import kr.co.popoolserver.enums.AdminType;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,9 @@ public class AdminTypeProvider {
 
     private final List<AdminCommonService> adminCommonServiceList;
 
-    public AdminCommonService getAdminService(AdminServiceName adminServiceName){
+    public AdminCommonService getAdminService(AdminType adminType){
         AdminCommonService adminCommonService = adminCommonServiceList.stream()
-                .filter(service -> service.canHandle(adminServiceName))
+                .filter(service -> service.canHandle(adminType))
                 .findFirst()
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.NOT_SERVICE));
         return adminCommonService;

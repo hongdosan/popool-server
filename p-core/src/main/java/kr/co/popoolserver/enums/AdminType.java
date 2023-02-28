@@ -1,6 +1,6 @@
 package kr.co.popoolserver.enums;
 
-public enum AdminServiceName {
+public enum AdminType {
     ADMIN,
     PRODUCT
 }

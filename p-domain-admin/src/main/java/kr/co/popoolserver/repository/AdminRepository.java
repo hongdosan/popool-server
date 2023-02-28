@@ -8,7 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface AdminRepository extends JpaRepository<AdminEntity, Long> {
-
     //find
     Optional<AdminEntity> findByIdentity(String identity);
 

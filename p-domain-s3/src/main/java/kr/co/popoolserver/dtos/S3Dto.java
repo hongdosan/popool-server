@@ -18,7 +18,7 @@ public class S3Dto {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class CONVERT{
+    public static class CONVERT {
         private String fileUrl;
 
         private String fileName;

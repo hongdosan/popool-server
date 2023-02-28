@@ -22,7 +22,9 @@ import java.util.Optional;
 public class ConsumerAuthenticationFilter extends OncePerRequestFilter {
 
     private final ConsumerAuthenticationService consumerAuthenticationService;
+
     private final JwtProvider jwtProvider;
+
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
