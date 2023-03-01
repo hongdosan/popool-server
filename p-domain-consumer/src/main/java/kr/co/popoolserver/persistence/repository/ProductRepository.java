@@ -1,6 +1,6 @@
-package kr.co.popoolserver.repository.product;
+package kr.co.popoolserver.persistence.repository;
 
-import kr.co.popoolserver.entity.product.ProductEntity;
+import kr.co.popoolserver.persistence.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

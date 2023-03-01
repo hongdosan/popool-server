@@ -1,8 +1,7 @@
-package kr.co.popoolserver.entity.career;
+package kr.co.popoolserver.persistence.entity;
 
 import kr.co.popoolserver.dtos.S3Dto;
-import kr.co.popoolserver.entity.user.UserEntity;
-import kr.co.popoolserver.entity.BaseEntity;
+import kr.co.popoolserver.persistence.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,14 +55,4 @@ public class CareerFileEntity extends BaseEntity {
                 .userEntity(userEntity)
                 .build();
     }
-
-//    public static CareerFileDto.READ_INFO of(CareerFileEntity careerFileEntity) {
-//        return CareerFileDto.READ_INFO.builder()
-//                .fileName(careerFileEntity.getFileName())
-//                .fileSize(careerFileEntity.getFileSize())
-//                .fileExtension(careerFileEntity.getFileExtension())
-//                .identity(careerFileEntity.getUserEntity().getIdentity())
-//                .createAt(careerFileEntity.createdAt)
-//                .build();
-//    }
 }

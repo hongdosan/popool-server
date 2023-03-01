@@ -2,14 +2,14 @@ package kr.co.popoolserver.admin.service;
 
 import kr.co.popoolserver.dtos.RequestAdmin;
 import kr.co.popoolserver.dtos.ResponseAdmin;
-import kr.co.popoolserver.entitiy.AdminEntity;
+import kr.co.popoolserver.persistence.entitiy.AdminEntity;
 import kr.co.popoolserver.enums.AdminType;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.exception.DuplicatedException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.admin.security.AdminThreadLocal;
 import kr.co.popoolserver.provider.JwtProvider;
-import kr.co.popoolserver.repository.AdminRepository;
+import kr.co.popoolserver.persistence.repository.AdminRepository;
 import kr.co.popoolserver.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -87,7 +87,7 @@ public class AdminUserService implements AdminCommonService{
 
     /**
      * 회원 탈퇴
-     * @param delete
+     * @param deleteAdmin
      */
     @Transactional
     public void deleteAdmin(RequestAdmin.DELETE_ADMIN deleteAdmin) {

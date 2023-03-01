@@ -1,6 +1,6 @@
 package kr.co.popoolserver.consumer.security;
 
-import kr.co.popoolserver.entity.user.CorporateEntity;
+import kr.co.popoolserver.persistence.entity.CorporateEntity;
 
 public class CorporateThreadLocal {
     private static final ThreadLocal<CorporateEntity> corporateThreadLocal;

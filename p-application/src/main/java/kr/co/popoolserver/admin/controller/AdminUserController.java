@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.popoolserver.admin.security.AdminThreadLocal;
 import kr.co.popoolserver.dtos.RequestAdmin;
 import kr.co.popoolserver.dtos.ResponseAdmin;
-import kr.co.popoolserver.entitiy.AdminEntity;
+import kr.co.popoolserver.persistence.entitiy.AdminEntity;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import kr.co.popoolserver.admin.service.AdminUserService;
 import kr.co.popoolserver.service.RedisService;

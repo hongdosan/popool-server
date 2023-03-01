@@ -1,4 +1,4 @@
-package kr.co.popoolserver.entity;
+package kr.co.popoolserver.persistence;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

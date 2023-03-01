@@ -1,7 +1,7 @@
-package kr.co.popoolserver.repository.user;
+package kr.co.popoolserver.persistence.repository;
 
-import kr.co.popoolserver.entity.user.UserEntity;
-import kr.co.popoolserver.entity.user.model.PhoneNumber;
+import kr.co.popoolserver.persistence.entity.UserEntity;
+import kr.co.popoolserver.persistence.entity.model.PhoneNumber;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

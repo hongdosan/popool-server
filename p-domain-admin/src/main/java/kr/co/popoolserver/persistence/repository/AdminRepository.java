@@ -1,6 +1,6 @@
-package kr.co.popoolserver.repository;
+package kr.co.popoolserver.persistence.repository;
 
-import kr.co.popoolserver.entitiy.AdminEntity;
+import kr.co.popoolserver.persistence.entitiy.AdminEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

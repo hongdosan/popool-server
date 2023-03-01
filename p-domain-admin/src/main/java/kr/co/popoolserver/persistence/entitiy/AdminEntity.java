@@ -1,4 +1,4 @@
-package kr.co.popoolserver.entitiy;
+package kr.co.popoolserver.persistence.entitiy;
 
 import kr.co.popoolserver.dtos.RequestAdmin;
 import kr.co.popoolserver.dtos.ResponseAdmin;
@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

@@ -1,11 +1,11 @@
 package kr.co.popoolserver.admin.security;
 
-import kr.co.popoolserver.entitiy.AdminEntity;
+import kr.co.popoolserver.persistence.entitiy.AdminEntity;
 import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.error.exception.NotFoundException;
 import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.provider.JwtProvider;
-import kr.co.popoolserver.repository.AdminRepository;
+import kr.co.popoolserver.persistence.repository.AdminRepository;
 import kr.co.popoolserver.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

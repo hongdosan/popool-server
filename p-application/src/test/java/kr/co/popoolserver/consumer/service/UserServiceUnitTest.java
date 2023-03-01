@@ -5,10 +5,10 @@ import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
-import kr.co.popoolserver.entity.user.UserEntity;
+import kr.co.popoolserver.persistence.entity.UserEntity;
 import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.provider.JwtProvider;
-import kr.co.popoolserver.repository.user.UserRepository;
+import kr.co.popoolserver.persistence.repository.UserRepository;
 import kr.co.popoolserver.service.RedisService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceUnitTest {

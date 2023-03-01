@@ -2,7 +2,7 @@ package kr.co.popoolserver.consumer.service;
 
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
-import kr.co.popoolserver.repository.user.UserRepository;
+import kr.co.popoolserver.persistence.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

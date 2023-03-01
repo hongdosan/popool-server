@@ -1,4 +1,4 @@
-package kr.co.popoolserver.entity.user.model;
+package kr.co.popoolserver.persistence.entity.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

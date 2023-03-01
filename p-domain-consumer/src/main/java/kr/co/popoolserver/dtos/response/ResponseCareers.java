@@ -1,7 +1,7 @@
 package kr.co.popoolserver.dtos.response;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.entity.career.CareerFileEntity;
+import kr.co.popoolserver.persistence.entity.CareerFileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package kr.co.popoolserver.admin.security;
 
-import kr.co.popoolserver.entitiy.AdminEntity;
+import kr.co.popoolserver.persistence.entitiy.AdminEntity;
 
 public class AdminThreadLocal {
     private static final ThreadLocal<AdminEntity> adminThreadLocal;

@@ -1,10 +1,10 @@
 package kr.co.popoolserver.consumer.service;
 
 import kr.co.popoolserver.dtos.response.ResponseProduct;
-import kr.co.popoolserver.entity.product.ProductEntity;
+import kr.co.popoolserver.persistence.entity.ProductEntity;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
 import kr.co.popoolserver.error.model.ErrorCode;
-import kr.co.popoolserver.repository.product.ProductRepository;
+import kr.co.popoolserver.persistence.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

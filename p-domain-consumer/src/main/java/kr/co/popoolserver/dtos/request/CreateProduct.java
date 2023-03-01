@@ -24,9 +24,5 @@ public class CreateProduct {
         @ApiModelProperty(example = "구독권입니다.")
         @NotBlank(message = "상품 설명을 입력하세요.")
         private String description;
-
-        @ApiModelProperty(example = "SUBSCRIPTION")
-        @NotBlank(message = "상품 종류를 입력해주세요.(COUPON, SUBSCRIPTION")
-        private String productType;
     }
 }

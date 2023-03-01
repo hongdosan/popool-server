@@ -1,6 +1,6 @@
 package kr.co.popoolserver.consumer.security;
 
-import kr.co.popoolserver.entity.user.UserEntity;
+import kr.co.popoolserver.persistence.entity.UserEntity;
 
 public class UserThreadLocal {
 

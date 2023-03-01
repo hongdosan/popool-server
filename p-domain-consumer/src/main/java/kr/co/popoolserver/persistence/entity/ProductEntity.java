@@ -1,10 +1,10 @@
-package kr.co.popoolserver.entity.product;
+package kr.co.popoolserver.persistence.entity;
 
 import kr.co.popoolserver.dtos.request.CreateProduct;
 import kr.co.popoolserver.dtos.request.UpdateProduct;
 import kr.co.popoolserver.dtos.response.ResponseProduct;
-import kr.co.popoolserver.entity.BaseEntity;
-import kr.co.popoolserver.enums.ProductType;
+
+import kr.co.popoolserver.persistence.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,19 +32,13 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "product_type")
-    @Enumerated(value = EnumType.STRING)
-    private ProductType productType;
-
     @Builder
     public ProductEntity(String productName,
                          long productPrice,
-                         String description,
-                         ProductType productType) {
+                         String description) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.description = description;
-        this.productType = productType;
     }
 
     public static ProductEntity of(CreateProduct.CREATE_PRODUCT createProduct){
@@ -52,7 +46,6 @@ public class ProductEntity extends BaseEntity {
                 .productName(createProduct.getProductName())
                 .productPrice(createProduct.getProductPrice())
                 .description(createProduct.getDescription())
-                .productType(ProductType.of(createProduct.getProductType()))
                 .build();
     }
 
@@ -60,7 +53,6 @@ public class ProductEntity extends BaseEntity {
         return ResponseProduct.READ_PRODUCT_DETAIL.builder()
                 .productName(productEntity.productName)
                 .productPrice(productEntity.productPrice)
-                .productType(productEntity.productType)
                 .description(productEntity.description)
                 .build();
     }
@@ -68,13 +60,11 @@ public class ProductEntity extends BaseEntity {
     public static ResponseProduct.READ_PRODUCT toDto(ProductEntity productEntity){
         return ResponseProduct.READ_PRODUCT.builder()
                 .productName(productEntity.productName)
-                .productType(productEntity.productType)
                 .build();
     }
 
     public void updateProduct(UpdateProduct.UPDATE_PRODUCT updateProduct){
         this.productPrice = updateProduct.getProductPrice();
         this.description = updateProduct.getDescription();
-        this.productType = ProductType.of(updateProduct.getProductType());
     }
 }

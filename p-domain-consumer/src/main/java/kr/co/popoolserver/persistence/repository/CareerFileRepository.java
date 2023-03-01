@@ -1,7 +1,7 @@
-package kr.co.popoolserver.repository.career;
+package kr.co.popoolserver.persistence.repository;
 
-import kr.co.popoolserver.entity.career.CareerFileEntity;
-import kr.co.popoolserver.entity.user.UserEntity;
+import kr.co.popoolserver.persistence.entity.CareerFileEntity;
+import kr.co.popoolserver.persistence.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
