@@ -25,6 +25,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceUnitTest {
@@ -51,6 +52,9 @@ public class UserServiceUnitTest {
         CreateUsers.CREATE_USER createUser = UserCreators.createUserDto();
         UserEntity userEntity = UserCreators.createUser();
         given(userRepository.save(any())).willReturn(userEntity);
+        given(userRepository.existsByIdentity(anyString())).willReturn(false);
+        given(userRepository.existsByPhoneNumber(any())).willReturn(false);
+        given(userRepository.existsByEmail(anyString())).willReturn(false);
 
         //when, then
         assertDoesNotThrow(() -> userService.createUser(createUser));

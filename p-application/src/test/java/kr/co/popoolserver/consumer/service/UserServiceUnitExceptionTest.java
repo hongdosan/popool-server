@@ -2,8 +2,13 @@ package kr.co.popoolserver.consumer.service;
 
 import kr.co.popoolserver.consumer.domain.UserCreators;
 import kr.co.popoolserver.consumer.security.UserThreadLocal;
+import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.UserEntity;
+import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
+import kr.co.popoolserver.error.exception.DuplicatedException;
+import kr.co.popoolserver.error.model.ErrorCode;
 import kr.co.popoolserver.provider.JwtProvider;
 import kr.co.popoolserver.repository.user.UserRepository;
 import kr.co.popoolserver.service.RedisService;
@@ -17,7 +22,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceUnitExceptionTest {
@@ -36,6 +47,73 @@ public class UserServiceUnitExceptionTest {
 
     @Mock
     private RedisService redisService;
+
+    @Test
+    @DisplayName("일반 회원 등록 실패 아이디 중복 - DuplicateException")
+    void createUser_already_identity_DuplicateException() {
+        //given
+        CreateUsers.CREATE_USER createUser = UserCreators.createUserDto();
+        given(userRepository.existsByIdentity(any())).willReturn(true);
+
+        //when, then
+        assertThrows(DuplicatedException.class,
+                () -> userService.createUser(createUser)).getMessage()
+                .equals(ErrorCode.DUPLICATED_ID.getMessage());
+    }
+
+    @Test
+    @DisplayName("일반 회원 등록 실패 전화번호 중복- DuplicateException")
+    void createUser_already_phonenumber_DuplicateException() {
+        //given
+        CreateUsers.CREATE_USER createUser = UserCreators.createUserDto();
+        given(userRepository.existsByPhoneNumber(any())).willReturn(true);
+
+        //when, then
+        assertThrows(DuplicatedException.class,
+                () -> userService.createUser(createUser)).getMessage()
+                .equals(ErrorCode.DUPLICATED_PHONE.getMessage());
+    }
+
+    @Test
+    @DisplayName("일반 회원 등록 실패 이메일 중복 - DuplicateException")
+    void createUser_already_email_DuplicateException() {
+        //given
+        CreateUsers.CREATE_USER createUser = UserCreators.createUserDto();
+        given(userRepository.existsByEmail(any())).willReturn(true);
+
+        //when, then
+        assertThrows(DuplicatedException.class,
+                () -> userService.createUser(createUser)).getMessage()
+                .equals(ErrorCode.DUPLICATED_EMAIL.getMessage());
+    }
+
+    @Test
+    @DisplayName("로그인 실패 비밀번호 오류 - BusinessLogicException")
+    void login_wrong_password_BusinessLogicException() {
+        //given
+        CreateUsers.LOGIN login = UserCreators.createLoginDto();
+        UserEntity userEntity = UserCreators.createUser();
+        given(userRepository.findByIdentity(anyString())).willReturn(Optional.ofNullable(userEntity));
+        given(passwordEncoder.matches(anyString(), anyString())).willReturn(false);
+
+        //when, then
+        assertThrows(BusinessLogicException.class,
+                () -> userService.login(login)).getMessage()
+                .equals(ErrorCode.WRONG_PASSWORD.getMessage());
+    }
+
+    @Test
+    @DisplayName("로그인 실패 없는 아이 - BusinessLogicException")
+    void login_wrong_identity_BusinessLogicException() {
+        //given
+        CreateUsers.LOGIN login = UserCreators.createLoginDto();
+        given(userRepository.findByIdentity(anyString())).willReturn(Optional.empty());
+
+        //when, then
+        assertThrows(BusinessLogicException.class,
+                () -> userService.login(login)).getMessage()
+                .equals(ErrorCode.WRONG_IDENTITY.getMessage());
+    }
 
     @Test
     @DisplayName("이미 삭제된 회원 - BusinessException")

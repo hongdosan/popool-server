@@ -2,7 +2,6 @@ package kr.co.popoolserver.consumer.domain;
 
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
-import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.entity.user.UserEntity;
 import kr.co.popoolserver.entity.user.model.PhoneNumber;
 import kr.co.popoolserver.enums.Gender;
