@@ -36,14 +36,12 @@ public class CorporateService implements UserCommonService {
     /**
      * create Corporate
      * @param createCorporate : create corporate info
-     * @exception DuplicatedException : ID, Phone Duplicated
+     * @exception DuplicatedException : ID Duplicated
      * @exception BusinessLogicException : PW Check
      */
     @Transactional
     public void createCorporate(CreateUsers.CREATE_CORPORATE createCorporate) {
         isIdentity(createCorporate.getIdentity());
-        isPhoneNumber(createCorporate.getBusinessPhoneNumber());
-        isEmail(createCorporate.getBusinessEmail());
 
         checkPassword(createCorporate.getPassword(), createCorporate.getCheckPassword());
 
