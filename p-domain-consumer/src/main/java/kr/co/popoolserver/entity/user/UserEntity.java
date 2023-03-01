@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "tbl_user")
 @Getter
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
+@Where(clause = "del_yn = N")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends BaseEntity {
 
@@ -88,6 +90,7 @@ public class UserEntity extends BaseEntity {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.userRole = userRole;
+        this.deyYN = "N";
     }
 
     public static UserEntity of(CreateUsers.CREATE_USER createUser,
@@ -108,7 +111,6 @@ public class UserEntity extends BaseEntity {
         return ResponseUsers.READ_USER.builder()
                 .name(userEntity.getName())
                 .birth(userEntity.getBirth())
-                .phoneNumber(userEntity.getPhoneNumber())
                 .gender(userEntity.getGender())
                 .userRole(userEntity.getUserRole())
                 .createAt(userEntity.getCreatedAt())

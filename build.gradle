@@ -16,6 +16,7 @@ subprojects {
     sourceCompatibility = '11'
 
     apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'idea'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
@@ -24,7 +25,9 @@ subprojects {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
 
+
         //test
+        testImplementation 'org.mockito:mockito-inline:3.4.4'
         testImplementation group: 'junit', name: 'junit'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }

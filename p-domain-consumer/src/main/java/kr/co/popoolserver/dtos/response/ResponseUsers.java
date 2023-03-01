@@ -34,9 +34,6 @@ public class ResponseUsers {
         @ApiModelProperty(example = "YYmmDD")
         private String birth;
 
-        @ApiModelProperty(example = "010-xxxx-xxxx")
-        private PhoneNumber phoneNumber;
-
         @ApiModelProperty(example = "MALE or FEMALE")
         private Gender gender;
 

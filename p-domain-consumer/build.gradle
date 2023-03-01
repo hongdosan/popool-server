@@ -2,8 +2,8 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
-    implementation project(':p-core')
-    implementation project(':p-domain-s3')
+    api project(':p-core')
+    api project(':p-domain-s3')
 
     //jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
