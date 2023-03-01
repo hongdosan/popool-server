@@ -59,7 +59,9 @@ public class JwtProvider {
      * @param name : 사용자 이름
      * @return 사용자 정보를 포함한 Claims 객체
      */
-    private Claims generateClaims(String identity, UserRole userRole, String name){
+    private Claims generateClaims(String identity,
+                                  UserRole userRole,
+                                  String name){
         Claims claims = Jwts.claims();
         claims.put(USER_IDENTITY, identity);
         claims.put(USER_ROLE, userRole);
@@ -74,7 +76,9 @@ public class JwtProvider {
      * @param name : 사용자 이름
      * @return 사용자의 AccessToken
      */
-    public String createAccessToken(String identity, UserRole userRole, String name){
+    public String createAccessToken(String identity,
+                                    UserRole userRole,
+                                    String name){
         Date issueDate = new Date();    //토큰 발행 시각.
         Date expireDate = new Date();   //토큰 유효 시각.
         expireDate.setTime(issueDate.getTime() + ACCESS_EXPIRE);
@@ -96,7 +100,9 @@ public class JwtProvider {
      * @param name : 사용자 이름
      * @return 사용자의 RefreshToken
      */
-    public String createRefreshToken(String identity, UserRole userRole, String name){
+    public String createRefreshToken(String identity,
+                                     UserRole userRole,
+                                     String name){
         Date issueDate = new Date();
         Date expireDate = new Date();
         expireDate.setTime(issueDate.getTime() + REFRESH_EXPIRE);

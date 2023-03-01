@@ -96,7 +96,8 @@ public class UpdateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class UPDATE_PASSWORD{
+    public static class
+    UPDATE_PASSWORD{
         @ApiModelProperty(example = "현재 비밀번호")
         @NotBlank(message = "현재 비밀번호를 입력해주세요")
         private String originalPassword;

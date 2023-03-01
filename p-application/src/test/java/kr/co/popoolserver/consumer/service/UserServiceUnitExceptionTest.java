@@ -58,7 +58,7 @@ public class UserServiceUnitExceptionTest {
         // given
         try (MockedStatic<UserThreadLocal> utl = Mockito.mockStatic(UserThreadLocal.class)) {
             UserEntity expected = UserCreators.createUser();
-            expected.updateAddress(UserCreators.createAddress());
+            expected.updateAddress(UserCreators.updateAddressDto());
             expected.deleted();
             utl.when(UserThreadLocal::get).thenReturn(expected);
 
