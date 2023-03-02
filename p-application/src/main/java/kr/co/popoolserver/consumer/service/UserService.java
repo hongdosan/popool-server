@@ -1,9 +1,9 @@
 package kr.co.popoolserver.consumer.service;
 
-import kr.co.popoolserver.consumer.security.UserThreadLocal;
+import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
-import kr.co.popoolserver.dtos.response.ResponseUsers;
+import kr.co.popoolserver.consumer.security.UserThreadLocal;
 import kr.co.popoolserver.persistence.entity.UserEntity;
 import kr.co.popoolserver.persistence.entity.model.PhoneNumber;
 import kr.co.popoolserver.enums.UserType;
@@ -63,7 +63,7 @@ public class UserService implements UserCommonService {
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
 
         checkEncodePassword(login.getPassword(), userEntity.getPassword(), passwordEncoder);
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
 
         final String[] tokens = generateToken(userEntity);
         redisService.createData(userEntity.getIdentity(), tokens[1], REFRESH_EXPIRE);
@@ -92,7 +92,7 @@ public class UserService implements UserCommonService {
      */
     public ResponseUsers.READ_USER getUser() {
         final UserEntity userEntity = UserThreadLocal.get();
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
 
         return UserEntity.of(userEntity);
     }
@@ -104,7 +104,7 @@ public class UserService implements UserCommonService {
     @Override
     public ResponseUsers.READ_USER_DETAIL getUserDetail() {
         final UserEntity userEntity = UserThreadLocal.get();
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
 
         return ResponseUsers.READ_USER_DETAIL.builder()
                 .address(userEntity.getAddress())
@@ -120,7 +120,7 @@ public class UserService implements UserCommonService {
     @Transactional
     public void updateUser(UpdateUsers.UPDATE_USER updateUser) {
         UserEntity userEntity = UserThreadLocal.get();
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
         userEntity.updateInfo(updateUser);
 
         userRepository.save(userEntity);
@@ -135,7 +135,7 @@ public class UserService implements UserCommonService {
     public void updatePassword(UpdateUsers.UPDATE_PASSWORD updatePassword) {
         UserEntity userEntity = UserThreadLocal.get();
 
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
         checkEncodePassword(updatePassword.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
         checkPassword(updatePassword.getNewPassword(), updatePassword.getNewCheckPassword());
 
@@ -152,7 +152,7 @@ public class UserService implements UserCommonService {
     public void updateEmail(UpdateUsers.UPDATE_EMAIL updateEmail) {
         UserEntity userEntity = UserThreadLocal.get();
 
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
         checkEncodePassword(updateEmail.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
 
         if(!userEntity.getEmail().equals(updateEmail.getEmail())){
@@ -172,7 +172,7 @@ public class UserService implements UserCommonService {
     public void updatePhoneNumber(UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber) {
         UserEntity userEntity = UserThreadLocal.get();
 
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
         checkEncodePassword(updatePhoneNumber.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
 
         if(!userEntity.getPhoneNumber().equals(updatePhoneNumber.getNewPhoneNumber())){
@@ -192,7 +192,7 @@ public class UserService implements UserCommonService {
     public void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress) {
         UserEntity userEntity = UserThreadLocal.get();
 
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
         checkEncodePassword(updateAddress.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
 
         userEntity.updateAddress(updateAddress);
@@ -208,7 +208,7 @@ public class UserService implements UserCommonService {
     public void deleteUser(UpdateUsers.DELETE delete) {
         UserEntity userEntity = UserThreadLocal.get();
 
-        checkDelete(userEntity.getDeyYN());
+        checkDelete(userEntity.getIsDeleted());
         checkEncodePassword(delete.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
 
         userEntity.deleted();
@@ -225,7 +225,7 @@ public class UserService implements UserCommonService {
         UserEntity userEntity = userRepository.findByIdentity(restore.getIdentity())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
 
-        checkRestore(userEntity.getDeyYN());
+        checkRestore(userEntity.getIsDeleted());
         checkEncodePassword(restore.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
 
         userEntity.restored();

@@ -32,11 +32,10 @@ public class S3Service {
 
     @Value("${aws.s3.bucket}")
     private String BUCKET_NAME;
-    final String FILE_EXTENSION_SEPARATOR = ".";
 
-//    @Value("${spring.file-dir}") //file 저장 경로
-//    private String rootDir;
     private String fileDir;
+
+    final String FILE_EXTENSION_SEPARATOR = ".";
 
     /**
      * 서버가 시작할 때 프로파일에 맞는 파일 경로를 설정해줌
@@ -48,19 +47,17 @@ public class S3Service {
 
     public S3Dto.CONVERT uploadS3(MultipartFile multipartFile,
                                   String dirName){
+
         File uploadFile = validateFileExists(multipartFile)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.FAIL_FILE_CONVERT));
 
-        String fileName = dirName + "/" + createFileName(multipartFile.getOriginalFilename()) + uploadFile.getName();
+        //file name 설정
+        String fileName = createFileName(dirName + "/", multipartFile.getOriginalFilename(), uploadFile.getName());
 
         String uploadImageUrl = putS3(uploadFile, fileName);
 
-        S3Dto.CONVERT convert = S3Dto.CONVERT.builder()
-                .fileName(fileName)
-                .fileUrl(uploadImageUrl)
-                .fileSize(uploadFile.length())
-                .fileExtension(contentType(fileName).toString())
-                .build();
+        S3Dto.CONVERT convert = createS3Convert(fileName, uploadImageUrl, uploadFile.length());
+
         removeNewFile(uploadFile);
 
         return convert;
@@ -85,13 +82,25 @@ public class S3Service {
             return;
     }
 
-    /**
-     * file name 난수화 Service
-     * @param fileName
-     * @return
-     */
     private String createFileName(String fileName){
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
+    }
+
+    private String createFileName(String dirName,
+                                  String fileName,
+                                  String uploadFileName){
+        return dirName + UUID.randomUUID().toString().concat(getFileExtension(fileName)) + uploadFileName;
+    }
+
+    private S3Dto.CONVERT createS3Convert(String fileName,
+                                          String uploadImageUrl,
+                                          long fileSize){
+        return S3Dto.CONVERT.builder()
+                .fileName(fileName)
+                .fileUrl(uploadImageUrl)
+                .fileSize(fileSize)
+                .fileExtension(contentType(fileName).toString())
+                .build();
     }
 
     /**

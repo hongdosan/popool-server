@@ -1,7 +1,9 @@
 package kr.co.popoolserver.persistence;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,14 +29,16 @@ public class BaseEntity {
     @Column(name = "updated_at")
     protected LocalDateTime updateAt;
 
-    @Column(name = "del_yn", nullable = false, length = 1)
-    protected String deyYN = "N";
+    @Builder.Default
+    @ColumnDefault("0")
+    @Column(name = "is-deleted", nullable = false)
+    protected Integer isDeleted;
 
     public void deleted(){
-        this.deyYN = "Y";
+        this.isDeleted = 1;
     }
 
     public void restored(){
-        this.deyYN = "N";
+        this.isDeleted = 0;
     }
 }

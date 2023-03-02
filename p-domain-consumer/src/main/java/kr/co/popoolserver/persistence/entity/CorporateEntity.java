@@ -1,12 +1,12 @@
 package kr.co.popoolserver.persistence.entity;
 
-import kr.co.popoolserver.dtos.request.CreateUsers;
-import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
+import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.persistence.BaseEntity;
 import kr.co.popoolserver.persistence.entity.model.Address;
 import kr.co.popoolserver.persistence.entity.model.PhoneNumber;
-import kr.co.popoolserver.enums.UserRole;
+import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.request.UpdateUsers;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

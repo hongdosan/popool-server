@@ -1,9 +1,9 @@
 package kr.co.popoolserver.persistence.entity;
 
-import kr.co.popoolserver.dtos.request.CreateCareers;
-import kr.co.popoolserver.dtos.request.UpdateCareers;
 import kr.co.popoolserver.dtos.response.ResponseCareers;
 import kr.co.popoolserver.persistence.BaseEntity;
+import kr.co.popoolserver.dtos.request.CreateCareers;
+import kr.co.popoolserver.dtos.request.UpdateCareers;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

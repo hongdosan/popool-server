@@ -1,9 +1,9 @@
 package kr.co.popoolserver.consumer.service;
 
-import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
+import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
-import kr.co.popoolserver.dtos.response.ResponseUsers;
+import kr.co.popoolserver.consumer.security.CorporateThreadLocal;
 import kr.co.popoolserver.persistence.entity.CorporateEntity;
 import kr.co.popoolserver.persistence.entity.model.PhoneNumber;
 import kr.co.popoolserver.enums.UserType;
@@ -61,7 +61,7 @@ public class CorporateService implements UserCommonService {
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
 
         checkEncodePassword(login.getPassword(), corporateEntity.getPassword(), passwordEncoder);
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
 
         final String[] tokens = generateToken(corporateEntity);
         redisService.createData(corporateEntity.getIdentity(), tokens[1], REFRESH_EXPIRE);
@@ -90,7 +90,7 @@ public class CorporateService implements UserCommonService {
      */
     public ResponseUsers.READ_CORPORATE getCorporate() {
         final CorporateEntity corporateEntity = CorporateThreadLocal.get();
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
 
         return CorporateEntity.of(corporateEntity);
     }
@@ -102,7 +102,7 @@ public class CorporateService implements UserCommonService {
     @Override
     public ResponseUsers.READ_USER_DETAIL getUserDetail() {
         final CorporateEntity corporateEntity = CorporateThreadLocal.get();
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
 
         return ResponseUsers.READ_USER_DETAIL.builder()
                 .address(corporateEntity.getBusinessAddress())
@@ -118,7 +118,7 @@ public class CorporateService implements UserCommonService {
     @Transactional
     public void updateCorporate(UpdateUsers.UPDATE_CORPORATE updateCorporate) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
         corporateEntity.updateInfo(updateCorporate);
 
         corporateRepository.save(corporateEntity);
@@ -133,7 +133,7 @@ public class CorporateService implements UserCommonService {
     public void updatePassword(UpdateUsers.UPDATE_PASSWORD updatePassword) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
 
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
         checkEncodePassword(updatePassword.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
         checkPassword(updatePassword.getNewPassword(), updatePassword.getNewCheckPassword());
 
@@ -150,7 +150,7 @@ public class CorporateService implements UserCommonService {
     public void updateEmail(UpdateUsers.UPDATE_EMAIL updateEmail) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
 
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
         checkEncodePassword(updateEmail.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
 
         corporateEntity.updateEmail(updateEmail.getEmail());
@@ -166,7 +166,7 @@ public class CorporateService implements UserCommonService {
     public void updatePhoneNumber(UpdateUsers.UPDATE_PHONE_NUMBER updatePhoneNumber) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
 
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
         checkEncodePassword(updatePhoneNumber.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
 
         corporateEntity.updatePhone(new PhoneNumber(updatePhoneNumber.getNewPhoneNumber()));
@@ -182,7 +182,7 @@ public class CorporateService implements UserCommonService {
     public void updateAddress(UpdateUsers.UPDATE_ADDRESS updateAddress) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
 
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
         checkEncodePassword(updateAddress.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
 
         corporateEntity.updateAddress(updateAddress);
@@ -198,7 +198,7 @@ public class CorporateService implements UserCommonService {
     public void deleteUser(UpdateUsers.DELETE delete) {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
 
-        checkDelete(corporateEntity.getDeyYN());
+        checkDelete(corporateEntity.getIsDeleted());
         checkEncodePassword(delete.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
 
         corporateEntity.deleted();
@@ -215,7 +215,7 @@ public class CorporateService implements UserCommonService {
         CorporateEntity corporateEntity = corporateRepository.findByIdentity(restore.getIdentity())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_IDENTITY));
 
-        checkRestore(corporateEntity.getDeyYN());
+        checkRestore(corporateEntity.getIsDeleted());
         checkEncodePassword(restore.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
 
         corporateEntity.restored();

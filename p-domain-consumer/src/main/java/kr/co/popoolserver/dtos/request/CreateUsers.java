@@ -4,16 +4,17 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 public class CreateUsers {
 
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class CREATE_USER{
         @ApiModelProperty(example = "id1234")
         @NotBlank(message = "아이디를 입력하세요.")
@@ -105,6 +106,7 @@ public class CreateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class LOGIN{
         @ApiModelProperty(example = "User ID")
         @NotBlank(message = "ID")

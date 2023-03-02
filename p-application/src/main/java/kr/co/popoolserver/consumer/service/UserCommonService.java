@@ -1,8 +1,8 @@
 package kr.co.popoolserver.consumer.service;
 
+import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.dtos.request.CreateUsers;
 import kr.co.popoolserver.dtos.request.UpdateUsers;
-import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.exception.BadRequestException;
 import kr.co.popoolserver.error.exception.BusinessLogicException;
@@ -59,22 +59,14 @@ public interface UserCommonService {
         }
     }
 
-    /**
-     * delete check
-     * @param delYN
-     */
-    default void checkDelete(String delYN){
-        if(delYN.equals("Y")) {
+    default void checkDelete(Integer isDelted){
+        if(isDelted.equals(1)) {
             throw new BusinessLogicException(ErrorCode.DELETED_USER);
         }
     }
 
-    /**
-     * delete check
-     * @param delYN
-     */
-    default void checkRestore(String delYN){
-        if(delYN.equals("N")) {
+    default void checkRestore(Integer isDelted){
+        if(isDelted.equals(0)) {
             throw new BadRequestException("해당 회원은 탈퇴되어있지 않습니다.");
         }
     }

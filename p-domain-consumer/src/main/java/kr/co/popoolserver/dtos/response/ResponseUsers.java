@@ -1,10 +1,10 @@
 package kr.co.popoolserver.dtos.response;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popoolserver.persistence.entity.model.Address;
-import kr.co.popoolserver.persistence.entity.model.PhoneNumber;
 import kr.co.popoolserver.enums.Gender;
 import kr.co.popoolserver.enums.UserRole;
+import kr.co.popoolserver.persistence.entity.model.Address;
+import kr.co.popoolserver.persistence.entity.model.PhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

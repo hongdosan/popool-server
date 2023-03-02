@@ -1,16 +1,18 @@
 package kr.co.popoolserver.persistence.entity;
 
+import kr.co.popoolserver.dtos.response.ResponseProduct;
+import kr.co.popoolserver.persistence.BaseEntity;
 import kr.co.popoolserver.dtos.request.CreateProduct;
 import kr.co.popoolserver.dtos.request.UpdateProduct;
-import kr.co.popoolserver.dtos.response.ResponseProduct;
-
-import kr.co.popoolserver.persistence.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 

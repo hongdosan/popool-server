@@ -39,6 +39,7 @@ public class AdminProductService implements AdminCommonService{
         checkProductName(createProduct.getProductName());
 
         final ProductEntity productEntity = ProductEntity.of(createProduct);
+
         productRepository.save(productEntity);
     }
 

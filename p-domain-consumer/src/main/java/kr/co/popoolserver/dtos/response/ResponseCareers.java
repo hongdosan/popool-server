@@ -5,13 +5,16 @@ import kr.co.popoolserver.persistence.entity.CareerFileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.logging.Level;
 
 public class ResponseCareers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class READ_CAREER {
         @ApiModelProperty(example = "X년 x개월")
         private String officePeriod;

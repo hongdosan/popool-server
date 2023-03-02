@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,6 +12,7 @@ public class CreateCareers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class CREATE_CAREER {
         @ApiModelProperty(example = "X년 x개월")
         @NotBlank(message = "근무 기간을 입력해주세요.")

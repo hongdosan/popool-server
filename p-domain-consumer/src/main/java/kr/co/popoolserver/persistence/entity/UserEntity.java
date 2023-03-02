@@ -1,13 +1,13 @@
 package kr.co.popoolserver.persistence.entity;
 
-import kr.co.popoolserver.dtos.request.CreateUsers;
-import kr.co.popoolserver.dtos.request.UpdateUsers;
 import kr.co.popoolserver.dtos.response.ResponseUsers;
+import kr.co.popoolserver.enums.Gender;
+import kr.co.popoolserver.enums.UserRole;
 import kr.co.popoolserver.persistence.BaseEntity;
 import kr.co.popoolserver.persistence.entity.model.Address;
 import kr.co.popoolserver.persistence.entity.model.PhoneNumber;
-import kr.co.popoolserver.enums.Gender;
-import kr.co.popoolserver.enums.UserRole;
+import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.request.UpdateUsers;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "tbl_user")
 @Getter
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
-@Where(clause = "del_yn = N")
+@Where(clause = "is_deleted = 0")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends BaseEntity {
 
@@ -90,7 +90,6 @@ public class UserEntity extends BaseEntity {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.userRole = userRole;
-        this.deyYN = "N";
     }
 
     public static UserEntity of(CreateUsers.CREATE_USER createUser,

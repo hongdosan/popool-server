@@ -1,13 +1,13 @@
 package kr.co.popoolserver.consumer.controller;
 
 import io.swagger.annotations.ApiOperation;
+import kr.co.popoolserver.dtos.request.CreateUsers;
+import kr.co.popoolserver.dtos.request.UpdateUsers;
+import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.consumer.service.CorporateService;
 import kr.co.popoolserver.consumer.service.UserCommonService;
 import kr.co.popoolserver.consumer.service.UserService;
 import kr.co.popoolserver.consumer.service.provider.UserTypeProvider;
-import kr.co.popoolserver.dtos.request.CreateUsers;
-import kr.co.popoolserver.dtos.request.UpdateUsers;
-import kr.co.popoolserver.dtos.response.ResponseUsers;
 import kr.co.popoolserver.enums.UserType;
 import kr.co.popoolserver.error.model.ResponseFormat;
 import kr.co.popoolserver.service.RedisService;
