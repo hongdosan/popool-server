@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -18,9 +19,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "tbl_corporate")
+@Table(name = "tbl_corporates")
 @Getter
-@AttributeOverride(name = "id", column = @Column(name = "corporate_id"))
+@Where(clause = "is_deleted = 0")
+@AttributeOverride(name = "id", column = @Column(name = "corporates_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CorporateEntity extends BaseEntity {
 

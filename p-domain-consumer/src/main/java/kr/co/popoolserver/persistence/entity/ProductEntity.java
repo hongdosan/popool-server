@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -17,9 +18,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "tbl_product")
+@Table(name = "tbl_products")
 @Getter
-@AttributeOverride(name = "id", column = @Column(name = "product_id"))
+@Where(clause = "is_deleted = 0")
+@AttributeOverride(name = "id", column = @Column(name = "products_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity extends BaseEntity {
 

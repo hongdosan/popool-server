@@ -8,13 +8,15 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tbl_career")
+@Table(name = "tbl_careers")
 @Getter
-@AttributeOverride(name = "id", column = @Column(name = "career_id"))
+@Where(clause = "is_deleted = 0")
+@AttributeOverride(name = "id", column = @Column(name = "careers_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CareerEntity extends BaseEntity {
 
@@ -34,7 +36,7 @@ public class CareerEntity extends BaseEntity {
     private String portfolioUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
     @Builder

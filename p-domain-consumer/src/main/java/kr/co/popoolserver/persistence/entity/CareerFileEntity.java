@@ -6,13 +6,15 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tbl_career_file")
+@Table(name = "tbl_career_files")
 @Getter
-@AttributeOverride(name = "id", column = @Column(name = "career_file_id"))
+@Where(clause = "is_deleted = 0")
+@AttributeOverride(name = "id", column = @Column(name = "career_files_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CareerFileEntity extends BaseEntity {
 
@@ -29,7 +31,7 @@ public class CareerFileEntity extends BaseEntity {
     private String fileExtension;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
     @Builder

@@ -31,7 +31,7 @@ public class BaseEntity {
 
     @Builder.Default
     @ColumnDefault("0")
-    @Column(name = "is-deleted", nullable = false)
+    @Column(name = "is_deleted", nullable = false)
     protected Integer isDeleted;
 
     public void deleted(){
