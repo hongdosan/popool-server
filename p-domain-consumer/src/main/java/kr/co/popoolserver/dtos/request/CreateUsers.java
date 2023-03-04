@@ -53,6 +53,7 @@ public class CreateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class CREATE_CORPORATE{
         @ApiModelProperty(example = "id1234")
         @NotBlank(message = "아이디를 입력하세요.")

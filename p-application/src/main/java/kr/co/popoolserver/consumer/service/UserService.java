@@ -209,6 +209,7 @@ public class UserService implements UserCommonService {
         UserEntity userEntity = UserThreadLocal.get();
 
         checkDelete(userEntity.getIsDeleted());
+        checkIdentity(userEntity.getIdentity(), delete.getIdentity());
         checkEncodePassword(delete.getOriginalPassword(), userEntity.getPassword(), passwordEncoder);
 
         userEntity.deleted();

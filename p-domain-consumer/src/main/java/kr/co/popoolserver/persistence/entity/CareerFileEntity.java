@@ -45,6 +45,7 @@ public class CareerFileEntity extends BaseEntity {
         this.fileUrl = fileUrl;
         this.fileExtension = fileExtension;
         this.userEntity = userEntity;
+        this.isDeleted = 0;
     }
 
     public static CareerFileEntity of(S3Dto.CONVERT convert,

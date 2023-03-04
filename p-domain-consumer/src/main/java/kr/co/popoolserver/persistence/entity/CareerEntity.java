@@ -52,6 +52,7 @@ public class CareerEntity extends BaseEntity {
         this.officeSkill = officeSkill;
         this.portfolioUrl = portfolioUrl;
         this.userEntity = userEntity;
+        this.isDeleted = 0;
     }
 
     public static CareerEntity of(CreateCareers.CREATE_CAREER createCareer,

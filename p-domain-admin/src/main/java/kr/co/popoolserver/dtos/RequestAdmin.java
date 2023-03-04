@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,6 +12,7 @@ public class RequestAdmin {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class CREATE_ADMIN{
         @ApiModelProperty(example = "id1234")
         @NotBlank(message = "아이디를 입력하세요.")
@@ -32,6 +34,7 @@ public class RequestAdmin {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class LOGIN_ADMIN{
         @ApiModelProperty(example = "User ID")
         @NotBlank(message = "ID")
@@ -45,6 +48,7 @@ public class RequestAdmin {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class DELETE_ADMIN {
         @ApiModelProperty(example = "현재 비밀번호")
         @NotBlank(message = "현재 비밀번호를 입력해주세요")

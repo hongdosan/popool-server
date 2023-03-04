@@ -90,6 +90,7 @@ public class UserEntity extends BaseEntity {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.userRole = userRole;
+        this.isDeleted = 0;
     }
 
     public static UserEntity of(CreateUsers.CREATE_USER createUser,

@@ -95,6 +95,7 @@ public class CorporateEntity extends BaseEntity {
         this.password = password;
         this.name = name;
         this.userRole = userRole;
+        this.isDeleted = 0;
     }
 
     public static CorporateEntity of(CreateUsers.CREATE_CORPORATE createCorporate,

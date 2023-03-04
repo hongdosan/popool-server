@@ -35,22 +35,18 @@ public interface UserCommonService {
 
     Boolean canHandle(UserType userType);
 
-    /**
-     * PW, Check PW equals check
-     * @param password : user pw
-     * @param checkPassword : check pw
-     */
+    default void checkIdentity(String identity, String checkIdentity) {
+        if(!identity.equals(checkIdentity)){
+            throw new BusinessLogicException(ErrorCode.WRONG_IDENTITY);
+        }
+    }
+
     default void checkPassword(String password, String checkPassword){
         if(!password.equals(checkPassword)){
             throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
         }
     }
 
-    /**
-     * Login Encode PW Check
-     * @param password : request pw
-     * @param encodePassword : encode pw
-     */
     default void checkEncodePassword(String password,
                                      String encodePassword,
                                      PasswordEncoder passwordEncoder){

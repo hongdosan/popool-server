@@ -199,6 +199,7 @@ public class CorporateService implements UserCommonService {
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
 
         checkDelete(corporateEntity.getIsDeleted());
+        checkIdentity(corporateEntity.getIdentity(), delete.getIdentity());
         checkEncodePassword(delete.getOriginalPassword(), corporateEntity.getPassword(), passwordEncoder);
 
         corporateEntity.deleted();

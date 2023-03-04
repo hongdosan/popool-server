@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,6 +12,7 @@ public class UpdateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class UPDATE_USER{
         @ApiModelProperty(example = "updateName")
         @NotBlank(message = "이름을 입력해주세요.")
@@ -28,6 +30,7 @@ public class UpdateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class UPDATE_CORPORATE{
         @ApiModelProperty(example = "HongDosan")
         @NotBlank(message = "이름을 입력해주세요.")
@@ -49,6 +52,7 @@ public class UpdateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class UPDATE_EMAIL{
         @ApiModelProperty(example = "example@email.com")
         @NotBlank(message = "이메일을 입력해주세요.")
@@ -62,6 +66,7 @@ public class UpdateUsers {
     @Getter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class UPDATE_PHONE_NUMBER {
         @ApiModelProperty(example = "010-XXXX-XXXX")
         @NotBlank(message = "휴대폰 번호를 입력해주세요")
@@ -75,6 +80,7 @@ public class UpdateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class UPDATE_ADDRESS {
         @ApiModelProperty(example = "12345")
         @NotBlank(message = "우편번호를 입력해주세요")
@@ -96,8 +102,8 @@ public class UpdateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class
-    UPDATE_PASSWORD{
+    @NoArgsConstructor
+    public static class UPDATE_PASSWORD{
         @ApiModelProperty(example = "현재 비밀번호")
         @NotBlank(message = "현재 비밀번호를 입력해주세요")
         private String originalPassword;
@@ -114,7 +120,12 @@ public class UpdateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class DELETE {
+        @ApiModelProperty(example = "삭제할 아이디")
+        @NotBlank(message = "삭제할 아이디를 입력하세요.")
+        private String identity;
+
         @ApiModelProperty(example = "현재 비밀번호")
         @NotBlank(message = "현재 비밀번호를 입력해주세요")
         private String originalPassword;
@@ -123,6 +134,7 @@ public class UpdateUsers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class RESTORE {
         @ApiModelProperty(example = "복구할 아이디")
         @NotBlank(message = "복구할 아이디를 입력하세요.")

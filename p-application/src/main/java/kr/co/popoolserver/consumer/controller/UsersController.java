@@ -132,7 +132,7 @@ public class UsersController {
     @ApiOperation("회원 탈퇴 API")
     @DeleteMapping("/{userType}")
     public ResponseFormat<String> deleteUser(@PathVariable(name = "userType") UserType userType,
-                                             @RequestBody UpdateUsers.DELETE delete){
+                                             @RequestBody @Valid UpdateUsers.DELETE delete){
         userCommonService = userTypeProvider.getUserType(userType);
         userCommonService.deleteUser(delete);
         return ResponseFormat.ok("탈퇴 완료");

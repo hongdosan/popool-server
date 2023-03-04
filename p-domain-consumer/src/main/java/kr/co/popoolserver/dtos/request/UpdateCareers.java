@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,6 +12,7 @@ public class UpdateCareers {
     @Builder
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class UPDATE_CAREER {
         @ApiModelProperty(example = "1")
         @NotBlank(message = "Career Entity Domain PK Value")

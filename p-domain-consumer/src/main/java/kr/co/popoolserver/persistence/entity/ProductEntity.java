@@ -43,6 +43,7 @@ public class ProductEntity extends BaseEntity {
         this.productName = productName;
         this.productPrice = productPrice;
         this.description = description;
+        this.isDeleted = 0;
     }
 
     public static ProductEntity of(CreateProduct.CREATE_PRODUCT createProduct){
